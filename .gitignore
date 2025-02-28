@@ -1,0 +1,6 @@
+.bundle
+db/*.sqlite
+node_modules
+public/assets
+public/assets.json
+tmp

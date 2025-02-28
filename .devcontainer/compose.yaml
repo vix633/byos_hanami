@@ -1,0 +1,17 @@
+name: "terminus"
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - app-db:/workspaces/terminus/db/sqlite
+      - ../..:/workspaces:cached
+    environment:
+      APP_URL: https://localhost:4443
+      DATABASE_URL: sqlite:///workspaces/terminus/db/sqlite/terminus.sqlite
+    command: sleep infinity
+
+volumes:
+  app-db:

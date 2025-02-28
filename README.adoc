@@ -1,0 +1,72 @@
+:toc: macro
+:toclevels: 5
+:figure-caption!:
+
+= Terminus
+
+toc::[]
+
+== Features
+
+== Requirements
+
+. link:https://www.ruby-lang.org[Ruby].
+
+== Setup
+
+To set up project, run:
+
+[source,bash]
+----
+git clone https://github.com/bkuhlmann/terminus
+cd terminus
+bin/setup
+----
+
+== Usage
+
+== Development
+
+To contribute, run:
+
+[source,bash]
+----
+git clone https://github.com/bkuhlmann/terminus
+cd terminus
+bin/setup
+----
+
+You can also use the IRB console for direct access to all objects:
+
+[source,bash]
+----
+bin/console
+----
+
+== Tests
+
+To test, run:
+
+[source,bash]
+----
+bin/rake
+----
+
+== link:https://usetrmnl.com/policies/license[License]
+
+== link:https://usetrmnl.com/policies/security[Security]
+
+== link:https://usetrmnl.com/policies/code_of_conduct[Code of Conduct]
+
+== link:https://usetrmnl.com/policies/contributions[Contributions]
+
+== link:https://usetrmnl.com/policies/developer_certificate_of_origin[Developer Certificate of Origin]
+
+== link:https://usetrmnl.com/projects/terminus/versions[Versions]
+
+== link:https://usetrmnl.com/community[Community]
+
+== Credits
+
+* Built with link:https://usetrmnl.com/projects/hanamismith[Hanamismith].
+* Engineered by link:https://usetrmnl.com[TRMNL].
