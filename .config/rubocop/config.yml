@@ -2,3 +2,7 @@ inherit_gem:
   caliber: config/all.yml
 
 plugins: rubocop-sequel
+
+RSpec/SpecFilePathFormat:
+  CustomTransform:
+    Terminus: ""
