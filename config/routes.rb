@@ -8,6 +8,7 @@ module Terminus
     get "/devices", to: "devices.index", as: :devices_index
     get "/devices/:id", to: "devices.show", as: :devices_show
     get "/devices/new", to: "devices.new", as: :devices_new
+    post "/devices", to: "devices.create", as: :devices_create
 
     slice(:health, at: "/up") { root to: "show" }
 
