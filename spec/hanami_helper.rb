@@ -14,6 +14,9 @@ require "hanami/prepare"
 
 using Refinements::Pathname
 
+Factory = ROM::Factory.configure { |config| config.rom = Hanami.app["db.rom"] }
+                      .struct_namespace(Terminus::Structs)
+
 ENV["LD_PRELOAD"] = nil
 Capybara.app = Hanami.app
 Capybara.server = :puma, {Silent: true, Threads: "0:1"}
