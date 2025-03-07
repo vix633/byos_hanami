@@ -5,6 +5,8 @@ module Terminus
   class Routes < Hanami::Routes
     get "/", to: "dashboard.show"
 
+    get "/api/display/", to: "api.display.show", as: :api_display_show
+
     get "/devices", to: "devices.index", as: :devices_index
     get "/devices/:id", to: "devices.show", as: :devices_show
     get "/devices/new", to: "devices.new", as: :devices_new
