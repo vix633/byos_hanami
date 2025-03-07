@@ -3,5 +3,11 @@ exclude_paths:
   - vendor
 
 detectors:
+  FeatureEnvy:
+    exclude:
+      - Terminus::Images::Screensaver#save
   LongParameterList:
     enabled: false
+  TooManyStatements:
+    exclude:
+      - Terminus::Images::Screensaver#save
