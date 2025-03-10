@@ -18,6 +18,7 @@ module Terminus
 
     config.middleware.use Rack::Attack
     config.middleware.use Rack::Deflater
+    config.middleware.use :body_parser, :json
 
     environment :development do
       # :nocov:
