@@ -5,6 +5,7 @@ exclude_paths:
 detectors:
   FeatureEnvy:
     exclude:
+      - Terminus::Actions::API::Images::Create#handle
       - Terminus::Images::Greyscaler#convert
       - Terminus::Images::Screensaver#save
   LongParameterList:

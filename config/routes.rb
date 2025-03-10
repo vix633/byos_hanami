@@ -6,6 +6,7 @@ module Terminus
     get "/", to: "dashboard.show"
 
     get "/api/display/", to: "api.display.show", as: :api_display_show
+    post "/api/images", to: "api.images.create", as: :api_images_create
 
     get "/devices", to: "devices.index", as: :devices_index
     get "/devices/:id", to: "devices.show", as: :devices_show
