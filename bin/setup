@@ -2,8 +2,9 @@
 # frozen_string_literal: true
 
 require "debug"
-require "fileutils"
-require "pathname"
+require "refinements/pathname"
+
+using Refinements::Pathname
 
 APP_ROOT = Pathname(__dir__).join("..").expand_path
 
@@ -11,7 +12,8 @@ Runner = lambda do |*arguments, kernel: Kernel|
   kernel.system(*arguments) || kernel.abort("\nERROR: Command #{arguments.inspect} failed.")
 end
 
-FileUtils.chdir APP_ROOT do
+# rubocop:todo Metrics/BlockLength
+APP_ROOT.change_dir do
   puts "Installing dependencies..."
   Runner.call "bundle install"
 
@@ -23,4 +25,47 @@ FileUtils.chdir APP_ROOT do
 
   puts "Compiling assets..."
   Runner.call "hanami assets compile"
+
+  APP_ROOT.join(".env.development").then do |path|
+    if path.exist?
+      puts ".env.development exists. Skipped."
+    else
+      puts "Creawting .env.development..."
+
+      path.write <<~BODY
+        APP_HOST=0.0.0.0
+        APP_URL=http://localhost:4567
+        DATABASE_URL=sqlite://db/terminus.sqlite
+        IMAGES_ROOT="#{APP_ROOT}/public/assets/images"
+      BODY
+    end
+  end
+
+  APP_ROOT.join(".env.test").then do |path|
+    if path.exist?
+      puts ".env.test exists. Skipped."
+    else
+      puts "Creating .env.test..."
+
+      path.write <<~BODY
+        APP_HOST=localhost
+        APP_URL=https://localhost:4567
+        DATABASE_URL=sqlite://db/terminus.sqlite
+        IMAGES_ROOT="#{APP_ROOT}/tmp/rspec"
+      BODY
+    end
+  end
+
+  APP_ROOT.join("Procfile.dev").then do |path|
+    if path.exist?
+      puts "Procfile.dev exists. Skipped."
+    else
+      puts "Creating Procfile.dev..."
+
+      path.write %(web: rerun --dir app,config,lib,slices --pattern="**/*.{erb,rb}" -- ) +
+                 "bundle exec puma --config ./config/puma.rb\n" \
+                 "assets: bundle exec hanami assets watch"
+    end
+  end
 end
+# rubocop:enable Metrics/BlockLength
