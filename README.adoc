@@ -2,15 +2,71 @@
 :toclevels: 5
 :figure-caption!:
 
+:docker_link: link:https://www.docker.com[Docker]
+:hanami_link: link:https://hanamirb.org[Hanami]
+:htmx_link: link:https://htmx.org[htmx]
+:overmind_link: link:https://github.com/DarthSim/overmind[Overmind]
+:puma_link: link:https://puma.io[Puma]
+:ruby_link: link:https://www.ruby-lang.org[Ruby]
+:sqlite_link: link:https://www.sqlite.org[SQLite]
+:trmnl_link: link:https://usetrmnl.com[TRMNL]
+
 = Terminus
+
+This is a {ruby_link}/{hanami_link} project that allows you to point a {trmnl_link} device to your own server which can be running on your local network or in the cloud. This is also the flagship implementation officially supported by {trmnl_link}.
 
 toc::[]
 
 == Features
 
+* Allows you to run your own server.
+* Built atop {ruby_link} and {hanami_link}.
+* Uses {htmx_link}.
+* Uses {puma_link}.
+* Uses {sqlite_link}.
+* Supports {overmind_link}.
+* Supports {docker_link}.
+* Supports {trmnl_link} devices.
+
+The following is a high level overview you can use to compare/contrast when deciding between using this Build Your Own Server (BYOS) implementation or our link:https://usetrmnl.com[hosted] solution.
+
+*Legend*
+
+* ⚪️ Planned.
+* 🟢 Supported.
+* 🟡 Partially supported.
+* 🔴 Not supported, not implemented, or isn't applicable.
+
+*Matrix*
+
+[options="header"]
+|===
+|                                   | Terminus | Hosted
+| Dashboard                         | 🟡       | 🟢
+| Plugins                           | ⚪️       | 🟢
+| Playlists                         | 🟡       | 🟢
+| Playlist Previews                 | ⚪️       | 🟢
+| Recipes                           | 🔴       | 🟢
+| Devices                           | 🟢       | 🟢
+| Account                           | 🔴       | 🟢
+| JSON Data API                     | 🟢       | 🟢
+| Open Source Components            | 🟡       | 🟡
+| Docker                            | 🟢       | 🔴
+|===
+
+The goal isn't for BYOS to match parity with our hosted solution but to provide enough of a pleasant solution for your own customized experience. There are trade offs either way but we've got you covered for whatever path you wish to travel. 🎉
+
+== Screencasts
+
+video::3xehPW-PCOM[youtube,role=video]
+
 == Requirements
 
-. link:https://www.ruby-lang.org[Ruby].
+. {ruby_link}.
+. {hanami_link}.
+. {overmind_link} (optional).
+. {docker_link} (optional).
+. A TRMNL device.
 
 == Setup
 
@@ -18,12 +74,171 @@ To set up project, run:
 
 [source,bash]
 ----
-git clone https://github.com/bkuhlmann/terminus
+git clone https://github.com/usetrmnl/byos_hanami terminus
 cd terminus
 bin/setup
 ----
 
 == Usage
+
+To launch the server, run:
+
+[source,bash]
+----
+bundle exec hanami assets compile
+bundle exec puma --config ./config/puma.rb
+----
+
+💡 Install {overmind_link} and run `overmind start` to run with full access to all processes (including remote debugging).
+
+To view the app, use either of the following:
+
+* *Secure*: https://localhost:2443
+* *Insecure*: http://localhost:2300
+
+To use the app, open `http://localhost:4567` in your browser to view the app and manage your device(s).
+
+=== APIs
+
+The following APIs are supported. Each uses HTTPS which requires accepting your locally generated SSL certificate. If you don't want this behavior, you can switch to using HTTP (see above).
+
+==== Display
+
+Used for displaying new content to your device. Your device's refresh determines how often this occurs.
+
+.Request
+[%collapsible]
+====
+[source,bash]
+----
+curl "https://localhost:2443/api/display/" \
+     -H 'ID: <redacted>' \
+     -H 'Access-Token: <redacted>' \
+     -H 'Accept: application/json' \
+     -H 'Content-Type: application/json'
+----
+====
+
+.Response
+[%collapsible]
+====
+[source,json]
+----
+{
+  "filename": "path.bmp",
+  "firmware_url": null,
+  "image_url": "https://localhost:2443/assets/images/generated/path.bmp",
+  "refresh_rate": 130,
+  "reset_firmware": false,
+  "special_function": "sleep",
+  "status": 0,
+  "update_firmware": false
+}
+----
+====
+
+==== Setup
+
+Uses for new device setup and then never used after.
+
+.Request
+[%collapsible]
+====
+[source,bash]
+----
+curl "https://localhost:2443/api/setup/" \
+    -H 'ID: <redacted>' \
+    -H 'Access-Token: <redacted>' \
+    -H 'Accept: application/json' \
+    -H 'Content-Type: application/json'
+----
+====
+
+.Response
+[%collapsible]
+====
+[source,json]
+----
+{
+  "api_key": "<redacted>",
+  "friendly_id": "ABC123",
+  "image_url": "https://localhost:2443/images/setup/logo.bmp",
+  "message": "Welcome to TRMNL BYOS",
+  "status": 200
+}
+----
+====
+
+==== Logs
+
+Uses for logging information about your server and/or device. Mostly used for debugging purposes.
+
+.Request
+[%collapsible]
+====
+[source,bash]
+----
+curl -X "POST" "https://localhost:2443/api/log" \
+     -H 'ID: <redacted>' \
+     -H 'Access-Token: <redacted>' \
+     -H 'Accept: application/json' \
+     -H 'Content-Type: application/json'
+----
+====
+
+.Response
+[%collapsible]
+====
+Logs details and answers a HTTP 204 status with no content.
+====
+
+==== Images
+
+Used for generating new images by supplying HTML content for rendering, screenshotting, and greyscaling to render properly on your device.
+
+.Request
+[%collapsible]
+====
+[source,bash]
+----
+curl -X "POST" "http://localhost:4567/api/images" \
+    -H 'ID: <redacted>' \
+    -H 'Access-Token: <redacted>' \
+    -H 'Accept: application/json' \
+    -H 'Content-Type: application/json' \
+    -d $'{
+ "image": {
+   "content": "<p>Test</p>"
+   "file_name": "test"
+ }
+}'
+----
+====
+
+.Response
+[%collapsible]
+====
+[source,json]
+----
+{
+  "path": "$HOME/Engineering/terminus/public/assets/images/generated/test.bmp"
+}
+----
+====
+
+
+💡 The images API supports full HTML so you can supply CSS styles, full DOM, etc. At a minimum, you'll want to use the following to prevent white borders showing up around your generated images:
+
+[source,css]
+----
+* {
+  margin: 0;
+}
+----
+
+If you don't supply a `file_name`, the server will generate one for you using a UUID for the file name. You can find all generated images in `public/images/generated`.
+
+💡 The `ID` is your device's MAC and the `Access-Token` is your device API Key.
 
 == Development
 
@@ -31,7 +246,7 @@ To contribute, run:
 
 [source,bash]
 ----
-git clone https://github.com/bkuhlmann/terminus
+git clone https://github.com/usetrmnl/terminus
 cd terminus
 bin/setup
 ----
@@ -43,6 +258,116 @@ You can also use the IRB console for direct access to all objects:
 bin/console
 ----
 
+Once in the console, you can then do the following:
+
+[source,ruby]
+----
+# View all devices.
+repository = Terminus::Repositories::Device.new
+repository.all
+
+# Fetch upcoming render, sorts in descending order by created timestamp.
+Terminus::Images::Fetcher.new.call images_uri: "https://localhost:2443/assets/images"
+
+# To generate image with random name.
+creator = Terminus::Images::Creator.new
+creator.call "<p>Test</p>",
+             Pathname(Hanami.app[:settings].images_root).join("generated/%<name>s.bmp")
+#<Pathname:terminus/public/assets/images/generated/f5af3f06-775f-4ae9-8bb1-246d9a5200c9.bmp>
+
+# To generate image with specific name.
+creator.call "<p>Test.</p>", Pathname.pwd.join("demo.bmp")
+#<Pathname:terminus/public/assets/images/generated/demo.bmp>
+----
+
+When creating images, you might find this HTML template valuable as a starting point as this let's you use the full capabilities of HTML to create new images for your device.
+
+.HTML Template
+[%collapsible]
+====
+[source,html]
+----
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+
+    <title>Demo</title>
+
+    <meta charset="utf-8">
+
+    <style type="text/css">
+      * {
+        margin: 0;
+      }
+    </style>
+
+    <script type="text/javascript">
+    </script>
+  </head>
+
+  <body>
+    <img src="uri/to/image" alt="Image"/>
+  </body>
+</html>
+----
+====
+
+Use of `margin` zero is important to prevent default browser styles from creating borders around your image which will show up when rendered on your device. Otherwise, you have full capabilities to render any kind of page you want using whatever HTML you like. Anything is possible because `Images::Creator` is designed to screenshot your rendered HTML as a 800x480 image to render on your device. If you put all this together, that means you can do this in the console:
+
+.Console Image Generation
+[%collapsible]
+====
+[source,ruby]
+----
+creator = Terminus::Images::Creator.new
+
+creator.call(<<~CONTENT, Pathname(Hanami.app[:settings].images_root).join("generated/%<name>s.bmp"))
+  <!DOCTYPE html>
+
+  <html lang="en">
+    <head>
+      <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+
+      <title>Demo</title>
+
+      <meta charset="utf-8">
+
+      <style type="text/css">
+        * {
+          margin: 0;
+        }
+      </style>
+
+      <script type="text/javascript">
+      </script>
+    </head>
+
+    <body>
+      <h1>Hello, World!</h1>
+    </body>
+  </html>
+CONTENT
+----
+====
+
+The above will create a new image in the `public/images/generated` folder of this application which will eventually render on your device. 🎉
+
+To build a {docker_link} image, run:
+
+[source,bash]
+----
+bin/docker/build
+----
+
+To work within your {docker_link} image, run:
+
+[source,bash]
+----
+bin/docker/console
+----
+
 == Tests
 
 To test, run:
@@ -52,21 +377,19 @@ To test, run:
 bin/rake
 ----
 
-== link:https://usetrmnl.com/policies/license[License]
+== Deployment
 
-== link:https://usetrmnl.com/policies/security[Security]
+*Local*
 
-== link:https://usetrmnl.com/policies/code_of_conduct[Code of Conduct]
+. Configure `APP_URL` within `+*.env+` file(s) to where your app is hosted (i.e. `http://192.168.x.x:4567`). 💡 Lack of trailing slash is important.
+. Retrieve your machine's local IP, ex 192.168.x.x (Mac: `ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}'`).
+. Point your link:https://github.com/usetrmnl/firmware[forked firmware] `API_BASE_URL` (link:https://github.com/usetrmnl/firmware/blob/2ee0723c66a3468b969c83d7663ffb3f8322ad99/include/config.h#L56[source]) to same value as `APP_URL`.
 
-== link:https://usetrmnl.com/policies/contributions[Contributions]
+*Hosted*
 
-== link:https://usetrmnl.com/policies/developer_certificate_of_origin[Developer Certificate of Origin]
-
-== link:https://usetrmnl.com/projects/terminus/versions[Versions]
-
-== link:https://usetrmnl.com/community[Community]
+More details to be provided soon.
 
 == Credits
 
-* Built with link:https://usetrmnl.com/projects/hanamismith[Hanamismith].
-* Engineered by link:https://usetrmnl.com[TRMNL].
+* Built with link:https://alchemists.io/projects/hanamismith[Hanamismith].
+* Engineered by {trmnl_link}.
