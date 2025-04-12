@@ -5,6 +5,7 @@
 :docker_link: link:https://www.docker.com[Docker]
 :hanami_link: link:https://hanamirb.org[Hanami]
 :htmx_link: link:https://htmx.org[htmx]
+:imagemagick_link: link:https://imagemagick.org[ImageMagick]
 :overmind_link: link:https://github.com/DarthSim/overmind[Overmind]
 :postgres_link: link:https://www.postgresql.org[PostgreSQL]
 :puma_link: link:https://puma.io[Puma]
@@ -23,11 +24,12 @@ toc::[]
 * Allows you to run your own server.
 * Built atop {ruby_link} and {hanami_link}.
 * Provides automatic detection of your server's IP address.
+* Uses {htmx_link}.
+* Uses {imagemagick_link}.
+* Uses {overmind_link}.
 * Uses {postgres_link}.
 * Uses {puma_link}.
-* Uses {htmx_link}.
 * Supports {yjit_link}.
-* Supports {overmind_link}.
 * Supports {docker_link}.
 * Supports {trmnl_link} devices.
 
@@ -51,8 +53,8 @@ The following is a high level overview you can use to compare/contrast when deci
 | JSON Data API                     | 🟢       | 🟢
 | Image Previews                    | ⚪️       | 🟢
 | Playlists                         | 🟡       | 🟢
-| Plugins                           | ⚪️       | 🟢
-| Recipes                           | 🔴       | 🟢
+| Plugins                           | 🟢       | 🟢
+| Recipes                           | 🟢       | 🟢
 | Account                           | 🔴       | 🟢
 | Open Source Components            | 🟢       | 🟡
 | Docker                            | 🟢       | 🔴
@@ -65,9 +67,8 @@ The goal isn't for BYOS to match parity with our hosted solution but to provide 
 . {ruby_link}.
 . {postgres_link}.
 . {hanami_link}.
-. {overmind_link} (optional).
 . {docker_link} (optional).
-. A TRMNL device.
+. A {trmnl_link} device.
 
 == Setup
 
@@ -86,11 +87,12 @@ To launch the server, run:
 
 [source,bash]
 ----
-bin/hanami assets compile
-bundle exec puma --config ./config/puma.rb
-----
+# Development
+overmind start --port-step 10 --procfile Procfile.dev --can-die assets,migrate
 
-💡 Install {overmind_link} and run `overmind start` to run with full access to all processes (including remote debugging).
+# Production
+overmind start --port-step 10 --can-die assets,migrate
+----
 
 To view the app, use either of the following:
 
@@ -103,6 +105,7 @@ There are a few environment variables you can use to customize behavior:
 
 * `API_URI`: Needed for connecting your device to this server. Defaults to your wired IP address.
 * `DATABASE_URL`: Necessary to connect to your {postgres_link} database. Can be customized by changing the value in the `.env.development` or `.env.test` file created when you ran `bin/setup`.
+* `FIRMWARE_ROOT`: The root location for firmware updates. Defaults to `public/assets/firmware`.
 * `SCREENS_ROOT`: The root location for all device screens (images). Defaults to `public/assets/screens`.
 
 === Device Provisioning
@@ -383,10 +386,11 @@ fetcher = Hanami.app["aspects.screens.fetcher"]
 fetcher.call device.slug
 
 # Generate device screen with random name.
+# 💡 "A1B2C3D4E5F6" would be your device slug (i.e. collapsed MAC Address).
 creator = Terminus::Screens::Creator.new
 creator.call "<p>Test</p>",
-             Pathname(Hanami.app[:settings].screens_root).join("%<name>s.bmp")
-#<Pathname:terminus/public/assets/screens/f5af3f06-775f-4ae9-8bb1-246d9a5200c9.bmp>
+             Pathname(Hanami.app[:settings].screens_root).join("A1B2C3D4E5F6/%<name>s.bmp")
+#<Pathname:terminus/public/assets/screens/A1B2C3D4E5F6/5af3f06-775f-4ae9-8bb1-246d9a5200c9.bmp>
 
 # To generate image with specific name.
 creator.call "<p>Test.</p>", Pathname(Hanami.app[:settings].screens_root).join("demo.bmp")
@@ -436,7 +440,7 @@ Use of `margin` zero is important to prevent default browser styles from creatin
 ----
 creator = Terminus::Screens::Creator.new
 
-creator.call(<<~CONTENT, Pathname(Hanami.app[:settings].screens_root).join("screens/%<name>s.bmp"))
+creator.call(<<~CONTENT, Pathname(Hanami.app[:settings].screens_root).join("A1B2C3D4E5F6/%<name>s.bmp"))
   <!DOCTYPE html>
 
   <html lang="en">
