@@ -14,7 +14,7 @@ module Terminus
           include Deps[
             image_fetcher: "aspects.screens.rotator",
             firmware_fetcher: "aspects.firmware.fetcher",
-            synchronizer: "aspects.synchronizers.device"
+            synchronizer: "aspects.devices.synchronizer"
           ]
 
           include Initable[problem: Petail, model: TRMNL::API::Models::Display]

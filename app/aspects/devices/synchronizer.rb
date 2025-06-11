@@ -6,9 +6,9 @@ require "pipeable"
 
 module Terminus
   module Aspects
-    module Synchronizers
+    module Devices
       # Updates device based on firmware header information.
-      class Device
+      class Synchronizer
         include Initable[firmware_parser: proc { Terminus::API::Headers::Parser.new }]
         include Deps[:settings, repository: "repositories.device"]
         include Pipeable
