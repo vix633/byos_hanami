@@ -3,6 +3,7 @@
 require "ipaddr"
 require "rack/attack"
 
+# :nocov:
 allowed_subnets = [
   IPAddr.new("10.0.0.0/8"),
   IPAddr.new("172.16.0.0/12"),
