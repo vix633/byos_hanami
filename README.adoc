@@ -118,6 +118,7 @@ There are a few environment variables you can use to customize behavior:
 * `DATABASE_URL`: Necessary to connect to your {postgres_link} database. Can be customized by changing the value in the `.env.development` or `.env.test` file created when you ran `bin/setup`.
 * `FIRMWARE_ROOT`: The root location for firmware updates. Defaults to `public/assets/firmware`.
 * `PREVIEWS_ROOT`: The root location for all device screen preview images when designing new screens. Defaults to `public/assets/previews`
+* `RACK_ATTACK_ALLOWED_SUBNETS`: Defines the {rack_attack_link} subnets that are allowed to connect to this server. This might interfere with your service layers like DNS, reverse proxy, or a VPN, etc. between your device and this application so you can use this environment variable to add more subnets as desired. Alternatively, you can disable Rack Attack altogether by removing the `config.middleware.use Rack::Attack` line from `config/app.rb` or customize Rack Attack via the `config/initializers/rack_attack.rb` file. Any of these approaches will allow you to get your service layer properly configured so your device can talk to this server. By default, the following subnets are allowed: `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `127.0.0.1`, and `::1`.
 * `SCREENS_ROOT`: The root location for all device screens (images). Defaults to `public/assets/screens`.
 
 === Device Provisioning
@@ -822,10 +823,6 @@ image: ghcr.io/usetrmnl/terminus:latest
 The following is additional tooling, developed by the Open Source community, that might be of interest for use with this application:
 
 * link:https://github.com/clarson15/terminus-publisher[Terminus Publisher]: Provides a way to generate and publish content to Terminus for display on your device.
-
-== Troubleshooting
-
-{rack_attack_link} is enabled by default but might interfere when using a custom service layer like DNS, reverse proxy, etc. between your device and this application. If that's the case, you can disable Rack Attack by removing the `config.middleware.use Rack::Attack` line from `config/app.rb`. Alternatively, you can customize Rack Attack via the `config/initializers/rack_attack.rb` file. Either (or both) of these approaches will allow you to get your service layer properly configured so your device can talk to this server.
 
 == License
 
