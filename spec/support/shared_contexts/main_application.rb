@@ -11,7 +11,6 @@ RSpec.shared_context "with main application" do
   before do
     allow(settings).to receive_messages(
       api_uri: "https://localhost",
-      firmware_root: temp_dir,
       previews_root: temp_dir,
       screens_root: temp_dir
     )

@@ -10,10 +10,6 @@ module Terminus
             constructor: Types::Params::String,
             default: "http://#{IPFinder.new.wired}:2300"
 
-    setting :firmware_root,
-            constructor: Terminus::Types::Pathname,
-            default: Hanami.app.root.join("public/assets/firmware")
-
     setting :previews_root,
             constructor: Terminus::Types::Pathname,
             default: Hanami.app.root.join("public/assets/previews")
