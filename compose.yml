@@ -13,8 +13,8 @@ services:
       - "${HANAMI_PORT}:${HANAMI_PORT}"
     restart: unless-stopped
     volumes:
-      - web-assets-firmware:/app/public/assets/firmware
       - web-assets-screens:/app/public/assets/screens
+      - web-uploads:/app/public/uploads
     depends_on:
       database:
         condition: service_healthy
@@ -48,5 +48,5 @@ services:
 
 volumes:
   database-data:
-  web-assets-firmware:
   web-assets-screens:
+  web-uploads:
