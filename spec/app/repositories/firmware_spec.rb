@@ -65,19 +65,6 @@ RSpec.describe Terminus::Repositories::Firmware, :db do
     end
   end
 
-  describe "#latest" do
-    it "answers latest record" do
-      firmware
-      two = Factory[:firmware, version: "0.1.0"]
-
-      expect(repository.latest).to eq(two)
-    end
-
-    it "answers nil when records don't exist" do
-      expect(repository.latest).to be(nil)
-    end
-  end
-
   describe "#find_by_version" do
     it "answers record when found" do
       expect(repository.find_by_version(firmware.version)).to eq(firmware)
@@ -89,6 +76,19 @@ RSpec.describe Terminus::Repositories::Firmware, :db do
 
     it "answers nil for nil" do
       expect(repository.find_by_version(nil)).to be(nil)
+    end
+  end
+
+  describe "#latest" do
+    it "answers latest record" do
+      firmware
+      two = Factory[:firmware, version: "0.1.0"]
+
+      expect(repository.latest).to eq(two)
+    end
+
+    it "answers nil when records don't exist" do
+      expect(repository.latest).to be(nil)
     end
   end
 end
