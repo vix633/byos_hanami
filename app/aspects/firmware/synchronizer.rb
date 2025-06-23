@@ -37,13 +37,12 @@ module Terminus
 
           return Success record if record
 
-          upload = struct.upload StringIO.new(response), metadata: {"filename" => "#{version}.bin"}
+          struct.upload StringIO.new(response), metadata: {"filename" => "#{version}.bin"}
+          struct.valid? ? Success(create(version, struct)) : Failure(struct.errors)
+        end
 
-          if struct.valid?
-            Success repository.create(version: version, attachment_data: upload.data)
-          else
-            Failure upload.errors
-          end
+        def create version, struct
+          repository.create version: version, attachment_data: struct.attachment_attributes
         end
       end
     end

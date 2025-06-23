@@ -57,21 +57,17 @@ RSpec.describe Terminus::Aspects::Firmware::Synchronizer, :db do
       expect(synchronizer.call).to be_success(record)
     end
 
-    # rubocop:todo RSpec/VerifiedDoubles
     context "with attachment errors" do
       subject(:synchronizer) { described_class.new api:, downloader:, struct: }
 
       let :struct do
-        instance_double Terminus::Structs::Firmware,
-                        upload: double(errors: ["Danger!"]),
-                        valid?: false
+        instance_double Terminus::Structs::Firmware, upload: nil, errors: ["Danger!"], valid?: false
       end
 
       it "answers failure when attachment isn't saved" do
         expect(synchronizer.call).to be_failure(["Danger!"])
       end
     end
-    # rubocop:enable RSpec/VerifiedDoubles
 
     context "with API client failure" do
       let(:api) { instance_double TRMNL::API::Client, firmware: Failure(message: "Danger!") }
