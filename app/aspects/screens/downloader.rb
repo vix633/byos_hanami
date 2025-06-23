@@ -13,8 +13,7 @@ module Terminus
       # A basic file downloader for screen images.
       class Downloader
         include Deps[:settings, "aspects.screens.deduplicator"]
-        include Dependencies[client: :downloader]
-        include Initable[cgi: CGI]
+        include Initable[cgi: CGI, client: proc { Terminus::LegacyDownloader.new }]
         include Dry::Monads[:result]
 
         using Refinements::Pathname

@@ -2,7 +2,7 @@
 
 require "hanami_helper"
 
-RSpec.describe Terminus::Downloader do
+RSpec.describe Terminus::LegacyDownloader do
   using Refinements::Pathname
 
   subject(:downloader) { described_class.new http: }

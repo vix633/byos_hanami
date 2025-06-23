@@ -5,7 +5,8 @@ require "refinements/pathname"
 
 module Terminus
   # A simple remote file downloader.
-  class Downloader
+  # TODO: Remove once screens use Shrine attachments.
+  class LegacyDownloader
     include Dependencies[:http, :logger]
     include Dry::Monads[:result]
 

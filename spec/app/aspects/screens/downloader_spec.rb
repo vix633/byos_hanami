@@ -11,7 +11,7 @@ RSpec.describe Terminus::Aspects::Screens::Downloader do
 
   let :client do
     SPEC_ROOT.join("support/fixtures/test.png").copy download_path
-    instance_double Terminus::Downloader, call: Success(download_path)
+    instance_double Terminus::LegacyDownloader, call: Success(download_path)
   end
 
   let :uri do
@@ -44,7 +44,7 @@ RSpec.describe Terminus::Aspects::Screens::Downloader do
     end
 
     context "when unable to download" do
-      let(:client) { instance_double Terminus::Downloader, call: Failure("Danger!") }
+      let(:client) { instance_double Terminus::LegacyDownloader, call: Failure("Danger!") }
 
       it "answers failure" do
         expect(downloader.call(uri, "test")).to be_failure("Danger!")
