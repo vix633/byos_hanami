@@ -152,7 +152,7 @@ RSpec.describe "/api/screens", :db do
         status: :unprocessable_entity,
         detail: "Validation failed.",
         instance: "/api/screens",
-        extensions: {image: ["is missing"]}
+        extensions: {errors: {image: ["is missing"]}}
       ]
 
       expect(json_payload).to eq(problem.to_h)

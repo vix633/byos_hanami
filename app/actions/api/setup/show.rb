@@ -57,7 +57,7 @@ module Terminus
               status: :unprocessable_entity,
               detail: "Invalid request headers.",
               instance: "/api/setup",
-              extensions: errors
+              extensions: {errors:}
             ]
 
             response.with body: body.to_json, format: :problem_details, status: 422

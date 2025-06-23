@@ -63,7 +63,9 @@ RSpec.describe "/api/setup", :db do
       detail: "Invalid request headers.",
       instance: "/api/setup",
       extensions: {
-        HTTP_FW_VERSION: ["is in invalid format"]
+        errors: {
+          HTTP_FW_VERSION: ["is in invalid format"]
+        }
       }
     ]
 
@@ -79,7 +81,9 @@ RSpec.describe "/api/setup", :db do
       detail: "Invalid request headers.",
       instance: "/api/setup",
       extensions: {
-        HTTP_ID: ["is in invalid format"]
+        errors: {
+          HTTP_ID: ["is in invalid format"]
+        }
       }
     ]
 
@@ -95,7 +99,9 @@ RSpec.describe "/api/setup", :db do
       detail: "Invalid request headers.",
       instance: "/api/setup",
       extensions: {
-        HTTP_ID: ["is missing"]
+        errors: {
+          HTTP_ID: ["is missing"]
+        }
       }
     ]
 

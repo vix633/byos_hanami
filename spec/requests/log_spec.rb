@@ -110,7 +110,7 @@ RSpec.describe "/api/log", :db do
         status: :unprocessable_entity,
         detail: "Validation failed due to incorrect or invalid payload.",
         instance: "/api/log",
-        extensions: {log: {logs_array: ["is missing"]}}
+        extensions: {errors: {log: {logs_array: ["is missing"]}}}
       ]
 
       expect(json_payload).to eq(problem.to_h)

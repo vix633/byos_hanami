@@ -89,7 +89,7 @@ module Terminus
               status: __method__,
               detail: "Validation failed due to incorrect or invalid payload.",
               instance: "/api/log",
-              extensions: errors
+              extensions: {errors:}
             ]
 
             logger.error errors
