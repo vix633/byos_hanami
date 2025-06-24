@@ -8,8 +8,9 @@ module Terminus
     get "/", to: "dashboard.show", as: :root
 
     get "/api/display", to: "api.display.show", as: :api_display
-    post "/api/screens", to: "api.screens.create", as: :api_screens_create
     post "/api/log", to: "api.log.create", as: :api_log_create
+    get "/api/models", to: "api.models.index", as: :api_models
+    post "/api/screens", to: "api.screens.create", as: :api_screens_create
     get "/api/setup", to: "api.setup.show", as: :api_setup
 
     # TODO: Remove once Firmware drops trailing slash requirement.
