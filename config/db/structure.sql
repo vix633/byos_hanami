@@ -147,7 +147,9 @@ CREATE TABLE public.devices (
     proxy boolean DEFAULT false NOT NULL,
     firmware_update boolean DEFAULT false NOT NULL,
     sleep_start_at time without time zone,
-    sleep_end_at time without time zone
+    sleep_end_at time without time zone,
+    model_id integer,
+    playlist_id integer
 );
 
 
@@ -404,6 +406,22 @@ ALTER TABLE ONLY public.device_logs
 
 
 --
+-- Name: devices devices_model_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.devices
+    ADD CONSTRAINT devices_model_id_fkey FOREIGN KEY (model_id) REFERENCES public.model(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: devices devices_playlist_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.devices
+    ADD CONSTRAINT devices_playlist_id_fkey FOREIGN KEY (playlist_id) REFERENCES public.playlist(id) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -421,4 +439,5 @@ INSERT INTO schema_migrations (filename) VALUES
 ('20250609143532_add_firmwares.rb'),
 ('20250624130848_add_model.rb'),
 ('20250625103300_remove_model_timestamps.rb'),
-('20250625123433_add_playlist.rb');
+('20250625123433_add_playlist.rb'),
+('20250625123558_add_device_and_model_playlist_columns.rb');
