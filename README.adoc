@@ -285,17 +285,65 @@ Only the `ID` HTTP header is required for all of these API calls but these _opti
 ----
 ====
 
-==== Setup
+==== Log
 
-Used for new device setup and then never used after.
+Used by device firmware to log information about your device. Mostly used for debugging purposes. You can find device specific logs within the UI by clicking on your device logs.
 
 .Request
 [%collapsible]
 ====
 [source,bash]
 ----
-curl "https://localhost:2443/api/setup/" \
+curl -X "POST" "https://localhost:2443/api/log" \
      -H 'ID: <redacted>' \
+     -H 'Content-Type: application/json' \
+     -d $'{
+  "log": {
+    "logs_array": [
+      {
+        "log_id": 1,
+        "creation_timestamp": 1742022123,
+        "log_message": "returned code is not OK: 404",
+        "log_codeline": 597,
+        "device_status_stamp": {
+          "wifi_status": "connected",
+          "wakeup_reason": "timer",
+          "current_fw_version": "1.5.2",
+          "free_heap_size": 160656,
+          "max_alloc_size": 200000,
+          "special_function": "none",
+          "refresh_rate": 30,
+          "battery_voltage": 4.772,
+          "time_since_last_sleep_start": 31,
+          "wifi_rssi_level": -54
+        },
+        "additional_info": {
+          "retry_attempt": 1
+        },
+        "log_sourcefile": "src/bl.cpp"
+      }
+    ]
+  }
+}'
+----
+====
+
+.Response
+[%collapsible]
+====
+Logs details and answers a HTTP 204 status with no content.
+====
+
+==== Models
+
+Provides details about the various TRMNL models in production. This will soon be used when creating devices and screens.
+
+.Reqeuest
+[%collapsible]
+====
+[source,bash]
+----
+curl "https://localhost:2443/api/models" \
      -H 'Content-Type: application/json'
 ----
 ====
@@ -306,10 +354,17 @@ curl "https://localhost:2443/api/setup/" \
 [source,json]
 ----
 {
-  "api_key": "<redacted>",
-  "friendly_id": "ABC123",
-  "image_url": "https://localhost:2443/assets/setup.bmp",
-  "message": "Welcome to TRMNL BYOS"
+  "data": [
+    {
+      "id": 1,
+      "name": "t1",
+      "label": "T1",
+      "description": "The first production model.",
+      "width": 800,
+      "height": 480,
+      "published_at": "2024-06-25 00:00:00 -0600"
+    }
+  ]
 }
 ----
 ====
@@ -422,54 +477,33 @@ Allows you to render a strictly Base64 encoded image on your device. The `dimens
 No matter what parameters you use for this request, you'll always get a path (unless an error is encountered).
 ====
 
-==== Logs
+==== Setup
 
-Used by device firmware to log information about your device. Mostly used for debugging purposes. You can find device specific logs within the UI by clicking on your device logs.
+Used for new device setup and then never used after.
 
 .Request
 [%collapsible]
 ====
 [source,bash]
 ----
-## Logs
-curl -X "POST" "https://localhost:2443/api/log" \
+curl "https://localhost:2443/api/setup/" \
      -H 'ID: <redacted>' \
-     -H 'Content-Type: application/json' \
-     -d $'{
-  "log": {
-    "logs_array": [
-      {
-        "log_id": 1,
-        "creation_timestamp": 1742022123,
-        "log_message": "returned code is not OK: 404",
-        "log_codeline": 597,
-        "device_status_stamp": {
-          "wifi_status": "connected",
-          "wakeup_reason": "timer",
-          "current_fw_version": "1.5.2",
-          "free_heap_size": 160656,
-          "max_alloc_size": 200000,
-          "special_function": "none",
-          "refresh_rate": 30,
-          "battery_voltage": 4.772,
-          "time_since_last_sleep_start": 31,
-          "wifi_rssi_level": -54
-        },
-        "additional_info": {
-          "retry_attempt": 1
-        },
-        "log_sourcefile": "src/bl.cpp"
-      }
-    ]
-  }
-}'
+     -H 'Content-Type: application/json'
 ----
 ====
 
 .Response
 [%collapsible]
 ====
-Logs details and answers a HTTP 204 status with no content.
+[source,json]
+----
+{
+  "api_key": "<redacted>",
+  "friendly_id": "ABC123",
+  "image_url": "https://localhost:2443/assets/setup.bmp",
+  "message": "Welcome to TRMNL BYOS"
+}
+----
 ====
 
 == Development
