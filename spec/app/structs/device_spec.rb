@@ -33,7 +33,7 @@ RSpec.describe Terminus::Structs::Device, :db do
       Factory[
         :device,
         sleep_start_at: Time.new(2025, 1, 1, 1, 1, 0),
-        sleep_end_at: Time.new(2025, 1, 1, 1, 10, 0)
+        sleep_stop_at: Time.new(2025, 1, 1, 1, 10, 0)
       ]
     end
 

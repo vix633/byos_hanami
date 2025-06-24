@@ -86,10 +86,10 @@
         <dd class="value"><%= human_time device.sleep_start_at %></dd>
 
         <dt class="key">
-          Sleep End
-          <%= render "shared/popovers/trigger", name: :sleep_end %>
+          Sleep Stop
+          <%= render "shared/popovers/trigger", name: :sleep_stop %>
         </dt>
-        <dd class="value"><%= human_time device.sleep_end_at %></dd>
+        <dd class="value"><%= human_time device.sleep_stop_at %></dd>
 
         <dt class="key">Created</dt>
         <dd class="value"><%= human_at device.created_at %></dd>

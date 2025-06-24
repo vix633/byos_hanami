@@ -19,7 +19,7 @@ RSpec.describe Terminus::Contracts::Devices::Update do
           proxy: "on",
           firmware_update: "on",
           sleep_start_at: Time.new(2025, 1, 1, 1, 1, 1),
-          sleep_end_at: Time.new(2025, 2, 1, 1, 1, 1)
+          sleep_stop_at: Time.new(2025, 2, 1, 1, 1, 1)
         }
       }
     end
@@ -30,7 +30,7 @@ RSpec.describe Terminus::Contracts::Devices::Update do
 
     it "answers success when start and end date/time are nil" do
       attributes[:device].delete :sleep_start_at
-      attributes[:device].delete :sleep_end_at
+      attributes[:device].delete :sleep_stop_at
 
       expect(contract.call(attributes)).to be_success
     end
@@ -40,8 +40,8 @@ RSpec.describe Terminus::Contracts::Devices::Update do
 
       expect(contract.call(attributes).errors.to_h).to eq(
         device: {
-          sleep_start_at: ["must be before end time"],
-          sleep_end_at: ["must be after start time"]
+          sleep_start_at: ["must be before stop time"],
+          sleep_stop_at: ["must be after start time"]
         }
       )
     end
@@ -52,18 +52,18 @@ RSpec.describe Terminus::Contracts::Devices::Update do
       expect(contract.call(attributes).errors.to_h).to eq(
         device: {
           sleep_start_at: ["must be filled"],
-          sleep_end_at: ["must have corresponding start time"]
+          sleep_stop_at: ["must have corresponding start time"]
         }
       )
     end
 
     it "answers failures when start is present but end is missing" do
-      attributes[:device][:sleep_end_at] = nil
+      attributes[:device][:sleep_stop_at] = nil
 
       expect(contract.call(attributes).errors.to_h).to eq(
         device: {
-          sleep_start_at: ["must have corresponding end time"],
-          sleep_end_at: ["must be filled"]
+          sleep_start_at: ["must have corresponding stop time"],
+          sleep_stop_at: ["must be filled"]
         }
       )
     end

@@ -109,15 +109,15 @@
                   class: :value %>
   <% end %>
 
-  <%= scope(:form_field, key: :sleep_end_at, errors:).render do %>
-    <label class="key" for="device[sleep_end_at]">
-      Sleep End
+  <%= scope(:form_field, key: :sleep_stop_at, errors:).render do %>
+    <label class="key" for="device[sleep_stop_at]">
+      Sleep Stop
       <%= render "shared/popovers/trigger", name: :sleep_end %>
     </label>
 
-    <%= tag.input name: "device[sleep_end_at]",
+    <%= tag.input name: "device[sleep_stop_at]",
                   type: :time,
-                  value: time_at(field_for(:sleep_end_at, fields, device)),
+                  value: time_at(field_for(:sleep_stop_at, fields, device)),
                   class: :value %>
   <% end %>
 </fieldset>

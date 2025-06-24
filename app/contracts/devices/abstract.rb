@@ -6,16 +6,16 @@ module Terminus
       # The abstract contract for device create and update.
       class Abstract < Dry::Validation::Contract
         rule device: :sleep_start_at do
-          end_at = values.dig :device, :sleep_end_at
+          stop_at = values.dig :device, :sleep_stop_at
 
-          if value && end_at && value > end_at then key.failure "must be before end time"
-          elsif value && end_at.nil? then key.failure "must have corresponding end time"
-          elsif value.nil? && end_at then key.failure "must be filled"
+          if value && stop_at && value > stop_at then key.failure "must be before stop time"
+          elsif value && stop_at.nil? then key.failure "must have corresponding stop time"
+          elsif value.nil? && stop_at then key.failure "must be filled"
           else next
           end
         end
 
-        rule device: :sleep_end_at do
+        rule device: :sleep_stop_at do
           start_at = values.dig :device, :sleep_start_at
 
           if value && start_at && value < start_at then key.failure "must be after start time"

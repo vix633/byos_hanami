@@ -15,7 +15,7 @@ module Terminus
         optional(:proxy).filled :bool
         optional(:firmware_update).filled :bool
         optional(:sleep_start_at).maybe :time
-        optional(:sleep_end_at).maybe :time
+        optional(:sleep_stop_at).maybe :time
 
         after :value_coercer do |result|
           next unless result.output

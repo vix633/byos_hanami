@@ -147,7 +147,7 @@ CREATE TABLE public.devices (
     proxy boolean DEFAULT false NOT NULL,
     firmware_update boolean DEFAULT false NOT NULL,
     sleep_start_at time without time zone,
-    sleep_end_at time without time zone,
+    sleep_stop_at time without time zone,
     model_id integer,
     playlist_id integer
 );
@@ -440,4 +440,5 @@ INSERT INTO schema_migrations (filename) VALUES
 ('20250624130848_add_model.rb'),
 ('20250625103300_remove_model_timestamps.rb'),
 ('20250625123433_add_playlist.rb'),
-('20250625123558_add_device_and_model_playlist_columns.rb');
+('20250625123558_add_device_and_model_playlist_columns.rb'),
+('20250625123645_change_device_sleep_end_column.rb');

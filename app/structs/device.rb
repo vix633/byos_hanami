@@ -17,9 +17,9 @@ module Terminus
       end
 
       def asleep? now = Time.now
-        return false unless sleep_start_at && sleep_end_at
+        return false unless sleep_start_at && sleep_stop_at
 
-        (sleep_start_at.to_s..sleep_end_at.to_s).cover? now.strftime("%H:%M:%S")
+        (sleep_start_at.to_s..sleep_stop_at.to_s).cover? now.strftime("%H:%M:%S")
       end
     end
   end
