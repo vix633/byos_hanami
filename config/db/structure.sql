@@ -204,9 +204,7 @@ CREATE TABLE public.model (
     description text,
     width integer NOT NULL,
     height integer NOT NULL,
-    published_at timestamp without time zone,
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+    published_at timestamp without time zone
 );
 
 
@@ -370,4 +368,5 @@ INSERT INTO schema_migrations (filename) VALUES
 ('20250429115049_change_device_column_text_types.rb'),
 ('20250602132300_add_device_sleep_period.rb'),
 ('20250609143532_add_firmwares.rb'),
-('20250624130848_add_model.rb');
+('20250624130848_add_model.rb'),
+('20250625103300_remove_model_timestamps.rb');

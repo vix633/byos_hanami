@@ -6,6 +6,4 @@ Factory.define :model, relation: :model do |factory|
   factory.width 800
   factory.height 480
   factory.published_at { Time.now }
-  factory.created_at { Time.now }
-  factory.updated_at { Time.now }
 end

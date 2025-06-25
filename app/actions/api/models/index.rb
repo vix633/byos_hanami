@@ -11,21 +11,7 @@ module Terminus
           format :json
 
           def handle *, response
-            response.body = {data:}.to_json
-          end
-
-          private
-
-          def data
-            repository.all.map do |record|
-              record.attributes.slice :id,
-                                      :name,
-                                      :label,
-                                      :description,
-                                      :width,
-                                      :height,
-                                      :published_at
-            end
+            response.body = {data: repository.all.map(&:to_h)}.to_json
           end
         end
       end
