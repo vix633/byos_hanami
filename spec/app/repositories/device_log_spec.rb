@@ -72,7 +72,7 @@ RSpec.describe Terminus::Repositories::DeviceLog, :db do
     end
 
     it "doesn't delete record for valid device ID and invalid log ID" do
-      repository.delete_by_device log.device_id, 13
+      repository.delete_by_device log.device_id, 13_000_000
       expect(repository.find(log.id)).to eq(log)
     end
   end
