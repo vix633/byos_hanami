@@ -10,9 +10,9 @@ RSpec.describe "/api/models", :db do
     expect(json_payload).to match(
       data: [
         hash_including(
-          id: 1,
-          label: "T1",
-          name: "t1",
+          id: model.id,
+          label: model.label,
+          name: model.name,
           description: nil,
           width: 800,
           height: 480,
