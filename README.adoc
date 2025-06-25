@@ -15,6 +15,7 @@
 :puma_link: link:https://puma.io[Puma]
 :rack_attack_link: link:https://github.com/rack/rack-attack[Rack Attack]
 :ruby_link: link:https://www.ruby-lang.org[Ruby]
+:trmnl_firmware_link: link:https://github.com/usetrmnl/trmnl-firmware[TRMNL Firmware]
 :trmnl_link: link:https://usetrmnl.com[TRMNL]
 :yjit_link: link:https://github.com/ruby/ruby/blob/master/doc/yjit/yjit.md[YJIT]
 
@@ -193,16 +194,15 @@ In situations where your device updated to a newer Firmware version and it was a
 
 === APIs
 
-This section documents all supported API endpoints. Each endpoint uses HTTPS which requires accepting your locally generated SSL certificate. If you don't want this behavior, you can switch to using HTTP (see above). Any/all error responses adhere to link:https://www.rfc-editor.org/rfc/rfc9457[RFC 9457 (Problem Details for HTTP APIs)] as implemented by the {petail_link} gem which also means you can use Petail to easily parse the error responses in your own application if desired.
+Each API endpoint uses HTTPS which requires accepting the locally generated SSL certificate by this application when running the Ruby stack locally. If you don't want this behavior, you can switch to using HTTP (see above). For Docker, at the moment, none of this applies so can only use HTTP requests.
 
-Some endpoints use either the HTTP `ID`, `Access-Token` or both headers. These break down as follows:
+See each category/endpoint, below, for further details.
 
-* `ID`: Your device's MAC address.
-* `Access-Token`: Your device's API key.
+==== Firmware
 
-See each endpoint for further details.
+The following endpoints are used to communicate with your device's {trmnl_firmware_link}. These endpoints typically require authentication via the HTTP `ID` header which is your device's MAC address. Any changes to these endpoints require updates to both the firmware and this implementation so they don't change often.
 
-==== Display
+===== Display
 
 Used for displaying new content to your device. Your device's refresh rate determines how often this occurs.
 
@@ -285,7 +285,7 @@ Only the `ID` HTTP header is required for all of these API calls but these _opti
 ----
 ====
 
-==== Log
+===== Log
 
 Used by device firmware to log information about your device. Mostly used for debugging purposes. You can find device specific logs within the UI by clicking on your device logs.
 
@@ -334,11 +334,48 @@ curl -X "POST" "https://localhost:2443/api/log" \
 Logs details and answers a HTTP 204 status with no content.
 ====
 
-==== Models
+===== Setup
+
+Used for new device setup and then never used after.
+
+.Request
+[%collapsible]
+====
+[source,bash]
+----
+curl "https://localhost:2443/api/setup/" \
+     -H 'ID: <redacted>' \
+     -H 'Content-Type: application/json'
+----
+====
+
+.Response
+[%collapsible]
+====
+[source,json]
+----
+{
+  "api_key": "<redacted>",
+  "friendly_id": "ABC123",
+  "image_url": "https://localhost:2443/assets/setup.bmp",
+  "message": "Welcome to TRMNL BYOS"
+}
+----
+====
+
+==== Server
+
+The following endpoints are unique to this server implementation and allow you to interact via your favorite JSON Data API client. Most of these endpoints require an HTTP `Access-Token` header which is your device's API key.
+
+These endpoints are faster to change/update since they won't break any communication with your device. Any/all error responses adhere to link:https://www.rfc-editor.org/rfc/rfc9457[RFC 9457 (Problem Details for HTTP APIs)] as implemented by the {petail_link} gem which also means you can use Petail to easily parse the error responses in your own application if desired.
+
+Lastly, these endpoints are constantly evolving and not entirely stable as of yet.
+
+===== Models
 
 Provides details about the various TRMNL models in production. This will soon be used when creating devices and screens.
 
-.Reqeuest
+.Request
 [%collapsible]
 ====
 [source,bash]
@@ -369,7 +406,7 @@ curl "https://localhost:2443/api/models" \
 ----
 ====
 
-==== Screens
+===== Screens
 
 Used for generating new device screens by supplying HTML content for rendering, screenshotting, and grey scaling to render properly on your device. Both `.png` or `.bmp` extensions are supported for the `file_name` key. If you don't supply a `file_name`, the server will generate one for you using a UUID for the file name. You can find all generated images in `public/assets/screens`.
 
@@ -400,7 +437,15 @@ Allows you to render custom HTML content as an image on your device. Full HTML i
 }
 ----
 
-Don't forget that you can use the Designer within the UI to build custom screens in real-time for faster feedback. The result of your work can be supplied to this endpoint to create a new screen for display on your device.
+Due to this being so flexible, this also means you can pull in and use our link:https://usetrmnl.com/framework[Design Framework] when building custom screens by linking to the following:
+
+* Plugins
+** link:https://usetrmnl.com/css/latest/plugins.css[Stylesheet]
+** link:https://usetrmnl.com/js/latest/plugins.js[JavaScript]
+* Components
+** link:https://usetrmnl.com/js/latest/trmnl-component.js[JavaScript]
+
+💡 You can use the Designer within the UI to build custom screens in real-time for faster feedback. The result of your work can be supplied to this endpoint to create a new screen for display on your device.
 ====
 
 .Request (Preprocessed URI)
@@ -470,40 +515,13 @@ Allows you to render a strictly Base64 encoded image on your device. The `dimens
 [source,json]
 ----
 {
-  "path": "$HOME/Engineering/terminus/public/assets/screens/A1B2C3D4E5F6/demo.png"
+  "data": {
+    "path": "$HOME/Engineering/terminus/public/assets/screens/A1B2C3D4E5F6/demo.png"
+  }
 }
 ----
 
 No matter what parameters you use for this request, you'll always get a path (unless an error is encountered).
-====
-
-==== Setup
-
-Used for new device setup and then never used after.
-
-.Request
-[%collapsible]
-====
-[source,bash]
-----
-curl "https://localhost:2443/api/setup/" \
-     -H 'ID: <redacted>' \
-     -H 'Content-Type: application/json'
-----
-====
-
-.Response
-[%collapsible]
-====
-[source,json]
-----
-{
-  "api_key": "<redacted>",
-  "friendly_id": "ABC123",
-  "image_url": "https://localhost:2443/assets/setup.bmp",
-  "message": "Welcome to TRMNL BYOS"
-}
-----
 ====
 
 == Development
