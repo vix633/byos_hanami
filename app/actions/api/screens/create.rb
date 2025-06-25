@@ -50,7 +50,7 @@ module Terminus
             result = creator.call output_path(device.slug, image), dimensions: "800x480", **image
 
             if result.success?
-              response.with body: {path: result.success}.to_json, format: :json, status: 200
+              response.with body: {data: {path: result.success}}.to_json, format: :json, status: 200
             else
               unprocessable_entity_for_creation result, response
             end

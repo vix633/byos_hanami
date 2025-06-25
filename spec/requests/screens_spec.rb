@@ -12,7 +12,7 @@ RSpec.describe "/api/screens", :db do
          "CONTENT_TYPE" => "application/json",
          "HTTP_ACCESS_TOKEN" => device.api_key
 
-    expect(Pathname(json_payload[:path]).exist?).to be(true)
+    expect(Pathname(json_payload.dig(:data, :path)).exist?).to be(true)
   end
 
   it "creates image from HTML with specific name" do
@@ -21,7 +21,7 @@ RSpec.describe "/api/screens", :db do
          "CONTENT_TYPE" => "application/json",
          "HTTP_ACCESS_TOKEN" => device.api_key
 
-    expect(Pathname(json_payload[:path]).exist?).to be(true)
+    expect(Pathname(json_payload.dig(:data, :path)).exist?).to be(true)
   end
 
   it "creates preprocessed image from URI" do
@@ -30,7 +30,7 @@ RSpec.describe "/api/screens", :db do
          "CONTENT_TYPE" => "application/json",
          "HTTP_ACCESS_TOKEN" => device.api_key
 
-    expect(Pathname(json_payload[:path]).exist?).to be(true)
+    expect(Pathname(json_payload.dig(:data, :path)).exist?).to be(true)
   end
 
   it "creates unprocessed image from URI" do
@@ -39,7 +39,7 @@ RSpec.describe "/api/screens", :db do
          "CONTENT_TYPE" => "application/json",
          "HTTP_ACCESS_TOKEN" => device.api_key
 
-    expect(Pathname(json_payload[:path]).exist?).to be(true)
+    expect(Pathname(json_payload.dig(:data, :path)).exist?).to be(true)
   end
 
   it "creates image from Base64 encoded data" do
@@ -50,7 +50,7 @@ RSpec.describe "/api/screens", :db do
          "CONTENT_TYPE" => "application/json",
          "HTTP_ACCESS_TOKEN" => device.api_key
 
-    expect(Pathname(json_payload[:path]).exist?).to be(true)
+    expect(Pathname(json_payload.dig(:data, :path)).exist?).to be(true)
   end
 
   it "creates image with specific dimensions" do
@@ -59,7 +59,7 @@ RSpec.describe "/api/screens", :db do
          "CONTENT_TYPE" => "application/json",
          "HTTP_ACCESS_TOKEN" => device.api_key
 
-    image = MiniMagick::Image.open Pathname(json_payload[:path])
+    image = MiniMagick::Image.open Pathname(json_payload.dig(:data, :path))
 
     expect(image).to have_attributes(width: 50, height: 100)
   end
