@@ -10,6 +10,9 @@ module Terminus
     get "/api/display", to: "api.display.show", as: :api_display
     post "/api/log", to: "api.log.create", as: :api_log_create
     get "/api/models", to: "api.models.index", as: :api_models
+    post "/api/models", to: "api.models.create", as: :api_model_create
+    patch "/api/models/:id", to: "api.models.patch", as: :api_model_patch
+    delete "/api/models/:id", to: "api.models.delete", as: :api_model_delete
     post "/api/screens", to: "api.screens.create", as: :api_screens_create
     get "/api/setup", to: "api.setup.show", as: :api_setup
 
