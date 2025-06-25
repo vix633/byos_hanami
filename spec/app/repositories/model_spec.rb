@@ -34,17 +34,22 @@ RSpec.describe Terminus::Repositories::Model, :db do
     end
   end
 
-  describe "#find_by_name" do
-    it "answers record when found" do
-      expect(repository.find_by_name(model.name)).to eq(model)
+  describe "#find_by" do
+    it "answers record when found by single attribute" do
+      expect(repository.find_by(name: model.name)).to eq(model)
+    end
+
+    it "answers record when found by multiple attributes" do
+      model
+      expect(repository.find_by(width: 800, height: 480)).to eq(model)
     end
 
     it "answers nil when not found" do
-      expect(repository.find_by_name("bogus")).to be(nil)
+      expect(repository.find_by(name: "bogus")).to be(nil)
     end
 
     it "answers nil for nil" do
-      expect(repository.find_by_name(nil)).to be(nil)
+      expect(repository.find_by(name: nil)).to be(nil)
     end
   end
 

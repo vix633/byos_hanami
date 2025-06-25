@@ -13,7 +13,7 @@ module Terminus
 
       def find(id) = (model.by_pk(id).one if id)
 
-      def find_by_name(value) = model.where(name: value).one
+      def find_by(**) = model.where(**).first
 
       def find_or_create(key, value, **)
         model.where(key => value).one.then { |record| record || create(name: value, **) }
