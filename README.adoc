@@ -365,6 +365,8 @@ curl "https://localhost:2443/api/setup/" \
 
 ==== Server
 
+⚠️ *These endpoints are constantly evolving and we will do our best to minimize impact but please be aware there might be action on your part when new changes are released.*
+
 The following endpoints are unique to this server implementation and allow you to interact via your favorite JSON Data API client. Most of these endpoints require an HTTP `Access-Token` header which is your device's API key.
 
 These endpoints are faster to change/update since they won't break any communication with your device. Any/all error responses adhere to link:https://www.rfc-editor.org/rfc/rfc9457[RFC 9457 (Problem Details for HTTP APIs)] as implemented by the {petail_link} gem which also means you can use Petail to easily parse the error responses in your own application if desired.
@@ -373,9 +375,9 @@ Lastly, these endpoints are constantly evolving and not entirely stable as of ye
 
 ===== Models
 
-Provides details about the various TRMNL models in production. This will soon be used when creating devices and screens.
+Provides details about the various TRMNL models in production. This information will soon be associated with device and screen management.
 
-.Request
+.GET Request
 [%collapsible]
 ====
 [source,bash]
@@ -385,7 +387,7 @@ curl "https://localhost:2443/api/models" \
 ----
 ====
 
-.Response
+.GET Response
 [%collapsible]
 ====
 [source,json]
@@ -404,6 +406,113 @@ curl "https://localhost:2443/api/models" \
   ]
 }
 ----
+
+You'll get an empty array when no models exist.
+====
+
+.POST Request
+[%collapsible]
+====
+[source,bash]
+----
+curl -X "POST" "https://localhost:2443/api/models" \
+     -H 'Content-Type: application/json' \
+     -d $'{
+  "model": {
+    "name": "demo",
+    "label": "Demo",
+    "description": "A demonstration.",
+    "width": "800",
+    "height": "480",
+    "published_at": "2025-01-01T00:00:00+00:00"
+  }
+}'
+----
+====
+
+.POST Response
+[%collapsible]
+====
+[source,json]
+----
+{
+  "data": {
+    "id": 3,
+    "name": "demo",
+    "label": "Demo",
+    "description": "A demonstration.",
+    "width": 800,
+    "height": 480,
+    "published_at": "2025-01-01 00:00:00 -0700"
+  }
+}
+----
+====
+
+.PATCH Request
+[%collapsible]
+====
+[source,bash]
+----
+curl -X "PUT" "https://localhost:2443/api/models/3" \
+     -H 'Content-Type: application/json' \
+     -d $'{
+  "model": {
+    "description": "A patch demonstration."
+  }
+}'
+----
+====
+
+.PATCH Response
+[%collapsible]
+====
+[source,json]
+----
+{
+  "data": {
+    "id": 3,
+    "name": "demo",
+    "label": "Demo",
+    "description": "A patch demonstration.",
+    "width": 800,
+    "height": 480,
+    "published_at": "2025-01-01 00:00:00 -0700"
+  }
+}
+----
+====
+
+.DELETE Request
+[%collapsible]
+====
+[source,bash]
+----
+curl -X "DELETE" "https://localhost:2443/api/models/3" \
+     -H 'Content-Type: application/json' \
+     -d $'{}'
+----
+====
+
+.DELETE Response
+[%collapsible]
+====
+[source,json]
+----
+{
+  "data": {
+    "id": 3,
+    "name": "demo",
+    "label": "Demo",
+    "description": "A delete demonstration.",
+    "width": 800,
+    "height": 480,
+    "published_at": "2025-01-01 00:00:00 -0700"
+  }
+}
+----
+
+You'll get an empty hash when there is nothing to delete.
 ====
 
 ===== Screens
