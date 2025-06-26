@@ -6,13 +6,16 @@ module Terminus
     module Devices
       # Defines device upsert schema.
       Upsert = Dry::Schema.Params do
+        required(:model_id).filled :integer
+        optional(:playlist_id).filled :integer
+        optional(:friendly_id).filled :string
         required(:label).filled :string
-        required(:friendly_id).filled :string
         required(:mac_address).filled Types::MACAddress
-        required(:api_key).filled :string
-        required(:refresh_rate).filled { int? > gteq?(10) }
-        required(:image_timeout).filled { int? > gteq?(0) }
+        optional(:api_key).filled :string
+        optional(:refresh_rate).filled { int? > gteq?(10) }
+        optional(:image_timeout).filled { int? > gteq?(0) }
         optional(:proxy).filled :bool
+        optional(:firmware_beta).filled :bool
         optional(:firmware_update).filled :bool
         optional(:sleep_start_at).maybe :time
         optional(:sleep_stop_at).maybe :time
@@ -23,6 +26,7 @@ module Terminus
           attributes = result.to_h
 
           attributes[:proxy] = false unless result.key? :proxy
+          attributes[:firmware_beta] = false unless result.key? :firmware_beta
           attributes[:firmware_update] = false unless result.key? :firmware_update
 
           attributes

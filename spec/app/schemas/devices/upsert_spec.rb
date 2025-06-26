@@ -8,6 +8,7 @@ RSpec.describe Terminus::Schemas::Devices::Upsert do
   describe "#call" do
     let :attributes do
       {
+        model_id: 1,
         label: "Test",
         friendly_id: "ABC123",
         mac_address: "AA:BB:CC:11:22:33",
@@ -15,6 +16,7 @@ RSpec.describe Terminus::Schemas::Devices::Upsert do
         refresh_rate: 100,
         image_timeout: 0,
         proxy: "on",
+        firmware_beta: "on",
         firmware_update: "on"
       }
     end
@@ -46,6 +48,15 @@ RSpec.describe Terminus::Schemas::Devices::Upsert do
     it "answers false when proxy key is missing" do
       attributes.delete :proxy
       expect(contract.call(attributes).to_h).to include(proxy: false)
+    end
+
+    it "answers true when firmware beta is truthy" do
+      expect(contract.call(attributes).to_h).to include(firmware_beta: true)
+    end
+
+    it "answers false when firmware beta key is missing" do
+      attributes.delete :firmware_beta
+      expect(contract.call(attributes).to_h).to include(firmware_beta: false)
     end
 
     it "answers true when firmware update is truthy" do
