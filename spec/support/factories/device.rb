@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Factory.define :device do |factory|
+  factory.association :model
+  factory.association(:playlist) { nil }
+
   factory.friendly_id "ABC123"
   factory.label "Test"
   factory.api_key "abc123"
