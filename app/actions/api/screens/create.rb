@@ -2,7 +2,6 @@
 
 require "dry/monads"
 require "initable"
-require "petail"
 require "refinements/pathname"
 
 module Terminus
@@ -10,15 +9,13 @@ module Terminus
     module API
       module Screens
         # The create action.
-        class Create < Terminus::Action
+        class Create < Base
           include Deps[:settings, repository: "repositories.device"]
-          include Initable[problem: Petail, creator: proc { Terminus::Screens::Creator.new }]
+          include Initable[creator: proc { Terminus::Screens::Creator.new }]
           include Dry::Monads[:result]
 
           using Refinements::Pathname
           using Refines::Actions::Response
-
-          format :json
 
           params do
             required(:image).hash do

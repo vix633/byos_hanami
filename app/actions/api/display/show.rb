@@ -2,7 +2,6 @@
 
 require "dry/monads"
 require "initable"
-require "petail"
 require "trmnl/api"
 
 module Terminus
@@ -10,7 +9,7 @@ module Terminus
     module API
       module Display
         # The show action.
-        class Show < Terminus::Action
+        class Show < Base
           include Deps[
             :settings,
             firmware_repository: "repositories.firmware",
@@ -18,12 +17,10 @@ module Terminus
             synchronizer: "aspects.devices.synchronizer"
           ]
 
-          include Initable[problem: Petail, model: TRMNL::API::Models::Display]
+          include Initable[model: TRMNL::API::Models::Display]
           include Dry::Monads[:result]
 
           using Refines::Actions::Response
-
-          format :json
 
           def handle request, response
             environment = request.env

@@ -8,14 +8,14 @@ module Terminus
     module API
       module Setup
         # The show action.
-        class Show < Terminus::Action
+        class Show < Base
           include Deps[
             repository: "repositories.device",
             device_builder: "aspects.devices.builder",
             welcomer: "aspects.screens.welcomer"
           ]
 
-          include Initable[model: Aspects::API::Responses::Setup, problem: Petail]
+          include Initable[model: Aspects::API::Responses::Setup]
 
           using Refines::Actions::Response
 
@@ -23,8 +23,6 @@ module Terminus
             required(:HTTP_ID).filled Types::MACAddress
             optional(:HTTP_FW_VERSION).maybe Types::String.constrained(format: Versionaire::PATTERN)
           end
-
-          format :json
 
           def handle request, response
             environment = request.env

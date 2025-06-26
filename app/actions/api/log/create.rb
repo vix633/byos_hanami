@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
-require "initable"
-require "petail"
-
 module Terminus
   module Actions
     module API
       module Log
         # The create action.
-        class Create < Terminus::Action
+        class Create < Base
           include Deps[
             :logger,
             transformer: "aspects.api.transformers.firmware_log",
@@ -16,11 +13,7 @@ module Terminus
             log_repository: "repositories.device_log"
           ]
 
-          include Initable[problem: Petail]
-
           using Refines::Actions::Response
-
-          format :json
 
           params do
             required(:log).hash do
