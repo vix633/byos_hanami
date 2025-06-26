@@ -81,7 +81,6 @@ RSpec.describe Terminus::Repositories::Device, :db do
     end
 
     it "answers record without updates for no attributes" do
-      device
       update = repository.update_by_mac_address device.mac_address
 
       expect(update).to eq(device)
