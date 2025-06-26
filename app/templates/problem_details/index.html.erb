@@ -5,100 +5,151 @@
     <h1>Problem Details</h1>
   </header>
 
-  <p>Welcome to the problem details page where you can information for resolving API errors.</p>
+  <p class="introduction">
+    Welcome to the problem details page where you can information for resolving API errors.
+  </p>
 
-  <h2 id="device_id" class="problem">Device ID</h2>
+  <details name="details">
+    <summary id="device_id" class="summary">Device ID</summary>
 
-  <p>Could not find device by ID. The device ID should be supplied via the HTTP ID header.</p>
+    <p>Could not find device by ID. The device ID should be supplied via the HTTP ID header.</p>
+  </details>
 
-  <h2 id="device_setup" class="problem">Device Setup</h2>
+  <details name="details">
+    <summary id="device_setup" class="summary">Device Setup</summary>
 
-  The following required and optional headers are necessary when making API requests:
+    The following required and optional headers are necessary when making API requests:
 
-  <p><strong>Required</strong></p>
+    <h2 class="label">Required</h2>
 
-  <dl class="site-definition-list">
-    <dt class="key">ID</dt>
-    <dd class="value">Must be your device's MAC address and properly formatted. Example: <code>A1:B2:C3:D4:E5:F6</code>.</dd>
-  </dl>
+    <dl class="site-definition-list">
+      <dt class="key">ID</dt>
+      <dd class="value">Must be your device's MAC address and properly formatted. Example: <code>A1:B2:C3:D4:E5:F6</code>.</dd>
+    </dl>
 
-  <p><strong>Optional:</strong></p>
+    <h2 class="label">Optional</h2>
 
-  <dl class="site-definition-list">
-    <dt class="key">FW_VERSION</dt>
-    <dd class="value">If provided, must adhere to <a href="https://alchemists.io/articles/strict_semantic_versioning">Strict Semantic Versioning</a>. Example: <code>1.2.3</code>.
-    </dd>
-  </dl>
+    <dl class="site-definition-list">
+      <dt class="key">FW_VERSION</dt>
+      <dd class="value">If provided, must adhere to <a href="https://alchemists.io/articles/strict_semantic_versioning">Strict Semantic Versioning</a>. Example: <code>1.2.3</code>.
+      </dd>
+    </dl>
+  </details>
 
-  <p></p>
+  <details name="details">
+    <summary id="log_payload" class="summary">Log Payload</summary>
 
-  <h2 id="log_payload" class="problem">Log Payload</h2>
+    <p>Could not create log for device due to invalid payload. The payload should be structured as follows:</p>
 
-  <p>Could not create log for device due to invalid payload. The payload should be structured as follows:</p>
+    <pre>
+      "log": {
+        "logs_array": [
+          {
+            "log_id": 1,
+            "creation_timestamp": 1742022123,
+            "log_message": "returned code is not OK: 404",
+            "log_codeline": 597,
+            "device_status_stamp": {
+              "wifi_status": "connected",
+              "wakeup_reason": "timer",
+              "current_fw_version": "1.5.2",
+              "free_heap_size": 160656,
+              "max_alloc_size": 200000,
+              "special_function": "none",
+              "refresh_rate": 30,
+              "battery_voltage": 4.772,
+              "time_since_last_sleep_start": 31,
+              "wifi_rssi_level": -54
+            },
+            "additional_info": {
+              "retry_attempt": 1
+            },
+            "log_sourcefile": "src/bl.cpp"
+          }
+        ]
+      }
+    </pre>
 
-  <pre>
-    "log": {
-      "logs_array": [
-        {
-          "log_id": 1,
-          "creation_timestamp": 1742022123,
-          "log_message": "returned code is not OK: 404",
-          "log_codeline": 597,
-          "device_status_stamp": {
-            "wifi_status": "connected",
-            "wakeup_reason": "timer",
-            "current_fw_version": "1.5.2",
-            "free_heap_size": 160656,
-            "max_alloc_size": 200000,
-            "special_function": "none",
-            "refresh_rate": 30,
-            "battery_voltage": 4.772,
-            "time_since_last_sleep_start": 31,
-            "wifi_rssi_level": -54
-          },
-          "additional_info": {
-            "retry_attempt": 1
-          },
-          "log_sourcefile": "src/bl.cpp"
-        }
-      ]
-    }
-  </pre>
+    <p>The <code>additional_info</code> key is optional and can be be excluded but all other keys are required.</p>
+  </details>
 
-  <p>💡 The <code>additional_info</code> key is optional and can be be excluded but all other keys are required.</p>
+  <details name="details">
+    <summary id="model_payload" class="summary">Model Payload</summary>
 
-  <h2 id="screen_payload" class="problem">Screen Payload</h2>
+    <p>Could not create or update model. When making an API HTTP POST request, the following is a list of all required and optional keys:</p>
 
-  <p>Could not create screen for device. When making an API HTTP POST request, the following required and optional keys should be used within the hash provided for the <code>image</code> key.</p>
+    <h2 class="label">Required</h2>
 
-  <p><strong>Required (use only one):</strong></p>
+    <dl class="site-definition-list">
+      <dt class="key">name</dt>
+      <dd class="value">The unique name.</dd>
 
-  <dl class="site-definition-list">
-    <dt class="key">content</dt>
-    <dd class="value">Must be HTML content. CSS can be provided via the style tags within HTML head element if desired too.</dd>
+      <dt class="key">label</dt>
+      <dd class="value">The unique name.</dd>
 
-    <dt class="key">uri</dt>
-    <dd class="value">Must be an image URI. This can be either relative path or an URL to an image.</dd>
+      <dt class="key">width</dt>
+      <dd class="value">The width.</dd>
 
-    <dt class="key">data</dt>
-    <dd class="value">Must be Base64 encoded image data. In Ruby, that'd be: <code>Base64.strict_encode64 file.read</code>.</dd>
-  </dl>
+      <dt class="key">height</dt>
+      <dd class="value">The height.</dd>
 
-  <p><strong>Optional:</strong></p>
+      <dt class="key">published_at</dt>
+      <dd class="value">The published date/time. This is for when the model was first available for use in production (or when it was first supported if not manufactured by TRMNL).</dd>
+    </dl>
 
-  <dl class="site-definition-list">
-    <dt class="key">dimensions</dt>
-    <dd class="value">
-      Use to render your screen with specific dimensions. The <a href="https://www.imagemagick.org/script/command-line-processing.php#geometry">ImageMagick Geometry</a> syntax is available to you to render your screen as desired. If no dimensions are supplied, then the default dimensions of <code>800x480</code> are used.
-    </dd>
+    <h2 class="label">Optional</h2>
 
-    <dt class="key">file_name</dt>
-    <dd class="value">Use to create a screen with an automatically generated or specific file name. Example: <code>demo.png</code>. Otherwise, if no file name is provided, a UUID will be used instead. Example: <code>e2a8a4bc-11ba-40a4-9184-5275f4172da4.png</code>. You can also use <code>%&lt;name&gt;s</code> with a file extension to render an automatically generated file. Example: <code>%&lt;name&gt;s.bmp</code>. Only <code>.bmp</code> and <code>.png</code> file extensions are supported.</dd>
+    <dl class="site-definition-list">
+      <dt class="key">description</dt>
+      <dd class="value">The model description. This can be any descriptive text that would give more context for the model.</dd>
+    </dl>
 
-    <dt class="key">preprocessed</dt>
-    <dd class="value">
-      Use to render a preprocessed image directly onto your device. The value must be either <code>true</code> or <code>false</code>. When <code>true</code>, this must be used in conjuction with the <code>uri</code> key (mentioned above). This assumes the URI you want have rendered on your device is fully compatible with the device in terms of greyscale, bit depth, color depth, and so forth.
-    </dd>
+    <p>Here's an example of a bare minimum request paylaod.</p>
 
-  </dl>
+    <pre>
+      "model": {
+        "name": "demo",
+        "label": "Demo",
+        "width": "800",
+        "height": "480",
+        "published_at": "2025-01-01T00:00:00+00:00"
+      }
+    </pre>
+  </details>
+
+  <details name="details">
+    <summary id="screen_payload" class="summary">Screen Payload</summary>
+
+    <p>Could not create screen for device. When making an API HTTP POST request, the following required and optional keys should be used within the hash provided for the <code>image</code> key.</p>
+
+    <h2 class="label">Required (use only one):</h2>
+
+    <dl class="site-definition-list">
+      <dt class="key">content</dt>
+      <dd class="value">Must be HTML content. CSS can be provided via the style tags within HTML head element if desired too.</dd>
+
+      <dt class="key">uri</dt>
+      <dd class="value">Must be an image URI. This can be either relative path or an URL to an image.</dd>
+
+      <dt class="key">data</dt>
+      <dd class="value">Must be Base64 encoded image data. In Ruby, that'd be: <code>Base64.strict_encode64 file.read</code>.</dd>
+    </dl>
+
+    <h2 class="label">Optional:</h2>
+
+    <dl class="site-definition-list">
+      <dt class="key">dimensions</dt>
+      <dd class="value">
+        Use to render your screen with specific dimensions. The <a href="https://www.imagemagick.org/script/command-line-processing.php#geometry">ImageMagick Geometry</a> syntax is available to you to render your screen as desired. If no dimensions are supplied, then the default dimensions of <code>800x480</code> are used.
+      </dd>
+
+      <dt class="key">file_name</dt>
+      <dd class="value">Use to create a screen with an automatically generated or specific file name. Example: <code>demo.png</code>. Otherwise, if no file name is provided, a UUID will be used instead. Example: <code>e2a8a4bc-11ba-40a4-9184-5275f4172da4.png</code>. You can also use <code>%&lt;name&gt;s</code> with a file extension to render an automatically generated file. Example: <code>%&lt;name&gt;s.bmp</code>. Only <code>.bmp</code> and <code>.png</code> file extensions are supported.</dd>
+
+      <dt class="key">preprocessed</dt>
+      <dd class="value">
+        Use to render a preprocessed image directly onto your device. The value must be either <code>true</code> or <code>false</code>. When <code>true</code>, this must be used in conjuction with the <code>uri</code> key (mentioned above). This assumes the URI you want have rendered on your device is fully compatible with the device in terms of greyscale, bit depth, color depth, and so forth.
+      </dd>
+    </dl>
+  </details>
 </section>
