@@ -26,6 +26,12 @@
 
       <dl class="site-definition-list">
         <dt class="key">
+          Model
+          <%= render "shared/popovers/trigger", name: :model %>
+        </dt>
+        <dd class="value"><%= device.model ? device.model.label : nil %></dd>
+
+        <dt class="key">
           Friendly ID
           <%= render "shared/popovers/trigger", name: :friendly_id %>
         </dt>

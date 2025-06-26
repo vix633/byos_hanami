@@ -9,6 +9,7 @@ RSpec.describe Terminus::Contracts::Devices::Create do
     let :attributes do
       {
         device: {
+          model_id: 1,
           label: "Test",
           friendly_id: "ABC123",
           mac_address: "AA:BB:CC:11:22:33",

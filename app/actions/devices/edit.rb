@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
+require "initable"
+
 module Terminus
   module Actions
     module Devices
       # The edit action.
       class Edit < Terminus::Action
         include Deps[repository: "repositories.device"]
+        include Initable[model_optioner: proc { Terminus::Aspects::Models::Optioner }]
 
         params { required(:id).filled :integer }
 
@@ -20,7 +23,7 @@ module Terminus
         private
 
         def view_settings request, parameters
-          settings = {device: repository.find(parameters[:id])}
+          settings = {model_options: model_optioner.call, device: repository.find(parameters[:id])}
 
           settings[:layout] = false if request.env.key? "HTTP_HX_REQUEST"
           settings

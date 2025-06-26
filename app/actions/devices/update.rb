@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "initable"
+
 module Terminus
   module Actions
     module Devices
@@ -10,6 +12,8 @@ module Terminus
           show_view: "views.devices.show",
           edit_view: "views.devices.edit"
         ]
+
+        include Initable[model_optioner: proc { Terminus::Aspects::Models::Optioner }]
 
         contract Contracts::Devices::Update
 
@@ -31,11 +35,16 @@ module Terminus
         def save device, parameters, response
           id = device.id
           repository.update id, **parameters[:device]
-          response.render show_view, device: repository.find(id), layout: false
+
+          response.render show_view,
+                          model_options: model_optioner.call,
+                          device: repository.find(id),
+                          layout: false
         end
 
         def edit device, parameters, response
           response.render edit_view,
+                          model_options: model_optioner.call,
                           device:,
                           fields: parameters[:device],
                           errors: parameters.errors[:device],

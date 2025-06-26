@@ -6,11 +6,12 @@ RSpec.describe Terminus::Actions::Devices::Create, :db do
   subject(:action) { described_class.new }
 
   describe "#call" do
-    let(:device) { Factory[:device] }
+    let(:model) { Factory[:model] }
 
     let :params do
       {
         device: {
+          model_id: model.id,
           label: "Test",
           friendly_id: "ABC123",
           mac_address: "AA:BB:CC:11:22:33",

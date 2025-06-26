@@ -1,4 +1,17 @@
 <fieldset role="group" class="group">
+  <%= scope(:form_field, key: :model_id, errors:).render do %>
+    <label class="key" for="device[model_id]">
+      Model
+      <%= render "shared/popovers/trigger", name: :model %>
+    </label>
+
+    <%= tag.select name: "device[model_id]", class: :value do %>
+      <% model_options.each do |label, id| %>
+        <%= tag.option label, value: id, selected: id == field_for(:model_id, fields, device) %>
+      <% end %>
+    <% end %>
+  <% end %>
+
   <%= scope(:form_field, key: :label, errors:).render do %>
     <label class="key" for="device[label]">Label</label>
 
