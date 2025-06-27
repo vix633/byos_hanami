@@ -2,7 +2,7 @@
 
 require "hanami_helper"
 
-RSpec.describe Terminus::Actions::Bulk::Firmware::Delete do
+RSpec.describe Terminus::Actions::Bulk::Firmware::Delete, :db do
   subject(:action) { described_class.new }
 
   describe "#call" do
