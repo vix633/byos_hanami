@@ -29,7 +29,7 @@ RSpec.describe "/api/models", :db do
           description: nil,
           width: 800,
           height: 480,
-          published_at: model.published_at.to_s
+          published_at: match_rfc_3339
         )
       ]
     )
@@ -46,7 +46,7 @@ RSpec.describe "/api/models", :db do
         description: "A test.",
         width: 800,
         height: 480,
-        published_at: /2025-01-01 01:01:01 .*?\d{4}/
+        published_at: match_rfc_3339
       }
     )
   end
@@ -85,7 +85,7 @@ RSpec.describe "/api/models", :db do
         description: "A patch.",
         width: 800,
         height: 480,
-        published_at: model.published_at.to_s
+        published_at: match_rfc_3339
       }
     )
   end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "initable"
+
 module Terminus
   module Actions
     module API
@@ -7,6 +9,7 @@ module Terminus
         # The create action.
         class Create < Base
           include Deps[repository: "repositories.model"]
+          include Initable[serializer: Serializers::Model]
 
           using Refines::Actions::Response
 
@@ -26,7 +29,7 @@ module Terminus
 
             if parameters.valid?
               model = repository.create parameters[:model]
-              response.body = {data: model.to_h}.to_json
+              response.body = {data: serializer.new(model).to_h}.to_json
             else
               unprocessable_entity parameters, response
             end

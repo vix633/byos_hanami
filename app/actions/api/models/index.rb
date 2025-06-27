@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "initable"
+
 module Terminus
   module Actions
     module API
@@ -7,9 +9,11 @@ module Terminus
         # The index action.
         class Index < Base
           include Deps[repository: "repositories.model"]
+          include Initable[serializer: Serializers::Model]
 
           def handle *, response
-            response.body = {data: repository.all.map(&:to_h)}.to_json
+            data = repository.all.map { serializer.new(it).to_h }
+            response.body = {data:}.to_json
           end
         end
       end
