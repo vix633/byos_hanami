@@ -16,6 +16,4 @@ Factory.define :device_log do |factory|
   factory.wake_reason "timer"
   factory.battery_voltage 4.75
   factory.free_heap_size 150000
-  factory.created_at { Time.now }
-  factory.updated_at { Time.now }
 end

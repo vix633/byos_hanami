@@ -9,6 +9,4 @@ Factory.define :device do |factory|
   factory.wifi(-44)
   factory.firmware_version "1.2.3"
   factory.proxy false
-  factory.created_at { Time.now }
-  factory.updated_at { Time.now }
 end
