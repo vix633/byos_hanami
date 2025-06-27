@@ -10,7 +10,7 @@ RSpec.describe Terminus::Aspects::Devices::Builder do
   end
 
   let(:time) { class_double Time, now: at }
-  let(:at) { Time.new 2025, 1, 2, 3, 4, 5 }
+  let(:at) { Time.utc 2025, 1, 2, 3, 4, 5 }
 
   describe "#call" do
     it "answers defaults" do

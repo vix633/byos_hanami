@@ -8,4 +8,4 @@ repository.find_or_create :name,
                           description: "The first production model.",
                           width: 800,
                           height: 480,
-                          published_at: Time.new(2024, 6, 25, 0, 0, 0)
+                          published_at: Time.utc(2024, 6, 25, 0, 0, 0)

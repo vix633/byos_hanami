@@ -23,7 +23,7 @@ module Terminus
           if request.env.key? "HTTP_HX_REQUEST"
             render_text parameters[:template], response
           else
-            response.render show_view, id: Time.new.to_i
+            response.render show_view, id: Time.new.utc.to_i
           end
         end
 

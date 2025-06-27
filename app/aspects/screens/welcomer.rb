@@ -13,7 +13,7 @@ module Terminus
         include Initable[seconds: 30]
         include Dry::Monads[:result]
 
-        def call device, now: Time.now
+        def call device, now: Time.now.utc
           output_path = path_for device
 
           return Success output_path if output_path.exist? || (now - device.created_at) >= seconds

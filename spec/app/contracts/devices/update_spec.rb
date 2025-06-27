@@ -18,8 +18,8 @@ RSpec.describe Terminus::Contracts::Devices::Update do
           image_timeout: 0,
           proxy: "on",
           firmware_update: "on",
-          sleep_start_at: Time.new(2025, 1, 1, 1, 1, 1),
-          sleep_stop_at: Time.new(2025, 2, 1, 1, 1, 1)
+          sleep_start_at: Time.utc(2025, 1, 1, 1, 1, 1),
+          sleep_stop_at: Time.utc(2025, 2, 1, 1, 1, 1)
         }
       }
     end
@@ -36,7 +36,7 @@ RSpec.describe Terminus::Contracts::Devices::Update do
     end
 
     it "answers failures when start is after end" do
-      attributes[:device][:sleep_start_at] = Time.new 2025, 3, 1, 1, 1, 1
+      attributes[:device][:sleep_start_at] = Time.utc 2025, 3, 1, 1, 1, 1
 
       expect(contract.call(attributes).errors.to_h).to eq(
         device: {
