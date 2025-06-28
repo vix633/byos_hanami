@@ -20,17 +20,7 @@ module Terminus
         optional(:sleep_start_at).maybe :time
         optional(:sleep_stop_at).maybe :time
 
-        after :value_coercer do |result|
-          next unless result.output
-
-          attributes = result.to_h
-
-          attributes[:proxy] = false unless result.key? :proxy
-          attributes[:firmware_beta] = false unless result.key? :firmware_beta
-          attributes[:firmware_update] = false unless result.key? :firmware_update
-
-          attributes
-        end
+        after(:value_coercer, &Coercers::DeviceValue)
       end
     end
   end
