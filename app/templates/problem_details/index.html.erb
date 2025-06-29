@@ -16,6 +16,79 @@
   </details>
 
   <details name="details">
+    <summary id="device_payload" class="summary">Device Payload</summary>
+
+    <p>Could not create device. When making an API HTTP POST request, use the following required and optional keys:</p>
+
+    <h2 class="label">Required</h2>
+
+    <dl class="site-definition-list">
+      <dt class="key">model_id</dt>
+      <dd class="value">The model ID (see Models API for details).</dd>
+
+      <dt class="key">label</dt>
+      <dd class="value">The label. Use this to give your device a unique label.</dd>
+
+      <dt class="key">mac_address</dt>
+      <dd class="value">The MAC Address. The unique MAC address of your device.</dd>
+    </dl>
+
+    <h2 class="label">Optional</h2>
+
+    <dl class="site-definition-list">
+      <dt class="key">playlist_id</dt>
+      <dd class="value">The playlist ID. The current device playlist. Default: <code>nil</code>.</dd>
+
+      <dt class="key">friendly_id</dt>
+      <dd class="value">The friendly ID. Should be identical to your Core account if you want device proxying support. Defaults to an uppercase six character hex value.</dd>
+
+      <dt class="key">api_key</dt>
+      <dd class="value">The API Key. The unique API key for making API requests. Defaults to an auto-generated value when not supplied.</dd>
+
+      <dt class="key">refresh_rate</dt>
+      <dd class="value">The refresh rate in seconds. Must be greater than <code>10</code>. Default: <code>900</code>.</dd>
+
+      <dt class="key">image_timeout</dt>
+      <dd class="value">The image timeout in seconds. The maximum duration the device will wait before timing out for acquiring an image to display. Must be a positive number. Default: <code>0</code>.</dd>
+
+      <dt class="key">proxy</dt>
+      <dd class="value">Determines if the device should proxy images from the Core server. Default: <code>false</code>.</dd>
+
+      <dt class="key">firmware_beta</dt>
+      <dd class="value">Determines if device should automatically update with Beta Firmware releases. Default: <code>false</code>.</dd>
+
+      <dt class="key">firmware_update</dt>
+      <dd class="value">Determines if device should automatically update with stable Firmware releases. Default: <code>false</code>.</dd>
+
+      <dt class="key">sleep_start_at</dt>
+      <dd class="value">Sets when a device should sleep. Default: <code>nil</code>.</dd>
+
+      <dt class="key">sleep_stop_at</dt>
+      <dd class="value">Sets when a device should wake. Default: <code>nil</code>.</dd>
+    </dl>
+
+    <p>Here's an example of a request payload using all attributes.</p>
+
+    <pre>
+      "device": {
+        "playlist_id": "1",
+        "model_id": 1,
+        "friendly_id": "AFCA5B",
+        "label": "Demo",
+        "api_key": "QubEY53CZCW9QxJbDNNA",
+        "mac_address": "A1:B2:C3:D4:E5:F6",
+        "firmware_beta": false,
+        "firmware_update": true,
+        "refresh_rate": "500",
+        "image_timeout": "0",
+        "proxy": true,
+        "sleep_start_at": "00:00:00",
+        "sleep_stop_at": "06:00:00"
+      }
+    </pre>
+  </details>
+
+  <details name="details">
     <summary id="device_setup" class="summary">Device Setup</summary>
 
     The following required and optional headers are necessary when making API requests:
