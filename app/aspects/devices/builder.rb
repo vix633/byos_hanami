@@ -7,7 +7,7 @@ module Terminus
     module Devices
       # Builds default attributes for new devices.
       class Builder
-        include Initable[randomizer: SecureRandom, time: Time]
+        include Initable[randomizer: SecureRandom]
 
         def call
           {
@@ -15,8 +15,7 @@ module Terminus
             friendly_id: randomizer.hex(3).upcase,
             api_key: randomizer.alphanumeric(20),
             refresh_rate: 900,
-            image_timeout: 0,
-            setup_at: time.now
+            image_timeout: 0
           }
         end
       end
