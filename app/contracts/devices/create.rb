@@ -4,8 +4,11 @@ module Terminus
   module Contracts
     module Devices
       # The contract for device creates.
-      class Create < Abstract
+      class Create < Dry::Validation::Contract
         params { required(:device).hash Schemas::Devices::Upsert }
+
+        rule device: :sleep_start_at, &Rules::SleepStartAt
+        rule device: :sleep_stop_at, &Rules::SleepStopAt
       end
     end
   end
