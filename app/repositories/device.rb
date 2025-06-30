@@ -24,9 +24,12 @@ module Terminus
       def find_by_mac_address(value) = with_associations.where(mac_address: value.to_s).one
 
       def update_by_mac_address(value, **attributes)
-        return with_associations.where(mac_address: value.to_s).one if attributes.empty?
+        device = find_by_mac_address value
 
-        devices.command(:update).call(**attributes)
+        return device if attributes.empty?
+        return unless device
+
+        update device.id, **attributes
       end
 
       private

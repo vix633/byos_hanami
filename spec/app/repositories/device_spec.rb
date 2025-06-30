@@ -85,5 +85,10 @@ RSpec.describe Terminus::Repositories::Device, :db do
 
       expect(update).to eq(device)
     end
+
+    it "answers nil when device can't be found" do
+      update = repository.update_by_mac_address "bogus"
+      expect(update).to be(nil)
+    end
   end
 end
