@@ -12,8 +12,8 @@ module Terminus
                    .to_a
       end
 
-      def all_by_device id
-        device_logs.where(device_id: id)
+      def all_by(**)
+        device_logs.where(**)
                    .order { created_at.desc }
                    .to_a
       end

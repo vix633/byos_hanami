@@ -18,15 +18,23 @@ RSpec.describe Terminus::Repositories::DeviceLog, :db do
     end
   end
 
-  describe "#all_by_device" do
+  describe "#all_by" do
     it "answers records" do
-      expect(repository.all_by_device(log.device_id)).to contain_exactly(
+      expect(repository.all_by(device_id: log.device_id)).to contain_exactly(
         have_attributes(id: log.id, device_id: log.device_id)
       )
     end
 
     it "answers empty array when records don't exist" do
-      expect(repository.all_by_device(13)).to eq([])
+      expect(repository.all_by(device_id: 13)).to eq([])
+    end
+
+    it "answers empty array when not found" do
+      expect(repository.all_by(device_id: 13, refresh_rate: 1)).to eq([])
+    end
+
+    it "answers empty array when nil" do
+      expect(repository.all_by(refresh_rate: nil)).to eq([])
     end
   end
 
