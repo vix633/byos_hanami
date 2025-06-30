@@ -27,7 +27,7 @@ module Terminus
 
       def find(id) = (firmwares.by_pk(id).one if id)
 
-      def find_by_version(value) = firmwares.where(version: value).one
+      def find_by(**) = firmwares.where(**).one
 
       def latest
         firmwares.order { version.desc }

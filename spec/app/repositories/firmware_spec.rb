@@ -65,17 +65,21 @@ RSpec.describe Terminus::Repositories::Firmware, :db do
     end
   end
 
-  describe "#find_by_version" do
-    it "answers record when found" do
-      expect(repository.find_by_version(firmware.version)).to eq(firmware)
+  describe "#find_by" do
+    it "answers record when found by single attribute" do
+      expect(repository.find_by(version: firmware.version)).to eq(firmware)
+    end
+
+    it "answers record when found by multiple attributes" do
+      expect(repository.find_by(id: firmware.id, version: firmware.version)).to eq(firmware)
     end
 
     it "answers nil when not found" do
-      expect(repository.find_by_version("bogus")).to be(nil)
+      expect(repository.find_by(version: "6.6.6")).to be(nil)
     end
 
     it "answers nil for nil" do
-      expect(repository.find_by_version(nil)).to be(nil)
+      expect(repository.find_by(version: nil)).to be(nil)
     end
   end
 
