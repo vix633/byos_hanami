@@ -30,7 +30,7 @@ module Terminus
 
           def handle request, response
             parameters = request.params
-            device = repository.find_by_api_key request.env["HTTP_ACCESS_TOKEN"]
+            device = repository.find_by api_key: request.env["HTTP_ACCESS_TOKEN"]
 
             return unauthorized response unless device
 

@@ -39,7 +39,7 @@ module Terminus
 
           def create environment, response
             mac_address, firmware_version = environment.values_at "HTTP_ID", "HTTP_FW_VERSION"
-            device = repository.find_by_mac_address mac_address
+            device = repository.find_by(mac_address:)
             device ||= create_device mac_address, firmware_version
             welcomer.call device
             response.body = model.for(device).to_json

@@ -12,7 +12,7 @@ RSpec.describe "/api/setup", :db do
 
   context "without devices" do
     let(:mac_address) { "AA:BB:CC:00:11:22" }
-    let(:device) { repository.find_by_mac_address mac_address }
+    let(:device) { repository.find_by mac_address: }
 
     it "answers device/image details for new device" do
       get routes.path(:api_setup), {}, "HTTP_ID" => mac_address, "HTTP_FW_VERSION" => "1.2.3"

@@ -11,20 +11,18 @@ module Terminus
                          .to_a
       end
 
-      def all_by_label value
-        with_associations.where { label.ilike "%#{value}%" }
+      def all_by(**)
+        with_associations.where(**)
                          .order { created_at.asc }
                          .to_a
       end
 
       def find(id) = (with_associations.by_pk(id).one if id)
 
-      def find_by_api_key(value) = with_associations.where(api_key: value.to_s).one
-
-      def find_by_mac_address(value) = with_associations.where(mac_address: value.to_s).one
+      def find_by(**) = with_associations.where(**).one
 
       def update_by_mac_address(value, **attributes)
-        device = find_by_mac_address value
+        device = find_by mac_address: value
 
         return device if attributes.empty?
         return unless device

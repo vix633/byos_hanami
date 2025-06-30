@@ -44,7 +44,7 @@ module Terminus
 
           def handle request, response
             parameters = request.params
-            device = device_repository.find_by_mac_address request.get_header("HTTP_ID")
+            device = device_repository.find_by mac_address: request.get_header("HTTP_ID")
 
             return not_found response unless device
             return unprocessable_entity parameters, response unless parameters.valid?

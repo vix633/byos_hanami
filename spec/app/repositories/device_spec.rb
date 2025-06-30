@@ -18,6 +18,20 @@ RSpec.describe Terminus::Repositories::Device, :db do
     end
   end
 
+  describe "#all_by" do
+    it "answers record for label" do
+      expect(repository.all_by(label: device.label)).to contain_exactly(device)
+    end
+
+    it "answers empty array for unknown value" do
+      expect(repository.all_by(label: "bogus")).to eq([])
+    end
+
+    it "answers empty array for nil" do
+      expect(repository.all_by(label: nil)).to eq([])
+    end
+  end
+
   describe "#find" do
     it "answers record by ID" do
       expect(repository.find(device.id)).to eq(device)
@@ -32,41 +46,21 @@ RSpec.describe Terminus::Repositories::Device, :db do
     end
   end
 
-  describe "#all_by_label" do
-    it "answers record for label" do
-      expect(repository.all_by_label(device.label)).to contain_exactly(device)
+  describe "#find_by" do
+    it "answers record when found by single attribute" do
+      expect(repository.find_by(label: device.label)).to eq(device)
     end
 
-    it "empty array for unknown label" do
-      expect(repository.all_by_label("bogus")).to eq([])
-    end
-  end
-
-  describe "#find_by_api_key" do
-    it "answers record for API key" do
-      expect(repository.find_by_api_key(device.api_key)).to eq(device)
+    it "answers record when found by multiple attributes" do
+      expect(repository.find_by(label: device.label, friendly_id: device.friendly_id)).to eq(device)
     end
 
-    it "answers nil for unknown ID" do
-      expect(repository.find_by_api_key(13)).to be(nil)
+    it "answers nil when not found" do
+      expect(repository.find_by(label: "Bogus")).to be(nil)
     end
 
     it "answers nil for nil" do
-      expect(repository.find_by_api_key(nil)).to be(nil)
-    end
-  end
-
-  describe "#find_by_mac_address" do
-    it "answers record for API key" do
-      expect(repository.find_by_mac_address(device.mac_address)).to eq(device)
-    end
-
-    it "answers nil for unknown ID" do
-      expect(repository.find_by_mac_address(13)).to be(nil)
-    end
-
-    it "answers nil for nil" do
-      expect(repository.find_by_mac_address(nil)).to be(nil)
+      expect(repository.find_by(label: nil)).to be(nil)
     end
   end
 
