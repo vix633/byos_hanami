@@ -13,7 +13,7 @@ module Terminus
 
       def find(id) = (playlist.by_pk(id).one if id)
 
-      def find_by(**) = playlist.where(**).first
+      def find_by(**) = playlist.where(**).one
     end
   end
 end
