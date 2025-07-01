@@ -3,15 +3,17 @@
 <section class="page-devices">
   <header class="page-header">
     <ul class="site-breadcrumbs">
-      <li class="breadcrumb"><a href="/devices" class="link">Devices</a></li>
-      <li class="breadcrumb"><%= link_to device.label, "/devices/#{device.id}", class: :link %></li>
+      <li class="breadcrumb"><%= link_to "Devices", routes.path(:devices), class: :link %></li>
+      <li class="breadcrumb">
+        <%= link_to device.label, routes.path(:device, id: device.id), class: :link %>
+      </li>
       <li class="breadcrumb">Logs</li>
     </ul>
 
     <div class="actions">
       <%= render :search, device:, query: %>
 
-      <a href="/bulk/devices/<%= device.id %>/logs"
+      <a href="<%= routes.path :bulk_device_logs_delete, device_id: device.id %>"
          class="button-danger"
          hx-delete="/bulk/devices/<%= device.id %>/logs"
          hx-confirm="Are you sure you want to delete all logs for this device?"

@@ -3,7 +3,7 @@
 <section class="page-devices">
   <header class="page-header">
     <ul class="site-breadcrumbs">
-      <li class="breadcrumb"><a href="/devices" class="link">Devices</a></li>
+      <li class="breadcrumb"><%= link_to "Devices", routes.path(:devices), class: :link %></li>
       <li class="breadcrumb"><%= link_to device.label, "/devices/#{device.id}", class: :link %></li>
       <li class="breadcrumb">Edit</li>
     </ul>
@@ -23,9 +23,9 @@
         <div class="form-actions">
           <%= render "save_button", verb: :put, path: "/devices/#{device.id}" %>
 
-          <a href="<%= routes.path :device_show, id: device.id %>"
+          <a href="<%= routes.path :device, id: device.id %>"
              class="button-decline"
-             hx-get="<%= routes.path :device_show, id: device.id %>"
+             hx-get="<%= routes.path :device, id: device.id %>"
              hx-trigger="click"
              hx-target="closest .page-devices"
              hx-swap="outerHTML"

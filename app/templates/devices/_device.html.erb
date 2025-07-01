@@ -8,13 +8,13 @@
   <%= render "measurements", device: %>
 
   <div class="actions">
-    <%= link_to "View", routes.path(:device_show, id: device.id) %>
+    <%= link_to "View", routes.path(:device, id: device.id) %>
     <%= link_to "Logs", routes.path(:device_logs, device_id: device.id) %>
     <%= render "edit_link", device: %>
 
-    <a href="/devices"
+    <a href="<%= routes.path :device, id: device.id %>"
        class="link-cancel"
-       hx-delete="/devices/<%= device.id %>"
+       hx-delete="<%= routes.path :device, id: device.id %>"
        hx-confirm="Are you sure you want to delete this device?"
        hx-target="closest .device"
        hx-swap="outerHTML">

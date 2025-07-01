@@ -17,7 +17,7 @@
       <ul class="devices">
         <% devices.each do |device| %>
           <li class="device">
-            <%= link_to(device.label, routes.path(:device_show, id: device.id)) %>
+            <%= link_to(device.label, routes.path(:device, id: device.id)) %>
             <%= render "devices/measurements", device: %>
           </li>
         <% end %>

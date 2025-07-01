@@ -1,4 +1,4 @@
-<% path = "/devices/#{device.id}/edit" %>
+<% path = routes.path :device_edit, id: device.id %>
 
 <a href="<%= path %>"
    hx-get="<%= path %>"

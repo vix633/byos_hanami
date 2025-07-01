@@ -9,7 +9,7 @@ RSpec.describe "Dashboard", :db do
     device
     visit routes.path(:root)
 
-    expect(page).to have_link("Test", href: routes.path(:device_show, id: device.id))
+    expect(page).to have_link("Test", href: routes.path(:device, id: device.id))
   end
 
   it "lists IP addresses" do

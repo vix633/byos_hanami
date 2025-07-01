@@ -3,9 +3,13 @@
 <section class="page-devices">
   <header class="page-header">
     <ul class="site-breadcrumbs">
-      <li class="breadcrumb"><a href="/devices" class="link">Devices</a></li>
-      <li class="breadcrumb"><%= link_to device.label, "/devices/#{device.id}", class: :link %></li>
-      <li class="breadcrumb"><%= link_to "Logs", "/devices/#{device.id}/logs", class: :link %></li>
+      <li class="breadcrumb"><%= link_to "Devices", routes.path(:devices), class: :link %></li>
+      <li class="breadcrumb">
+        <%= link_to device.label, routes.path(:device, id: device.id), class: :link %>
+      </li>
+      <li class="breadcrumb">
+        <%= link_to "Logs", routes.path(:device_logs, device_id: device.id), class: :link %>
+      </li>
       <li class="breadcrumb">Log</li>
     </ul>
   </header>
