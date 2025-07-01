@@ -20,6 +20,26 @@ RSpec.describe Terminus::Repositories::Playlist, :db do
     end
   end
 
+  describe "#all_by" do
+    it "answers record for single attribute" do
+      expect(repository.all_by(label: playlist.label)).to contain_exactly(playlist)
+    end
+
+    it "answers record for multiple attributes" do
+      expect(repository.all_by(label: playlist.label, name: playlist.name)).to contain_exactly(
+        playlist
+      )
+    end
+
+    it "answers empty array for unknown value" do
+      expect(repository.all_by(label: "bogus")).to eq([])
+    end
+
+    it "answers empty array for nil" do
+      expect(repository.all_by(label: nil)).to eq([])
+    end
+  end
+
   describe "#find" do
     it "answers record by ID" do
       expect(repository.find(playlist.id)).to eq(playlist)
