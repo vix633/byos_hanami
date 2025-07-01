@@ -82,7 +82,7 @@ The goal isn't for BYOS to match parity with our hosted solution but to provide 
 
 == Setup
 
-To set up project, run:
+To set up this project, run:
 
 [source,bash]
 ----
@@ -1202,6 +1202,13 @@ build:
 ----
 image: ghcr.io/usetrmnl/terminus:latest
 ----
+
+== Devices
+
+Once this server is up and running, you're going to want to connect your TRMNL device(s). The following guides will help you get started but are written for connecting to our Core server, not this server. When the docs say to *Connect*, make sure you fill in the *API Server* details (i.e. the `API_URI` as mentioned in the xref:_configuration[Configuration] section) _before_ connecting.
+
+* link:https://help.usetrmnl.com/en/articles/9416306-how-to-set-up-a-new-device[How to set up a new device].
+* link:https://help.usetrmnl.com/en/articles/11663377-setting-up-a-trmnl-on-tricky-wi-fi-situations[Dealing with tricky Wi-Fi situations].
 
 == Tools
 
