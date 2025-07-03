@@ -63,6 +63,41 @@ RSpec.describe "/api/devices", :db do
     expect(json_payload).to eq(data: [])
   end
 
+  it "answers device when it exists" do
+    get routes.path(:api_device, id: device.id), "CONTENT_TYPE" => "application/json"
+
+    expect(json_payload).to match(
+      data: {
+        id: device.id,
+        model_id: model.id,
+        playlist_id: playlist.id,
+        friendly_id: "ABC123",
+        label: "Test",
+        mac_address: "A1:B2:C3:D4:E5:F6",
+        api_key: "abc123",
+        firmware_version: "1.2.3",
+        firmware_beta: false,
+        wifi: -44,
+        battery: 3.0,
+        refresh_rate: 900,
+        image_timeout: 0,
+        width: 0,
+        height: 0,
+        proxy: false,
+        firmware_update: false,
+        sleep_start_at: nil,
+        sleep_stop_at: nil,
+        created_at: match_rfc_3339,
+        updated_at: match_rfc_3339
+      }
+    )
+  end
+
+  it "answers not found error when device doesn't exist" do
+    get routes.path(:api_device, id: 666), "CONTENT_TYPE" => "application/json"
+    expect(json_payload).to eq(Petail[status: :not_found].to_h)
+  end
+
   it "creates device when valid using all attributes" do
     post routes.path(:api_devices),
          {device: attributes}.to_json,
