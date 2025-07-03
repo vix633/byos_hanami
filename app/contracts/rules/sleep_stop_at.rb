@@ -7,8 +7,7 @@ module Terminus
       SleepStopAt = lambda do
         start_at = values.dig :device, :sleep_start_at
 
-        if value && start_at && value < start_at then key.failure "must be after start time"
-        elsif value && start_at.nil? then key.failure "must have corresponding start time"
+        if value && start_at.nil? then key.failure "must have corresponding start time"
         elsif value.nil? && start_at then key.failure "must be filled"
         else next
         end

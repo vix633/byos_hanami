@@ -35,13 +35,6 @@ RSpec.describe Terminus::Contracts::Rules::SleepStopAt do
       expect(result.success?).to be(true)
     end
 
-    it "answers error when start isn't before stop" do
-      attributes[:device].merge! sleep_start_at: "02:00:00", sleep_stop_at: "01:00:00"
-      result = contract.call attributes
-
-      expect(result.errors.to_h).to eq(device: {sleep_stop_at: ["must be after start time"]})
-    end
-
     it "answers error when corresponding start is missing" do
       attributes[:device].delete :sleep_start_at
       result = contract.call attributes
