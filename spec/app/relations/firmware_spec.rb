@@ -2,7 +2,7 @@
 
 require "hanami_helper"
 
-RSpec.describe Terminus::Relations::Firmware do
+RSpec.describe Terminus::Relations::Firmware, :db do
   subject(:relation) { Hanami.app["relations.firmwares"] }
 
   describe "#by_version_desc" do
