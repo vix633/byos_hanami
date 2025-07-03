@@ -19,8 +19,6 @@ module Terminus
         optional(:firmware_update).filled :bool
         optional(:sleep_start_at).maybe :string
         optional(:sleep_stop_at).maybe :string
-
-        after(:value_coercer, &Coercers::DeviceValue)
       end
     end
   end
