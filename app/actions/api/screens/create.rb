@@ -18,7 +18,7 @@ module Terminus
           using Refines::Actions::Response
 
           params do
-            required(:image).hash do
+            required(:image).filled(:hash) do
               optional(:content).filled :string
               optional(:uri).filled :string
               optional(:data).filled :string

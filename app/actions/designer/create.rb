@@ -9,7 +9,7 @@ module Terminus
         include Initable[creator: proc { Terminus::Screens::Creator.new }]
 
         params do
-          required(:template).hash do
+          required(:template).filled(:hash) do
             required(:id).filled :integer
             required(:content).filled :string
           end

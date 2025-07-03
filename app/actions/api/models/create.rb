@@ -14,7 +14,7 @@ module Terminus
           using Refines::Actions::Response
 
           params do
-            required(:model).hash do
+            required(:model).filled(:hash) do
               required(:name).filled :string
               required(:label).filled :string
               optional(:description).filled :string

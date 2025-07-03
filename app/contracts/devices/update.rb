@@ -7,7 +7,7 @@ module Terminus
       class Update < Dry::Validation::Contract
         params do
           required(:id).filled :integer
-          required(:device).hash Schemas::Devices::Upsert
+          required(:device).filled Schemas::Devices::Upsert
         end
 
         rule device: :sleep_start_at, &Rules::SleepStartAt
