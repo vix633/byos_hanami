@@ -35,6 +35,32 @@ RSpec.describe "/api/models", :db do
     )
   end
 
+  it "answers empty array when no records exist" do
+    get routes.path(:api_models), "CONTENT_TYPE" => "application/json"
+    expect(json_payload).to eq(data: [])
+  end
+
+  it "answers existing model" do
+    get routes.path(:api_model, id: model.id), "CONTENT_TYPE" => "application/json"
+
+    expect(json_payload).to match(
+      data: {
+        id: model.id,
+        label: model.label,
+        name: model.name,
+        description: nil,
+        width: 800,
+        height: 480,
+        published_at: match_rfc_3339
+      }
+    )
+  end
+
+  it "answers not found error with invalid ID" do
+    get routes.path(:api_model, id: 666), "CONTENT_TYPE" => "application/json"
+    expect(json_payload).to eq(Petail[status: :not_found].to_h)
+  end
+
   it "creates model when valid" do
     post routes.path(:api_models), {model: attributes}.to_json, "CONTENT_TYPE" => "application/json"
 
