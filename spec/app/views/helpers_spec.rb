@@ -53,16 +53,6 @@ RSpec.describe Terminus::Views::Helpers do
     end
   end
 
-  describe ".time_at" do
-    it "answers formatted time" do
-      expect(helper.time_at(Time.utc(2025, 1, 2, 3, 4, 5))).to eq("03:04:05")
-    end
-
-    it "answers nil if not set" do
-      expect(helper.time_at(nil)).to be(nil)
-    end
-  end
-
   describe "#size" do
     it "answers size in bytes" do
       expect(helper.size(50)).to eq("50 B")

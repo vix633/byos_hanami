@@ -28,8 +28,6 @@ module Terminus
 
       def human_time(value) = (value.strftime "%I:%M %p" if value)
 
-      def time_at(value) = (value.strftime "%H:%M:%S" if value)
-
       def size bytes, megabyte: 1_048_576.0
         case bytes
           when ...megabyte then "#{bytes} B"
