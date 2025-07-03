@@ -18,8 +18,8 @@ RSpec.describe Terminus::Contracts::Devices::Create do
           image_timeout: 0,
           proxy: "on",
           firmware_update: "on",
-          sleep_start_at: Time.utc(2025, 1, 1, 1, 1, 1),
-          sleep_stop_at: Time.utc(2025, 2, 1, 1, 1, 1)
+          sleep_start_at: "01:00:00",
+          sleep_stop_at: "02:00:00"
         }
       }
     end

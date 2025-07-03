@@ -17,8 +17,8 @@ module Terminus
         optional(:proxy).filled :bool
         optional(:firmware_beta).filled :bool
         optional(:firmware_update).filled :bool
-        optional(:sleep_start_at).maybe :time
-        optional(:sleep_stop_at).maybe :time
+        optional(:sleep_start_at).maybe :string
+        optional(:sleep_stop_at).maybe :string
 
         after(:value_coercer, &Coercers::DeviceValue)
       end

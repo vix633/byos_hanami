@@ -12,17 +12,6 @@ RSpec.shared_examples "a sleep contract" do
     expect(contract.call(attributes)).to be_success
   end
 
-  it "answers failures when start is after end" do
-    attributes[:device][:sleep_start_at] = Time.utc 2025, 3, 1, 1, 1, 1
-
-    expect(contract.call(attributes).errors.to_h).to eq(
-      device: {
-        sleep_start_at: ["must be before stop time"],
-        sleep_stop_at: ["must be after start time"]
-      }
-    )
-  end
-
   it "answers failures when start is missing but stop is present" do
     attributes[:device][:sleep_start_at] = nil
 
