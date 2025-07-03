@@ -118,7 +118,7 @@
 
     <%= tag.input name: "device[sleep_start_at]",
                   type: :time,
-                  value: time_at(field_for(:sleep_start_at, fields, device)),
+                  value: field_for(:sleep_start_at, fields, device),
                   class: :value %>
   <% end %>
 
@@ -130,7 +130,7 @@
 
     <%= tag.input name: "device[sleep_stop_at]",
                   type: :time,
-                  value: time_at(field_for(:sleep_stop_at, fields, device)),
+                  value: field_for(:sleep_stop_at, fields, device),
                   class: :value %>
   <% end %>
 </fieldset>
