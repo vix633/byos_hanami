@@ -28,6 +28,14 @@ RSpec.describe Terminus::Repositories::Firmware, :db do
       expect(repository.all).to eq([])
     end
 
+    it "deletes associated attachment" do
+      upload = firmware.upload StringIO.new([123].pack("N"))
+      repository.update firmware.id, attachment_data: upload.data
+      repository.delete firmware.id
+
+      expect(Hanami.app[:shrine].storages[:store].store).to eq({})
+    end
+
     it "ignores unknown record" do
       repository.delete 13
       expect(repository.all).to eq([])
