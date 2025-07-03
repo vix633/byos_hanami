@@ -6,10 +6,7 @@ module Terminus
     class Firmware < DB::Repository[:firmwares]
       commands :create, update: :by_pk
 
-      def all
-        firmwares.order { version.desc }
-                 .to_a
-      end
+      def all = firmwares.by_version_desc.to_a
 
       def delete id
         find(id).then { it.attachment_destroy if it }
@@ -29,10 +26,7 @@ module Terminus
 
       def find_by(**) = firmwares.where(**).one
 
-      def latest
-        firmwares.order { version.desc }
-                 .first
-      end
+      def latest = all.first
     end
   end
 end
