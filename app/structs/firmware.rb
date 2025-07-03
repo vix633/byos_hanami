@@ -21,7 +21,7 @@ module Terminus
       def attachment_attributes = attributes[:attachment_data].deep_symbolize_keys
 
       def attachment_destroy
-        store.delete attachment_id
+        store.delete attachment_id if attachment_id
         attributes[:attachment_data].clear
       end
 
@@ -33,7 +33,7 @@ module Terminus
 
       def attachment_type = attachment_attributes.dig :metadata, :mime_type
 
-      def attachment_uri(**) = store.url(attachment_id, **)
+      def attachment_uri(**) = (store.url(attachment_id, **) if attachment_id)
 
       def attach(io, **)
         attacher.assign(io, **).tap { |file| attributes[:attachment_data] = file.data }

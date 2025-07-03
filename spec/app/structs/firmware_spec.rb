@@ -27,22 +27,27 @@ RSpec.describe Terminus::Structs::Firmware, :db do
   end
 
   describe "#attachment_destroy" do
-    it "clears attributes" do
-      firmware.attachment_destroy
-      expect(firmware.attachment_attributes).to eq({})
-    end
-
     it "clears store" do
       id = firmware.attachment_id
       firmware.attachment_destroy
 
       expect(Hanami.app[:shrine].storages[:store].exists?(id)).to be(false)
     end
+
+    it "clears attributes" do
+      firmware.attachment_destroy
+      expect(firmware.attachment_attributes).to eq({})
+    end
   end
 
   describe "#attachment_id" do
     it "answers ID" do
       expect(firmware.attachment_id).to match(/\h{32}\.bin/)
+    end
+
+    it "answers nil when there is no associated attachment" do
+      firmware = Factory[:firmware]
+      expect(firmware.attachment_uri).to be(nil)
     end
   end
 
