@@ -54,6 +54,10 @@ RSpec.describe Terminus::Views::Helpers do
   end
 
   describe "#size" do
+    it "answers zero if nil" do
+      expect(helper.size(nil)).to eq("0")
+    end
+
     it "answers size in bytes" do
       expect(helper.size(50)).to eq("50 B")
     end

@@ -29,6 +29,8 @@ module Terminus
       def human_time(value) = (value.strftime "%I:%M %p" if value)
 
       def size bytes, megabyte: 1_048_576.0
+        return "0" unless bytes
+
         case bytes
           when ...megabyte then "#{bytes} B"
           else (bytes / megabyte).then { |megabytes| format("%.2f MB", megabytes).sub(".00", "") }
