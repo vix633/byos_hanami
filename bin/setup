@@ -97,7 +97,7 @@ install_gems() {
 # Description: Install JavaScript package dependencies.
 install_packages() {
   printf "%s\n" "Installing package dependencies..."
-  bundle install
+  npm install
 }
 
 # Label: Prepare Database
