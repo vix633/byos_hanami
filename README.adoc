@@ -1235,7 +1235,17 @@ At this point you can click through the tabs at the top of the page to inspect t
 
 == Docker
 
-{docker_link} is supported both for production and development purposes. In most cases, you'll want to use {docker_compose_link} to manage the stack. Read on to learn more.
+We provide {docker_link} support in case you don't want to use our {ruby_link} stack. Both production and development environments are supported. In most cases, you'll want to use {docker_compose_link} to manage the stack. We also build Docker link:https://github.com/usetrmnl/byos_hanami/pkgs/container/terminus[images] for AMD 64 and ARM 64.
+
+Continue reading to learn more.
+
+=== Setup
+
+Please ensure your have read and followed all xref:_setup[Setup] steps.
+
+=== Configuration
+
+Please ensure your have read and customized (optional) your xref:_configuration[Configuration] as necessary.
 
 === Compose
 
