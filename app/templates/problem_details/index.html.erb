@@ -115,35 +115,29 @@
     <p>Could not create log for device due to invalid payload. The payload should be structured as follows:</p>
 
     <pre>
-      "log": {
-        "logs_array": [
-          {
-            "log_id": 1,
-            "creation_timestamp": 1742022123,
-            "log_message": "returned code is not OK: 404",
-            "log_codeline": 597,
-            "device_status_stamp": {
-              "wifi_status": "connected",
-              "wakeup_reason": "timer",
-              "current_fw_version": "1.5.2",
-              "free_heap_size": 160656,
-              "max_alloc_size": 200000,
-              "special_function": "none",
-              "refresh_rate": 30,
-              "battery_voltage": 4.772,
-              "time_since_last_sleep_start": 31,
-              "wifi_rssi_level": -54
-            },
-            "additional_info": {
-              "retry_attempt": 1
-            },
-            "log_sourcefile": "src/bl.cpp"
-          }
-        ]
-      }
+      "logs": [
+        {
+          "id": 666,
+          "message": "An API test.",
+          "wifi_status": "connected",
+          "created_at": 1742022124,
+          "sleep_duration": 31,
+          "refresh_rate": 30,
+          "free_heap_size": 160656,
+          "max_alloc_size": 180000,
+          "source_path": "src/bl.cpp",
+          "wake_reason": "timer",
+          "firmware_version": "1.2.3",
+          "retry": 1,
+          "battery_voltage": 4.772,
+          "source_line": 597,
+          "special_function": "none",
+          "wifi_signal": -54
+        }
+      ]
     </pre>
 
-    <p>The <code>additional_info</code> key is optional and can be be excluded but all other keys are required.</p>
+    <p>The <code>retry</code> key is optional and can be be excluded but all other keys are required.</p>
   </details>
 
   <details name="details">
