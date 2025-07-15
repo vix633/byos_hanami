@@ -23,32 +23,25 @@ RSpec.describe "/api/log", :db do
 
   let :payload do
     {
-      log: {
-        logs_array: [
-          {
-            device_status_stamp: {
-              battery_voltage: 4.772,
-              current_fw_version: "1.2.3",
-              free_heap_size: 160656,
-              max_alloc_size: 990000,
-              refresh_rate: 30,
-              special_function: "none",
-              time_since_last_sleep_start: 31,
-              wakeup_reason: "timer",
-              wifi_rssi_level: -54,
-              wifi_status: "connected"
-            },
-            additional_info: {
-              retry_attempt: 1
-            },
-            log_codeline: 597,
-            log_id: 2,
-            log_message: "Danger!",
-            log_sourcefile: "src/bl.cpp",
-            creation_timestamp: 1742000523
-          }
-        ]
-      }
+      logs: [
+        {
+          battery_voltage: 4.772,
+          created_at: 1742000523,
+          firmware_version: "1.2.3",
+          free_heap_size: 210000,
+          id: 1,
+          message: "Danger!",
+          refresh_rate: 500,
+          retry: 2,
+          sleep_duration: 50,
+          source_line: 5,
+          source_path: "src/bl.cpp",
+          special_function: "none",
+          wake_reason: "timer",
+          wifi_signal: -54,
+          wifi_status: "connected"
+        }
+      ]
     }
   end
 
@@ -57,12 +50,22 @@ RSpec.describe "/api/log", :db do
 
     it "create record" do
       expect(repository.all.first).to have_attributes(
+        battery_voltage: 4.772,
+        created_at: Time.utc(2025, 3, 15, 1, 2, 3),
         device_id: device.id,
-        external_id: 2,
+        external_id: 1,
+        firmware_version: "1.2.3",
+        free_heap_size: 210000,
         message: "Danger!",
+        refresh_rate: 500,
+        retry: 2,
+        sleep_duration: 50,
+        source_line: 5,
+        source_path: "src/bl.cpp",
         special_function: "none",
-        retry: 1,
-        created_at: Time.utc(2025, 3, 15, 1, 2, 3)
+        wake_reason: "timer",
+        wifi_signal: -54,
+        wifi_status: "connected"
       )
     end
 
@@ -98,7 +101,7 @@ RSpec.describe "/api/log", :db do
   end
 
   context "with invalid payload" do
-    before { post routes.path(:api_log_create), {log: {log_array: []}}.to_json, **headers }
+    before { post routes.path(:api_log_create), {logs: []}.to_json, **headers }
 
     it "doesn't create record" do
       expect(repository.all).to eq([])
@@ -110,7 +113,7 @@ RSpec.describe "/api/log", :db do
         status: :unprocessable_entity,
         detail: "Validation failed due to incorrect or invalid payload.",
         instance: "/api/log",
-        extensions: {errors: {log: {logs_array: ["is missing"]}}}
+        extensions: {errors: {logs: ["must be filled"]}}
       ]
 
       expect(json_payload).to eq(problem.to_h)

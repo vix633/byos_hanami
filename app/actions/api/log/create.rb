@@ -16,29 +16,22 @@ module Terminus
           using Refines::Actions::Response
 
           params do
-            required(:log).hash do
-              required(:logs_array).array(:hash) do
-                required(:device_status_stamp).filled(:hash) do
-                  required(:battery_voltage).filled :float
-                  required(:current_fw_version).filled :string
-                  required(:free_heap_size).filled :integer
-                  required(:max_alloc_size).filled :integer
-                  required(:refresh_rate).filled :integer
-                  required(:special_function).filled :string
-                  required(:time_since_last_sleep_start).filled :integer
-                  required(:wakeup_reason).filled :string
-                  required(:wifi_rssi_level).filled :integer
-                  required(:wifi_status).filled :string
-                end
-                optional(:additional_info).maybe(:hash) do
-                  optional(:retry_attempt).filled :integer
-                end
-                required(:creation_timestamp).filled :integer
-                required(:log_id).filled :integer
-                required(:log_message).filled :string
-                required(:log_codeline).filled :integer
-                required(:log_sourcefile).filled :string
-              end
+            required(:logs).filled(:array).each(:hash) do
+              required(:battery_voltage).filled :float
+              required(:created_at).filled :integer
+              required(:firmware_version).filled :string
+              required(:free_heap_size).filled :integer
+              required(:id).filled :integer
+              required(:message).filled :string
+              required(:refresh_rate).filled :integer
+              optional(:retry).filled :integer
+              required(:sleep_duration).filled :integer
+              required(:source_line).filled :integer
+              required(:source_path).filled :string
+              required(:special_function).filled :string
+              required(:wake_reason).filled :string
+              required(:wifi_signal).filled :integer
+              required(:wifi_status).filled :string
             end
           end
 
