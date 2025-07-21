@@ -18,7 +18,7 @@ gem "hanami-db", "~> 2.2"
 gem "hanami-router", "~> 2.2"
 gem "hanami-validations", "~> 2.2"
 gem "hanami-view", "~> 2.2"
-gem "htmx", "~> 2.1"
+gem "htmx", github: "bkuhlmann/htmx", branch: "release" # TODO: Update once Version 2.4.0 arrives.
 gem "http", "~> 5.2"
 gem "infusible", "~> 4.2"
 gem "initable", "~> 0.3"

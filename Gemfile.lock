@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/bkuhlmann/htmx.git
+  revision: fe39076389a160372e958838ef9746049b79d3cf
+  branch: release
+  specs:
+    htmx (2.3.0)
+      refinements (~> 13.3)
+      zeitwerk (~> 2.7)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -231,9 +240,6 @@ GEM
       better_errors (~> 2.10, >= 2.10.1)
       binding_of_caller (~> 1.0)
     hansi (0.2.1)
-    htmx (2.3.0)
-      refinements (~> 13.3)
-      zeitwerk (~> 2.7)
     http (5.3.1)
       addressable (~> 2.8)
       http-cookie (~> 1.0)
@@ -555,7 +561,7 @@ DEPENDENCIES
   hanami-validations (~> 2.2)
   hanami-view (~> 2.2)
   hanami-webconsole (~> 2.2)
-  htmx (~> 2.1)
+  htmx!
   http (~> 5.2)
   infusible (~> 4.2)
   initable (~> 0.3)
@@ -663,7 +669,7 @@ CHECKSUMS
   hanami-view (2.2.1) sha256=09179b2ce6f30e1b9e939d85f44cf11ca4803bad7a91788376586b0e31bb2560
   hanami-webconsole (2.2.0) sha256=486fba76c2664a63fcd30729d9c97a763264944dc120ff6b3ad1e29ad06e0931
   hansi (0.2.1) sha256=7e27dfd729f1692a3a7690fc0ef3af9d5e3cfc0285bb135cae7e56180e4805db
-  htmx (2.3.0) sha256=85a236c689e8c54bca50c0448a0972569f47702e4b34723d7ec45a70deefa97f
+  htmx (2.3.0)
   http (5.3.1) sha256=c50802d8e9be3926cb84ac3b36d1a31fbbac383bc4cbecdce9053cb604231d7d
   http-cookie (1.0.8) sha256=b14fe0445cf24bf9ae098633e9b8d42e4c07c3c1f700672b09fbfe32ffd41aa6
   http-form_data (2.3.0) sha256=cc4eeb1361d9876821e31d7b1cf0b68f1cf874b201d27903480479d86448a5f3
