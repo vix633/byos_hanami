@@ -9,8 +9,8 @@
 
   <div class="actions">
     <%= link_to "View", routes.path(:device, id: device.id) %>
-    <%= link_to "Logs", routes.path(:device_logs, device_id: device.id) %>
     <%= render "edit_link", device: %>
+    <%= link_to "Logs", routes.path(:device_logs, device_id: device.id) %>
 
     <a href="<%= routes.path :device, id: device.id %>"
        class="link-cancel"
