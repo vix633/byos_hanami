@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "initable"
-
 module Terminus
   module Actions
     module Devices
@@ -10,11 +8,10 @@ module Terminus
         include Deps[
           :htmx,
           repository: "repositories.device",
+          model_repository: "repositories.model",
           new_view: "views.devices.new",
           index_view: "views.devices.index"
         ]
-
-        include Initable[model_optioner: proc { Terminus::Aspects::Models::Optioner }]
 
         contract Contracts::Devices::Create
 
@@ -39,7 +36,7 @@ module Terminus
 
         def render_new response, parameters
           response.render new_view,
-                          model_options: model_optioner.call,
+                          models: model_repository.all,
                           device: nil,
                           fields: parameters[:device],
                           errors: parameters.errors[:device],

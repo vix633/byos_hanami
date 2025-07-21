@@ -5,7 +5,7 @@ module Terminus
     module Devices
       # The edit view.
       class Edit < Terminus::View
-        expose :model_options, decorate: false
+        expose :models
         expose :device
         expose :fields, default: Dry::Core::EMPTY_HASH
         expose :errors, default: Dry::Core::EMPTY_HASH

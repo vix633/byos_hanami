@@ -6,7 +6,7 @@
     </label>
 
     <%= tag.select name: "device[model_id]", class: :value do %>
-      <% model_options.each do |label, id| %>
+      <% select_options_for(models).each do |label, id| %>
         <%= tag.option label, value: id, selected: id == field_for(:model_id, fields, device) %>
       <% end %>
     <% end %>
