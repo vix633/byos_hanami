@@ -28,6 +28,14 @@ module Terminus
 
       def human_time(value) = (value.strftime "%I:%M %p" if value)
 
+      def select_options_for records, label: :label, id: :id
+        initial = records.any? ? [["Select...", nil]] : []
+
+        records.reduce initial do |options, record|
+          options.append [record.public_send(label), record.public_send(id)]
+        end
+      end
+
       def size bytes, megabyte: 1_048_576.0
         return "0" unless bytes
 

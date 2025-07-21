@@ -53,6 +53,39 @@ RSpec.describe Terminus::Views::Helpers do
     end
   end
 
+  describe "#select_options_for" do
+    it "answers record options" do
+      record = Data.define(:id, :label).new 1, "Test"
+      expect(helper.select_options_for([record])).to eq([["Select...", nil], ["Test", 1]])
+    end
+
+    it "answers record options with custom label" do
+      record = Data.define(:id, :title).new 1, "Test"
+
+      expect(helper.select_options_for([record], label: :title)).to eq(
+        [
+          ["Select...", nil],
+          ["Test", 1]
+        ]
+      )
+    end
+
+    it "answers record options with custom ID" do
+      record = Data.define(:name, :label).new "test", "Test"
+
+      expect(helper.select_options_for([record], id: :name)).to eq(
+        [
+          ["Select...", nil],
+          ["Test", "test"]
+        ]
+      )
+    end
+
+    it "answers empty array when given empty array" do
+      expect(helper.select_options_for([])).to eq([])
+    end
+  end
+
   describe "#size" do
     it "answers zero if nil" do
       expect(helper.size(nil)).to eq("0")
