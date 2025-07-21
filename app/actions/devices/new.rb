@@ -7,12 +7,12 @@ module Terminus
     module Devices
       # The new action.
       class New < Terminus::Action
-        include Deps["aspects.devices.builder"]
+        include Deps[:htmx, "aspects.devices.builder"]
         include Initable[model_optioner: proc { Terminus::Aspects::Models::Optioner }]
 
         def handle request, response
           view_settings = {model_options: model_optioner.call, fields: builder.call}
-          view_settings[:layout] = false if request.env.key? "HTTP_HX_REQUEST"
+          view_settings[:layout] = false if htmx.request(**request.env).request?
 
           response.render view, **view_settings
         end

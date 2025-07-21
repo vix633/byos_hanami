@@ -7,7 +7,7 @@ module Terminus
     module Devices
       # The edit action.
       class Edit < Terminus::Action
-        include Deps[repository: "repositories.device"]
+        include Deps[:htmx, repository: "repositories.device"]
         include Initable[model_optioner: proc { Terminus::Aspects::Models::Optioner }]
 
         params { required(:id).filled :integer }
@@ -24,8 +24,7 @@ module Terminus
 
         def view_settings request, parameters
           settings = {model_options: model_optioner.call, device: repository.find(parameters[:id])}
-
-          settings[:layout] = false if request.env.key? "HTTP_HX_REQUEST"
+          settings[:layout] = false if htmx.request(**request.env).request?
           settings
         end
       end

@@ -5,8 +5,10 @@ module Terminus
     module Devices
       module Logs
         # The index action.
+        # :reek:DataClump
         class Index < Terminus::Action
           include Deps[
+            :htmx,
             device_repository: "repositories.device",
             repository: "repositories.device_log"
           ]
@@ -16,27 +18,33 @@ module Terminus
             optional(:query).maybe :string
           end
 
-          # :reek:TooManyStatements
-          # rubocop:todo Metrics/MethodLength
           def handle request, response
             parameters = request.params
 
             halt :unprocessable_entity unless parameters.valid?
 
-            query = parameters[:query].to_s
             device = device_repository.find parameters[:device_id]
-            logs = load_logs device.id, query
 
-            if request.get_header("HTTP_HX_TRIGGER") == "search"
-              add_htmx_headers response, device, query
-              response.render view, device:, logs:, query:, layout: false
+            if htmx.request(**request.env).trigger == "search"
+              render_search_results parameters, device, response
             else
-              response.render view, device:, logs:, query:
+              render_all parameters, device, response
             end
           end
-          # rubocop:enable Metrics/MethodLength
 
           private
+
+          def render_search_results parameters, device, response
+            query = parameters[:query].to_s
+            add_htmx_headers response, device, query
+
+            response.render view, device:, logs: load_logs(device.id, query), query:, layout: false
+          end
+
+          def render_all parameters, device, response
+            query = parameters[:query].to_s
+            response.render view, device:, logs: load_logs(device.id, query), query:
+          end
 
           def load_logs device_id, query
             return repository.all_by device_id: device_id if query.empty?

@@ -5,13 +5,13 @@ module Terminus
     module Devices
       # The index action.
       class Index < Terminus::Action
-        include Deps[repository: "repositories.device"]
+        include Deps[:htmx, repository: "repositories.device"]
 
         def handle request, response
           query = request.params[:query].to_s
           devices = load_devices query
 
-          if request.get_header("HTTP_HX_TRIGGER") == "search"
+          if htmx.request(**request.env).trigger == "search"
             add_htmx_headers response, query
             response.render view, devices:, query:, layout: false
           else

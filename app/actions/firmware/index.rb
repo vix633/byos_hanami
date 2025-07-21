@@ -5,13 +5,13 @@ module Terminus
     module Firmware
       # The index action.
       class Index < Terminus::Action
-        include Deps[repository: "repositories.firmware"]
+        include Deps[:htmx, repository: "repositories.firmware"]
 
         def handle request, response
           query = request.params[:query]
           firmware = load query
 
-          if request.get_header("HTTP_HX_TRIGGER") == "search"
+          if htmx.request(**request.env).trigger == "search"
             add_htmx_headers response, query
             response.render view, firmware:, query:, layout: false
           else

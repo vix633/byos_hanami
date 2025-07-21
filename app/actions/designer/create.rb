@@ -5,7 +5,7 @@ module Terminus
     module Designer
       # The create action.
       class Create < Terminus::Action
-        include Deps[:settings, show_view: "views.designer.show"]
+        include Deps[:settings, :htmx, show_view: "views.designer.show"]
         include Initable[creator: proc { Terminus::Screens::Creator.new }]
 
         params do
@@ -20,7 +20,7 @@ module Terminus
 
           halt 422 unless parameters.valid?
 
-          if request.env.key? "HTTP_HX_REQUEST"
+          if htmx.request(**request.env).request?
             render_text parameters[:template], response
           else
             response.render show_view, id: Time.new.utc.to_i

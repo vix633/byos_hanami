@@ -8,6 +8,7 @@ module Terminus
       # The create action.
       class Create < Terminus::Action
         include Deps[
+          :htmx,
           repository: "repositories.device",
           new_view: "views.devices.new",
           index_view: "views.devices.index"
@@ -32,8 +33,7 @@ module Terminus
 
         def view_settings request, _parameters
           settings = {devices: repository.all}
-
-          settings[:layout] = false if request.env.key? "HTTP_HX_REQUEST"
+          settings[:layout] = false if htmx.request(**request.env).request?
           settings
         end
 

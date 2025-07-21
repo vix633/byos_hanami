@@ -5,7 +5,7 @@ module Terminus
     module Devices
       # The show action.
       class Show < Terminus::Action
-        include Deps[repository: "repositories.device"]
+        include Deps[:htmx, repository: "repositories.device"]
 
         params { required(:id).filled :integer }
 
@@ -21,8 +21,7 @@ module Terminus
 
         def view_settings request, parameters
           settings = {device: repository.find(parameters[:id])}
-
-          settings[:layout] = false if request.env.key? "HTTP_HX_REQUEST"
+          settings[:layout] = false if htmx.request(**request.env).request?
           settings
         end
       end

@@ -13,19 +13,19 @@ RSpec.describe Terminus::Actions::Designer::Create, :db do
 
     it "answers original content" do
       response = Rack::MockRequest.new(action).post "",
-                                                    "HTTP_HX_REQUEST" => true,
+                                                    "HTTP_HX_REQUEST" => "true",
                                                     params: parameters
       expect(response.body).to eq("<p>Test</p>")
     end
 
     it "creates preview image" do
-      Rack::MockRequest.new(action).post "", "HTTP_HX_REQUEST" => true, params: parameters
+      Rack::MockRequest.new(action).post "", "HTTP_HX_REQUEST" => "true", params: parameters
       expect(temp_dir.join("123.png").exist?).to be(true)
     end
 
     it "answers created status" do
       response = Rack::MockRequest.new(action).post "",
-                                                    "HTTP_HX_REQUEST" => true,
+                                                    "HTTP_HX_REQUEST" => "true",
                                                     params: parameters
 
       expect(response.status).to eq(201)
