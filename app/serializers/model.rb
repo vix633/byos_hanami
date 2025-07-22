@@ -3,7 +3,7 @@
 
 module Terminus
   module Serializers
-    # A device serializer for specific keys.
+    # A model serializer for specific keys.
     class Model
       KEYS = %i[id name label description width height published_at].freeze
 
