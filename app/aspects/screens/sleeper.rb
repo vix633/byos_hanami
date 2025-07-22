@@ -7,21 +7,30 @@ module Terminus
     module Screens
       # Creates sleep screen for new device.
       class Sleeper
-        include Deps[:settings, view: "views.sleep.new"]
-        include Terminus::Screens::Savers::Dependencies[creator: :html]
+        include Deps[
+          "aspects.screens.creator",
+          view: "views.sleep.new",
+          screen_repository: "repositories.screen"
+        ]
         include Dry::Monads[:result]
 
         def call device
-          output_path = path_for device
+          id = device.friendly_id
+          name = "sleep_#{id.downcase}"
 
-          return Success output_path if output_path.exist?
-
-          creator.call "#{view.call device:} ", output_path
+          find(name).then { |screen| screen ? Success(screen) : create(id, device) }
         end
 
         private
 
-        def path_for(device) = settings.screens_root.join(device.slug).mkpath.join "sleep.png"
+        def find(name) = screen_repository.find_by(name:)
+
+        def create id, device
+          creator.call model_id: device.model_id,
+                       name: "sleep_#{id.downcase}",
+                       label: "Sleep #{id}",
+                       content: String.new(view.call(device:))
+        end
       end
     end
   end
