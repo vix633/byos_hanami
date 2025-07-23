@@ -2,7 +2,7 @@
 
 require "hanami_helper"
 
-RSpec.describe Terminus::Aspects::Devices::Builder do
+RSpec.describe Terminus::Aspects::Devices::Defaulter do
   subject(:builder) { described_class.new randomizer: }
 
   let :randomizer do

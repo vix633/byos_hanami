@@ -8,7 +8,7 @@ module Terminus
       module Devices
         # The create action.
         class Create < Base
-          include Deps["aspects.devices.builder", repository: "repositories.device"]
+          include Deps["aspects.devices.defaulter", repository: "repositories.device"]
           include Initable[serializer: Serializers::Device]
 
           using Refines::Actions::Response
@@ -19,7 +19,7 @@ module Terminus
             parameters = request.params
 
             if parameters.valid?
-              device = repository.create builder.call.merge(parameters[:device])
+              device = repository.create defaulter.call.merge(parameters[:device])
               response.body = {data: serializer.new(device).to_h}.to_json
             else
               unprocessable_entity parameters, response

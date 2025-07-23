@@ -5,10 +5,10 @@ module Terminus
     module Devices
       # The new action.
       class New < Terminus::Action
-        include Deps[:htmx, "aspects.devices.builder", model_repository: "repositories.model"]
+        include Deps[:htmx, "aspects.devices.defaulter", model_repository: "repositories.model"]
 
         def handle request, response
-          view_settings = {models: model_repository.all, fields: builder.call}
+          view_settings = {models: model_repository.all, fields: defaulter.call}
           view_settings[:layout] = false if htmx.request(**request.env).request?
 
           response.render view, **view_settings

@@ -6,7 +6,7 @@ module Terminus
   module Aspects
     module Devices
       # Builds default attributes for new devices.
-      class Builder
+      class Defaulter
         include Initable[randomizer: SecureRandom]
 
         def call

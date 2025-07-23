@@ -11,7 +11,7 @@ module Terminus
         class Show < Base
           include Deps[
             repository: "repositories.device",
-            device_builder: "aspects.devices.builder",
+            device_defaulter: "aspects.devices.defaulter",
             welcomer: "aspects.screens.welcomer"
           ]
 
@@ -46,7 +46,7 @@ module Terminus
           end
 
           def create_device mac_address, firmware_version
-            repository.create device_builder.call.merge(mac_address:, firmware_version:)
+            repository.create device_defaulter.call.merge(mac_address:, firmware_version:)
           end
 
           def unprocessable_entity errors, response
