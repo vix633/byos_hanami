@@ -6,7 +6,7 @@ module Terminus
       # The show action.
       class Show < Terminus::Action
         def handle _request, response
-          response.render view, id: Time.new.utc.to_i
+          response.render view, id: :designer
         end
       end
     end

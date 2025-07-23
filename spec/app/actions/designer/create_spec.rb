@@ -8,8 +8,11 @@ RSpec.describe Terminus::Actions::Designer::Create, :db do
   include_context "with main application"
 
   describe "#call" do
-    let(:device) { Factory[:device] }
-    let(:parameters) { {template: {id: 123, content: "<p>Test</p>"}} }
+    let(:model) { Factory[:model, name: "t1"] }
+    let(:parameters) { {template: {id: :test, content: "<p>Test</p>"}} }
+    let(:repository) { Terminus::Repositories::Screen.new }
+
+    before { model }
 
     it "answers original content" do
       response = Rack::MockRequest.new(action).post "",
@@ -18,9 +21,34 @@ RSpec.describe Terminus::Actions::Designer::Create, :db do
       expect(response.body).to eq("<p>Test</p>")
     end
 
-    it "creates preview image" do
+    it "creates screen when none exists" do
       Rack::MockRequest.new(action).post "", "HTTP_HX_REQUEST" => "true", params: parameters
-      expect(temp_dir.join("123.png").exist?).to be(true)
+
+      expect(repository.find_by(name: "test")).to have_attributes(
+        model_id: model.id,
+        name: "test",
+        label: "Test",
+        image_attributes: hash_including(
+          metadata: hash_including(
+            size: kind_of(Integer),
+            width: 800,
+            height: 480,
+            filename: "test.png",
+            mime_type: "image/png"
+          )
+        )
+      )
+    end
+
+    it "recreates screen when screen exists by same name" do
+      Factory[:screen, model_id: model.id, name: "test", label: "Old"]
+      Rack::MockRequest.new(action).post "", "HTTP_HX_REQUEST" => "true", params: parameters
+
+      expect(repository.find_by(name: "test")).to have_attributes(
+        model_id: model.id,
+        name: "test",
+        label: "Test"
+      )
     end
 
     it "answers created status" do
