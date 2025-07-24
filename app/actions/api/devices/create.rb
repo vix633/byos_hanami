@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "dry/monads"
 require "initable"
 
 module Terminus
@@ -8,8 +9,9 @@ module Terminus
       module Devices
         # The create action.
         class Create < Base
-          include Deps["aspects.devices.defaulter", repository: "repositories.device"]
+          include Deps["aspects.devices.provisioner"]
           include Initable[serializer: Serializers::Device]
+          include Dry::Monads[:result]
 
           using Refines::Actions::Response
 
@@ -19,14 +21,33 @@ module Terminus
             parameters = request.params
 
             if parameters.valid?
-              device = repository.create defaulter.call.merge(parameters[:device])
-              response.body = {data: serializer.new(device).to_h}.to_json
+              process parameters, response
             else
               unprocessable_entity parameters, response
             end
           end
 
           private
+
+          def process parameters, response
+            case provisioner.call(**parameters[:device])
+              in Success(device) then response.body = {data: serializer.new(device).to_h}.to_json
+              in Failure(String => error) then not_found error, response
+              # :nocov:
+              # :nocov:
+            end
+          end
+
+          def not_found error, response
+            body = problem[
+              type: "/problem_details#device_payload",
+              status: __method__,
+              detail: error,
+              instance: "/api/devices"
+            ]
+
+            response.with body: body.to_json, format: :problem_details, status: 404
+          end
 
           def unprocessable_entity parameters, response
             body = problem[

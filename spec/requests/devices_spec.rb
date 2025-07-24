@@ -10,7 +10,6 @@ RSpec.describe "/api/devices", :db do
   let :attributes do
     {
       model_id: model.id,
-      playlist_id: playlist.id,
       friendly_id: "ABC123",
       label: "Request Test",
       mac_address: "A1:B2:C3:D4:E5:F6",
@@ -98,7 +97,7 @@ RSpec.describe "/api/devices", :db do
     expect(json_payload).to eq(Petail[status: :not_found].to_h)
   end
 
-  it "creates device when valid using all attributes" do
+  it "creates device with valid attributes" do
     post routes.path(:api_devices),
          {device: attributes}.to_json,
          "CONTENT_TYPE" => "application/json"
@@ -120,7 +119,7 @@ RSpec.describe "/api/devices", :db do
     )
   end
 
-  it "creates device when valid using require attributs only" do
+  it "creates device with valid (required only) attributes" do
     post routes.path(:api_devices),
          {device: {model_id: model.id, label: "Test", mac_address: "A1:B2:C3:D4:E5:F6"}}.to_json,
          "CONTENT_TYPE" => "application/json"
@@ -129,7 +128,7 @@ RSpec.describe "/api/devices", :db do
       data: hash_including(
         id: kind_of(Integer),
         model_id: model.id,
-        playlist_id: nil,
+        playlist_id: kind_of(Integer),
         friendly_id: match_friendly_id,
         label: "Test",
         mac_address: "A1:B2:C3:D4:E5:F6",
@@ -152,8 +151,9 @@ RSpec.describe "/api/devices", :db do
     )
   end
 
-  it "answers error when creation fails" do
+  it "answers problem details when creation fails" do
     attributes.delete :model_id
+
     post routes.path(:api_devices),
          {device: attributes}.to_json,
          "CONTENT_TYPE" => "application/json"
@@ -170,6 +170,23 @@ RSpec.describe "/api/devices", :db do
           }
         }
       }
+    ]
+
+    expect(json_payload).to match(problem.to_h)
+  end
+
+  it "answers problem details for invalid model" do
+    attributes[:model_id] = 666
+
+    post routes.path(:api_devices),
+         {device: attributes}.to_json,
+         "CONTENT_TYPE" => "application/json"
+
+    problem = Petail[
+      type: "/problem_details#device_payload",
+      status: :not_found,
+      detail: %(Key (model_id)=(666) is not present in table "model".),
+      instance: "/api/devices"
     ]
 
     expect(json_payload).to match(problem.to_h)
