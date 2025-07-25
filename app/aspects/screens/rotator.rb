@@ -1,18 +1,50 @@
 # frozen_string_literal: true
 
-require "initable"
+require "dry/monads"
 
 module Terminus
   module Aspects
     module Screens
-      # Rotates and fetches images for rendering on a device.
+      # Updates a device's current playlist item by rotating to next screen.
       class Rotator
-        include Deps[:settings, "aspects.screens.fetcher"]
-        include Initable[toucher: proc { Terminus::Screens::Toucher }]
+        include Deps[
+          "aspects.screens.sleeper",
+          playlist_repository: "repositories.playlist",
+          item_repository: "repositories.playlist_item"
+        ]
+        include Dry::Monads[:result]
 
-        def call device, encryption: nil
-          fetcher.call(device, encryption:).tap do
-            toucher.call settings.screens_root.join(device.slug)
+        def call device
+          if device.asleep?
+            sleeper.call device
+          else
+            find_playlist(device.playlist_id).fmap { |playlist| update_current_item playlist }
+                                             .bind { |item_id| find_screen item_id }
+          end
+        end
+
+        private
+
+        def find_playlist id
+          playlist = playlist_repository.find id
+
+          return Success playlist if playlist
+
+          Failure "Unable to rotate screen. Can't find playlist with ID: #{id.inspect}."
+        end
+
+        def update_current_item playlist
+          playlist_id = playlist.id
+          next_item = item_repository.next_item(after: playlist.current_item_position, playlist_id:)
+          next_item_id = next_item.id if next_item
+
+          playlist_repository.update playlist_id, current_item_id: next_item_id
+          next_item_id
+        end
+
+        def find_screen item_id
+          item_repository.find(item_id).then do |item|
+            item ? Success(item.screen) : Failure("Unable to rotate screen. Playlist has no items.")
           end
         end
       end
