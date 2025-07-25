@@ -3,44 +3,19 @@
 require "hanami_helper"
 
 RSpec.describe "/api/setup", :db do
-  using Refinements::Pathname
+  let(:device) { Factory[:device, model_id: model.id] }
+  let(:model) { Factory[:model, name: "t1"] }
 
-  let(:device) { Factory[:device] }
-  let(:repository) { Terminus::Repositories::Device.new }
+  it "answers new device when device doesn't exist" do
+    model
+    get routes.path(:api_setup), {}, "HTTP_ID" => "A1:B2:C3:D4:E5:F6", "HTTP_FW_VERSION" => "1.2.3"
 
-  include_context "with main application"
-
-  context "without devices" do
-    let(:mac_address) { "AA:BB:CC:00:11:22" }
-    let(:device) { repository.find_by mac_address: }
-
-    it "answers device/image details for new device" do
-      get routes.path(:api_setup), {}, "HTTP_ID" => mac_address, "HTTP_FW_VERSION" => "1.2.3"
-
-      expect(json_payload).to eq(
-        api_key: device.api_key,
-        friendly_id: device.friendly_id,
-        image_url: %(#{settings.api_uri}/assets/setup.bmp),
-        message: "Welcome to Terminus!"
-      )
-    end
-
-    it "creates device" do
-      get routes.path(:api_setup), {}, "HTTP_ID" => mac_address, "HTTP_FW_VERSION" => "1.2.3"
-
-      expect(device).to have_attributes(
-        label: "TRMNL",
-        friendly_id: /[A-Z0-9]{6}/,
-        mac_address:,
-        firmware_version: "1.2.3",
-        api_key: /[a-z0-9]{20}/i
-      )
-    end
-
-    it "creates welcome screen" do
-      get routes.path(:api_setup), {}, "HTTP_ID" => mac_address, "HTTP_FW_VERSION" => "1.2.3"
-      expect(temp_dir.join("AABBCC001122/setup.png").exist?).to be(true)
-    end
+    expect(json_payload).to match(
+      api_key: match_device_api_key,
+      friendly_id: match_friendly_id,
+      image_url: %(#{settings.api_uri}/assets/setup.bmp),
+      message: "Welcome to Terminus!"
+    )
   end
 
   it "answers existing device for MAC address" do
@@ -54,7 +29,20 @@ RSpec.describe "/api/setup", :db do
     )
   end
 
-  it "answers error when firmware version header is invalid" do
+  it "answers problem details when model for device doesn't exist" do
+    get routes.path(:api_setup), {}, "HTTP_ID" => "A1:B2:C3:D4:E5:F6", "HTTP_FW_VERSION" => "1.2.3"
+
+    problem = Petail[
+      type: "/problem_details#device_setup",
+      status: :not_found,
+      detail: %(Unable to find model for ID: nil.),
+      instance: "/api/setup"
+    ]
+
+    expect(json_payload).to eq(problem.to_h)
+  end
+
+  it "answers problem details when firmware version header is invalid" do
     get routes.path(:api_setup), {}, "HTTP_ID" => device.mac_address, "HTTP_FW_VERSION" => "abc"
 
     problem = Petail[
@@ -72,7 +60,7 @@ RSpec.describe "/api/setup", :db do
     expect(json_payload).to eq(problem.to_h)
   end
 
-  it "answers error when device ID header is invalid" do
+  it "answers problem details when device ID header is invalid" do
     get routes.path(:api_setup), {}, "HTTP_ID" => "bogus"
 
     problem = Petail[
@@ -90,7 +78,7 @@ RSpec.describe "/api/setup", :db do
     expect(json_payload).to eq(problem.to_h)
   end
 
-  it "answers error when device headers are missing" do
+  it "answers problem details when device headers are missing" do
     get routes.path(:api_setup), {}
 
     problem = Petail[

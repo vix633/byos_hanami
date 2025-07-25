@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "dry/monads"
 require "initable"
 require "versionaire"
 
@@ -9,13 +10,9 @@ module Terminus
       module Setup
         # The show action.
         class Show < Base
-          include Deps[
-            repository: "repositories.device",
-            device_defaulter: "aspects.devices.defaulter",
-            welcomer: "aspects.screens.welcomer"
-          ]
-
-          include Initable[model: Aspects::API::Responses::Setup]
+          include Deps["aspects.devices.provisioner", model_repository: "repositories.model"]
+          include Initable[payload: Aspects::API::Responses::Setup]
+          include Dry::Monads[:result]
 
           using Refines::Actions::Response
 
@@ -26,12 +23,12 @@ module Terminus
 
           def handle request, response
             environment = request.env
-            result = contract.call environment
 
-            if result.success?
-              create environment, response
-            else
-              unprocessable_entity result.errors.to_h, response
+            case contract.call(environment).to_monad
+              in Success then create environment, response
+              in Failure(result) then unprocessable_entity result.errors.to_h, response
+              # :nocov:
+              # :nocov:
             end
           end
 
@@ -39,20 +36,34 @@ module Terminus
 
           def create environment, response
             mac_address, firmware_version = environment.values_at "HTTP_ID", "HTTP_FW_VERSION"
-            device = repository.find_by(mac_address:)
-            device ||= create_device mac_address, firmware_version
-            welcomer.call device
-            response.body = model.for(device).to_json
+
+            provisioner.call(model_id: find_model_id, mac_address:, firmware_version:)
+                       .either -> device { render_success device, response },
+                               -> error { not_found error, response }
           end
 
-          def create_device mac_address, firmware_version
-            repository.create device_defaulter.call.merge(mac_address:, firmware_version:)
+          # FIX: Use dynamic lookup once Firmware Issue 199 is resolved.
+          def find_model_id = model_repository.find_by(name: "t1").then { it.id if it }
+
+          def render_success device, response
+            response.with body: payload.for(device).to_json, status: 200
+          end
+
+          def not_found error, response
+            body = problem[
+              type: "/problem_details#device_setup",
+              status: __method__,
+              detail: error,
+              instance: "/api/setup"
+            ]
+
+            response.with body: body.to_json, format: :problem_details, status: 422
           end
 
           def unprocessable_entity errors, response
             body = problem[
               type: "/problem_details#device_setup",
-              status: :unprocessable_entity,
+              status: __method__,
               detail: "Invalid request headers.",
               instance: "/api/setup",
               extensions: {errors:}
