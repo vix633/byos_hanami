@@ -42,7 +42,7 @@ RSpec.describe Terminus::Repositories::Playlist, :db do
 
   describe "#find" do
     it "answers record by ID" do
-      expect(repository.find(playlist.id)).to eq(playlist)
+      expect(repository.find(playlist.id)).to have_attributes(playlist.to_h)
     end
 
     it "answers nil for unknown ID" do
@@ -56,11 +56,13 @@ RSpec.describe Terminus::Repositories::Playlist, :db do
 
   describe "#find_by" do
     it "answers record when found by single attribute" do
-      expect(repository.find_by(name: playlist.name)).to eq(playlist)
+      expect(repository.find_by(name: playlist.name)).to have_attributes(playlist.to_h)
     end
 
     it "answers record when found by multiple attributes" do
-      expect(repository.find_by(name: playlist.name, label: playlist.label)).to eq(playlist)
+      expect(repository.find_by(name: playlist.name, label: playlist.label)).to have_attributes(
+        playlist.to_h
+      )
     end
 
     it "answers nil when not found" do
