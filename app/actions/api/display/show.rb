@@ -12,8 +12,9 @@ module Terminus
         class Show < Base
           include Deps[
             :settings,
+            "aspects.screens.encoder",
+            "aspects.screens.rotator",
             firmware_repository: "repositories.firmware",
-            image_fetcher: "aspects.screens.rotator",
             synchronizer: "aspects.devices.synchronizer"
           ]
 
@@ -23,28 +24,28 @@ module Terminus
           using Refines::Actions::Response
 
           def handle request, response
-            environment = request.env
-
-            case synchronizer.call environment
-              in Success(device)
-                record = build_record fetch_image(request.params, environment, device), device
-                response.with body: record.to_json, status: 200
+            case process request.env, request.params
+              in Success(payload) then response.with body: payload.to_json, status: 200
+              in Failure(String => detail) then unprocessable_entity detail, response
               else not_found response
             end
           end
 
           private
 
-          def fetch_image parameters, environment, device
-            encryption = :base_64 if (environment["HTTP_BASE64"] || parameters[:base_64]) == "true"
+          def process environment, parameters
+            cached_device = nil
 
-            image_fetcher.call device, encryption:
+            synchronizer.call(environment)
+                        .bind { |device| cached_device = device and rotator.call device }
+                        .bind { |screen| encode screen, environment, parameters }
+                        .fmap { |image_attributes| build_payload cached_device, image_attributes }
           end
 
-          def build_record image, device
+          def build_payload device, image_attributes
             model[
               firmware_url: fetch_firmware_uri(device),
-              **image.slice(:image_url, :filename),
+              **image_attributes,
               **device.as_api_display
             ]
           end
@@ -57,6 +58,22 @@ module Terminus
 
               firmware.attachment_uri host: settings.api_uri
             end
+          end
+
+          def encode screen, environment, parameters
+            encryption = :base_64 if (environment["HTTP_BASE64"] || parameters[:base_64]) == "true"
+            encoder.call screen, encryption:
+          end
+
+          def unprocessable_entity detail, response
+            body = problem[
+              type: "/problem_details#device",
+              status: __method__,
+              detail:,
+              instance: "/api/display"
+            ]
+
+            response.with body: body.to_json, format: :problem_details, status: 422
           end
 
           def not_found response
