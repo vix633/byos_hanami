@@ -26,7 +26,9 @@ image:https://github.com/usetrmnl/byos_hanami/actions/workflows/docker.yml/badge
 image:https://alchemists.io/images/projects/caliber/coverage.svg[Code Coverage, link=https://dl.circleci.com/status-badge/redirect/gh/usetrmnl/byos_hanami/tree/main, width=139.1, height=20]
 image:https://alchemists.io/images/badges/style.svg[Style, link=https://alchemists.io/projects/caliber, width=81, height=20]
 
-This is a {ruby_link}/{hanami_link} project that allows you to point a {trmnl_link} device to your own server which can be running on your local network or in the cloud. This is also the flagship implementation officially supported by {trmnl_link}.
+Terminus is a {ruby_link}/{hanami_link} web server that allows you to manage {trmnl_link} devices running on your own local network or hosted cloud. This is also the flagship BYOS implementation officially supported by {trmnl_link}. For a quick introduction on TRMNL devices, check out the following 9to5Mac overview:
+
+link:https://www.youtube.com/watch?v=BxMRP_ASa-s[image:https://img.youtube.com/vi/BxMRP_ASa-s/maxresdefault.jpg[YouTube Video,width=960,height=540]]
 
 toc::[]
 
