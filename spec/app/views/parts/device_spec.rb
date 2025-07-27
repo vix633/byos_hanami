@@ -5,9 +5,7 @@ require "hanami_helper"
 RSpec.describe Terminus::Views::Parts::Device, :db do
   using Refinements::Pathname
 
-  subject(:part) { described_class.new settings:, value: device, rendering: view.new.rendering }
-
-  include_context "with main application"
+  subject(:part) { described_class.new value: device, rendering: view.new.rendering }
 
   let(:device) { Factory[:device] }
 
@@ -19,13 +17,21 @@ RSpec.describe Terminus::Views::Parts::Device, :db do
   end
 
   describe "#image_uri" do
-    before do
-      SPEC_ROOT.join("support/fixtures/test.bmp")
-               .copy temp_dir.join(device.slug, "test.bmp").make_ancestors
+    let :device do
+      attributes = {model_id: Factory[:model].id, mac_address: "A1:B2:C3:D4:E5:F6"}
+      Terminus::Aspects::Devices::Provisioner.new.call(**attributes).value!
     end
 
-    it "answers URI" do
-      expect(part.image_uri).to eq("/assets/screens/#{device.slug}/test.bmp")
+    it "answers screen URI when device is provisioned" do
+      expect(part.image_uri).to match(%r(memory://\h{32}\.png))
+    end
+
+    context "without playlist" do
+      let(:device) { Factory[:device] }
+
+      it "answers setup URI when device has no playlist" do
+        expect(part.image_uri).to eq("/assets/setup.svg")
+      end
     end
   end
 
