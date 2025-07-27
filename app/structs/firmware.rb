@@ -29,6 +29,13 @@ module Terminus
 
       def attachment_name = attachment_attributes.dig :metadata, :filename
 
+      def attachment_open(**)
+        io = store.open(attachment_id, **)
+        yield io if block_given?
+      ensure
+        io.close
+      end
+
       def attachment_size = attachment_attributes.dig :metadata, :size
 
       def attachment_type = attachment_attributes.dig :metadata, :mime_type

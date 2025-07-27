@@ -57,6 +57,16 @@ RSpec.describe Terminus::Structs::Firmware, :db do
     end
   end
 
+  describe "#attachment_open" do
+    it "yields IO object when given block" do
+      firmware.attachment_open { |io| expect(io).to be_a(StringIO) }
+    end
+
+    it "answers nil when not given a block" do
+      expect(firmware.attachment_open).to be(nil)
+    end
+  end
+
   describe "#attachment_size" do
     it "answers size" do
       expect(firmware.attachment_size).to eq(4)
