@@ -1,47 +1,41 @@
 # auto_register: false
 # frozen_string_literal: true
 
-require "mini_magick"
-
 module Terminus
   module Aspects
     module Screens
       module Designer
         # Renders device preview image event streams.
         class EventStream
-          include Deps[:settings]
-          include Initable[%i[req id], type: :png, imager: MiniMagick::Image, kernel: Kernel]
+          include Deps[repository: "repositories.screen"]
+          include Initable[%i[req id], kernel: Kernel]
 
-          def each
+          def each at: Time.now.to_i
             kernel.loop do
               yield <<~CONTENT
                 event: preview
-                data: #{image_for "/assets/previews/#{id}.#{type}", image_path}
+                data: #{load_screen at}
 
               CONTENT
 
               kernel.sleep 1
             end
-          ensure
-            image_path.delete if image_path.exist?
           end
 
           private
 
-          def image_path = settings.previews_root.join "#{id}.#{type}"
+          def load_screen at
+            screen = repository.find_by name: id
 
-          def image_for uri, path
-            return rendered_image uri, path if path.exist?
+            if screen
+              width, height = screen.image_attributes[:metadata].values_at :width, :height
 
-            %(<img src="/assets/screen_preview.svg" alt="Loader" class="image" ) +
-              %(width="800" height="480"/>)
-          end
-
-          def rendered_image uri, path
-            width, height = imager.open(path).dimensions
-
-            %(<img src="#{uri}?#{path.mtime.to_i}" alt="Preview" class="image" ) +
-              %(width="#{width}" height="#{height}"/>)
+              %(<img src="#{screen.image_uri}?#{at}" alt="Preview" class="image" ) +
+                %(width="#{width}" height="#{height}"/>)
+            else
+              %(<img src="/assets/screen_preview.svg" alt="Loader" class="image" ) +
+                %(width="800" height="480"/>)
+            end
           end
         end
       end
