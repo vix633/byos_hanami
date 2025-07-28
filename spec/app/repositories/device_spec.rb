@@ -10,7 +10,9 @@ RSpec.describe Terminus::Repositories::Device, :db do
   describe "#all" do
     it "answers all records" do
       device
-      expect(repository.all).to contain_exactly(device)
+      records = repository.all.map { it.to_h.tap { it.delete :playlist } }
+
+      expect(records).to contain_exactly(device.to_h)
     end
 
     it "answers empty array when records don't exist" do
@@ -20,7 +22,8 @@ RSpec.describe Terminus::Repositories::Device, :db do
 
   describe "#all_by" do
     it "answers record for label" do
-      expect(repository.all_by(label: device.label)).to contain_exactly(device)
+      records = repository.all_by(label: device.label).map { it.to_h.tap { it.delete :playlist } }
+      expect(records).to contain_exactly(device.to_h)
     end
 
     it "answers empty array for unknown value" do
@@ -34,7 +37,8 @@ RSpec.describe Terminus::Repositories::Device, :db do
 
   describe "#find" do
     it "answers record by ID" do
-      expect(repository.find(device.id)).to eq(device)
+      record = repository.find(device.id).to_h.tap { it.delete :playlist }
+      expect(record).to eq(device.to_h)
     end
 
     it "answers nil for unknown ID" do
@@ -48,11 +52,16 @@ RSpec.describe Terminus::Repositories::Device, :db do
 
   describe "#find_by" do
     it "answers record when found by single attribute" do
-      expect(repository.find_by(label: device.label)).to eq(device)
+      record = repository.find_by(label: device.label).to_h.tap { it.delete :playlist }
+      expect(record).to eq(device.to_h)
     end
 
     it "answers record when found by multiple attributes" do
-      expect(repository.find_by(label: device.label, friendly_id: device.friendly_id)).to eq(device)
+      record = repository.find_by(label: device.label, friendly_id: device.friendly_id)
+                         .to_h
+                         .tap { it.delete :playlist }
+
+      expect(record).to eq(device.to_h)
     end
 
     it "answers nil when not found" do
@@ -75,9 +84,8 @@ RSpec.describe Terminus::Repositories::Device, :db do
     end
 
     it "answers record without updates for no attributes" do
-      update = repository.update_by_mac_address device.mac_address
-
-      expect(update).to eq(device)
+      update = repository.update_by_mac_address(device.mac_address).to_h.tap { it.delete :playlist }
+      expect(update).to eq(device.to_h)
     end
 
     it "answers nil when device can't be found" do

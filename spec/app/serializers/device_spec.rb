@@ -5,7 +5,7 @@ require "hanami_helper"
 RSpec.describe Terminus::Serializers::Device, :db do
   subject(:serializer) { described_class.new device }
 
-  let(:device) { Factory[:device, model: model, playlist: playlist, **attributes] }
+  let(:device) { Factory[:device, model_id: model.id, playlist_id: playlist.id, **attributes] }
   let(:model) { Factory[:model] }
   let(:playlist) { Factory[:playlist] }
 

@@ -3,7 +3,7 @@
 require "hanami_helper"
 
 RSpec.describe "/api/devices", :db do
-  let(:device) { Factory[:device, model:, playlist:] }
+  let(:device) { Factory[:device, model_id: model.id, playlist_id: playlist.id] }
   let(:model) { Factory[:model] }
   let(:playlist) { Factory[:playlist] }
 
