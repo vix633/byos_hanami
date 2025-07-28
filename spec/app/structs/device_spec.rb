@@ -46,7 +46,7 @@ RSpec.describe Terminus::Structs::Device, :db do
     end
 
     it "answers false when start and end are nil" do
-      expect(device.asleep?).to be(false)
+      expect(Factory[:device].asleep?).to be(false)
     end
   end
 end
