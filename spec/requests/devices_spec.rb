@@ -10,6 +10,7 @@ RSpec.describe "/api/devices", :db do
   let :attributes do
     {
       model_id: model.id,
+      playlist_id: nil,
       friendly_id: "ABC123",
       label: "Request Test",
       mac_address: "A1:B2:C3:D4:E5:F6",
@@ -104,13 +105,23 @@ RSpec.describe "/api/devices", :db do
 
     expect(json_payload).to match(
       data: hash_including(
-        **attributes,
         id: kind_of(Integer),
+        model_id: model.id,
+        playlist_id: kind_of(Integer),
+        friendly_id: match_friendly_id,
+        label: "Request Test",
+        mac_address: "A1:B2:C3:D4:E5:F6",
+        api_key: kind_of(String),
         firmware_version: nil,
+        firmware_beta: false,
         wifi: 0,
         battery: 0.0,
+        refresh_rate: 500,
+        image_timeout: 5,
         width: 0,
         height: 0,
+        proxy: true,
+        firmware_update: true,
         sleep_start_at: "05:00:00",
         sleep_stop_at: "10:00:00",
         created_at: match_rfc_3339,
@@ -120,8 +131,15 @@ RSpec.describe "/api/devices", :db do
   end
 
   it "creates device with valid (required only) attributes" do
+    attributes = {
+      model_id: model.id,
+      playlist_id: nil,
+      label: "Test",
+      mac_address: "A1:B2:C3:D4:E5:F6"
+    }
+
     post routes.path(:api_devices),
-         {device: {model_id: model.id, label: "Test", mac_address: "A1:B2:C3:D4:E5:F6"}}.to_json,
+         {device: attributes}.to_json,
          "CONTENT_TYPE" => "application/json"
 
     expect(json_payload).to match(

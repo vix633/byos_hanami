@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "dry/core"
 require "htmx"
 require "refinements/hash"
 
@@ -29,9 +30,7 @@ module Terminus
       def human_time(value) = (value.strftime "%I:%M %p" if value)
 
       def select_options_for records, label: :label, id: :id
-        initial = records.any? ? [["Select...", nil]] : []
-
-        records.reduce initial do |options, record|
+        records.reduce [["Select...", Dry::Core::EMPTY_STRING]] do |options, record|
           options.append [record.public_send(label), record.public_send(id)]
         end
       end

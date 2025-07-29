@@ -15,7 +15,6 @@ RSpec.describe "Devices", :db do
     click_link "New"
     click_button "Save"
 
-    expect(page).to have_content("must be an integer")
     expect(page).to have_content("must be filled")
 
     select model.label, from: "device[model_id]"
@@ -31,7 +30,7 @@ RSpec.describe "Devices", :db do
     select "Select...", from: "device[model_id]"
     click_button "Save"
 
-    expect(page).to have_content("must be an integer")
+    expect(page).to have_content("must be filled")
   end
 
   it "edits and deletes device", :aggregate_failures, :js do
