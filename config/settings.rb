@@ -9,13 +9,5 @@ module Terminus
     setting :api_uri,
             constructor: Types::Params::String,
             default: "http://#{IPFinder.new.wired}:2300"
-
-    setting :previews_root,
-            constructor: Terminus::Types::Pathname,
-            default: Hanami.app.root.join("public/assets/previews")
-
-    setting :screens_root,
-            constructor: Terminus::Types::Pathname,
-            default: Hanami.app.root.join("public/assets/screens")
   end
 end
