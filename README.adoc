@@ -64,14 +64,14 @@ The following is a high level overview you can use to compare/contrast when deci
 | Devices                           | 🟢       | 🟢
 | JSON Data API                     | 🟢       | 🟢
 | Image Previews                    | 🟢       | 🟢
-| Playlists                         | 🟡       | 🟢
+| Playlists                         | 🟢       | 🟢
 | Plugins^*^                        | 🟢       | 🟢
 | Recipes^*^                        | 🟢       | 🟢
 | Account Management                | ⚪️       | 🟢
 | Docker                            | 🟢       | 🔴
 |===
 
-ℹ️ Plugins and Recipes are supported by pulling screen data from our link:https://usetrmnl.com[Core] server. This means Terminus accesses data outside your private network to acquire this data. This is done by _proxying_, per device, to our Core server (disabled by default), downloading screens from your playlist and then rendering on your device. For more information, see xref:_background_pollers[Background Pollers].
+ℹ️ Plugins and Recipes are supported by pulling screen data from our link:https://usetrmnl.com[Core] server. This means Terminus accesses data outside your private network to acquire this data. This is done by _proxying_, per device, to our Core server (disabled by default), downloading screens from your playlist, and then rendering on your device. For more information, see xref:_background_pollers[Background Pollers].
 
 The goal isn't for BYOS to match parity with our hosted solution but to provide enough of a pleasant solution for your own customized experience. There are trade offs either way but we've got you covered for whatever path you wish to travel. 🎉
 
@@ -121,9 +121,7 @@ There are a few environment variables you can use to customize behavior:
 * `API_URI`: Used for connecting your device to this server or via xref:_docker[Docker]. Defaults to the wired IP address and port of the server you are running Terminus on. This also assumes you are connecting your device directly to the same server Terminus is running on. If this is not the case and you are using a reverse proxy, DNS, or any service/layer between your device and Terminus then you need to update this value to be your host. For example, if your host is `http://demo.io` then this value must be `http://demo.io`. This includes updating your device, via the TRMNL captive Wifi portal, to be using `http://demo.io` as your custom host too. How you configure `http://demo.io` to resolve to the server you are running Terminus on is up to you. All your device (and this value) cares about is what the external host (or IP and port) is for the device to make API requests too (they must be identical).
 * `DATABASE_URL`: Necessary to connect to your {postgres_link} database. Can be customized by changing the value in the `.env.development` or `.env.test` file created when you ran `bin/setup`.
 * `HANAMI_PORT`: The default port when running the app locally or via xref:_docker[Docker]. When using Docker, this is used for the internal and external port mapping.
-* `PREVIEWS_ROOT`: The root location for all device screen preview images when designing new screens. Default: `public/assets/previews`.
 * `RACK_ATTACK_ALLOWED_SUBNETS`: Defines the {rack_attack_link} subnets that are allowed to connect to this server which helps when adding DNS, a reverse proxy, or a VPN, etc. between your device and this application so you can use this environment variable to add more subnets as desired. This takes a single subnet/IP or an array -- with no spaces -- of subnets/IPs as values. Example: "111.111.111.111,150.120.0.0/16". Alternatively, you can disable Rack Attack altogether by removing the `config.middleware.use Rack::Attack` line from `config/app.rb` or customize Rack Attack via the `config/initializers/rack_attack.rb` file. Any of these approaches will allow you to get your service layer properly configured so your device can talk to this server. By default, the following subnets are allowed: `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `127.0.0.1`, and `::1`.
-* `SCREENS_ROOT`: The root location for all device screens (images). Default: `public/assets/screens`.
 * `PG_DATABASE`: Defines your database name. Used by xref:_docker[Docker] only. Default: `terminus`.
 * `PG_PASSWORD`: Defines your database password. Used by xref:_docker[Docker] only. Default: (auto-generated for you during setup).
 * `PG_PORT`: Defines your database port. Used by xref:_docker[Docker] only. Default: `5432`.
@@ -399,27 +397,27 @@ curl "https://localhost:2443/api/devices/1" \
 {
   "data": [
     {
-      "id": 9,
+      "id": 1,
       "model_id": 1,
-      "playlist_id": null,
+      "playlist_id": 1,
       "friendly_id": "DEMO11",
       "label": "Demo",
       "mac_address": "A1:B2:C3:D4:E5:F6",
       "api_key": "OScdcN0kFbKjFcid9Kz6Cx",
-      "firmware_version": null,
+      "firmware_version": "1.5.12",
       "firmware_beta": false,
-      "wifi": 0,
-      "battery": 0.0,
+      "wifi": -71,
+      "battery": 4.0,
       "refresh_rate": 500,
       "image_timeout": 0,
-      "width": 0,
-      "height": 0,
+      "width": 800,
+      "height": 480,
       "proxy": true,
       "firmware_update": true,
-      "sleep_start_at": "23:00:00",
-      "sleep_stop_at": "06:00:00",
-      "created_at": "2025-06-29T19:11:48+0000",
-      "updated_at": "2025-06-29T19:11:48+0000"
+      "sleep_start_at": "22:30:00",
+      "sleep_stop_at": "05:30:00",
+      "created_at": "2025-07-29T16:19:05+0000",
+      "updated_at": "2025-07-29T16:19:05+0000"
     }
   ]
 }
@@ -427,27 +425,27 @@ curl "https://localhost:2443/api/devices/1" \
 # Single device.
 {
   "data": {
-    "id": 9,
+    "id": 1,
     "model_id": 1,
-    "playlist_id": null,
+    "playlist_id": 1,
     "friendly_id": "DEMO11",
     "label": "Demo",
     "mac_address": "A1:B2:C3:D4:E5:F6",
     "api_key": "OScdcN0kFbKjFcid9Kz6Cx",
-    "firmware_version": null,
+    "firmware_version": "1.5.12",
     "firmware_beta": false,
-    "wifi": 0,
-    "battery": 0.0,
+    "wifi": -71,
+    "battery": 4.0,
     "refresh_rate": 500,
     "image_timeout": 0,
-    "width": 0,
-    "height": 0,
+    "width": 800,
+    "height": 480,
     "proxy": true,
     "firmware_update": true,
-    "sleep_start_at": "23:00:00",
-    "sleep_stop_at": "06:00:00",
-    "created_at": "2025-06-29T19:11:48+0000",
-    "updated_at": "2025-06-29T19:11:48+0000"
+    "sleep_start_at": "22:30:00",
+    "sleep_stop_at": "05:30:00",
+    "created_at": "2025-07-29T16:19:05+0000",
+    "updated_at": "2025-07-29T16:19:05+0000"
   }
 }
 ----
@@ -505,27 +503,27 @@ curl -X "POST" "https://localhost:2443/api/devices" \
 ----
 {
   "data": {
-    "id": 9,
+    "id": 1,
     "model_id": 1,
-    "playlist_id": null,
+    "playlist_id": 1,
     "friendly_id": "DEMO11",
     "label": "Demo",
     "mac_address": "A1:B2:C3:D4:E5:F6",
     "api_key": "OScdcN0kFbKjFcid9Kz6Cx",
-    "firmware_version": null,
+    "firmware_version": "1.5.12",
     "firmware_beta": false,
-    "wifi": 0,
-    "battery": 0.0,
+    "wifi": -71,
+    "battery": 4.0,
     "refresh_rate": 500,
     "image_timeout": 0,
-    "width": 0,
-    "height": 0,
+    "width": 800,
+    "height": 480,
     "proxy": true,
     "firmware_update": true,
-    "sleep_start_at": "23:00:00",
-    "sleep_stop_at": "06:00:00"
-    "created_at": "2025-06-29T19:11:48+0000",
-    "updated_at": "2025-06-29T19:11:48+0000"
+    "sleep_start_at": "22:30:00",
+    "sleep_stop_at": "05:30:00",
+    "created_at": "2025-07-29T16:19:05+0000",
+    "updated_at": "2025-07-29T16:19:05+0000"
   }
 }
 ----
@@ -537,9 +535,8 @@ curl -X "POST" "https://localhost:2443/api/devices" \
 [source,bash]
 ----
 ## Devices (patch)
-curl -X "PATCH" "https://localhost:2443/api/devices/9" \
+curl -X "PATCH" "https://localhost:2443/api/devices/1" \
      -H 'Content-Type: application/json' \
-     -H 'Cookie: BetterErrors-2.10.1-CSRF-Token=1e937fde-9d7f-43e5-b164-c29e328969f5' \
      -d $'{
   "device": {
     "refresh_rate": 250
@@ -557,27 +554,27 @@ You you change a single attribute or multiple attributes at once.
 ----
 {
   "data": {
-    "id": 9,
+    "id": 1,
     "model_id": 1,
-    "playlist_id": null,
+    "playlist_id": 3,
     "friendly_id": "DEMO11",
     "label": "Demo",
     "mac_address": "A1:B2:C3:D4:E5:F6",
     "api_key": "OScdcN0kFbKjFcid9Kz6Cx",
-    "firmware_version": null,
+    "firmware_version": "1.5.12",
     "firmware_beta": false,
-    "wifi": 0,
-    "battery": 0.0,
+    "wifi": -71,
+    "battery": 4.0,
     "refresh_rate": 250,
     "image_timeout": 0,
-    "width": 0,
-    "height": 0,
-    "proxy": false,
-    "firmware_update": false,
-    "sleep_start_at": "23:00:00",
-    "sleep_stop_at": "06:00:00"
-    "created_at": "2025-06-29T19:11:48+0000",
-    "updated_at": "2025-06-29T19:11:48+0000"
+    "width": 800,
+    "height": 480,
+    "proxy": true,
+    "firmware_update": true,
+    "sleep_start_at": "22:30:00",
+    "sleep_stop_at": "05:30:00",
+    "created_at": "2025-07-29T16:19:05+0000",
+    "updated_at": "2025-07-29T16:19:05+0000"
   }
 }
 ----
@@ -589,7 +586,7 @@ You you change a single attribute or multiple attributes at once.
 [source,bash]
 ----
 ## Devices (delete)
-curl -X "DELETE" "https://localhost:2443/api/devices/9" \
+curl -X "DELETE" "https://localhost:2443/api/devices/1" \
      -H 'Content-Type: application/json' \
      -d $'{}'
 ----
@@ -602,27 +599,27 @@ curl -X "DELETE" "https://localhost:2443/api/devices/9" \
 ----
 {
   "data": {
-    "id": 9,
+    "id": 1,
     "model_id": 1,
-    "playlist_id": null,
+    "playlist_id": 3,
     "friendly_id": "DEMO11",
     "label": "Demo",
     "mac_address": "A1:B2:C3:D4:E5:F6",
     "api_key": "OScdcN0kFbKjFcid9Kz6Cx",
-    "firmware_version": null,
+    "firmware_version": "1.5.12",
     "firmware_beta": false,
-    "wifi": 0,
-    "battery": 0.0,
-    "refresh_rate": 250,
+    "wifi": -71,
+    "battery": 4.0,
+    "refresh_rate": 500,
     "image_timeout": 0,
-    "width": 0,
-    "height": 0,
-    "proxy": false,
-    "firmware_update": false,
-    "sleep_start_at": "23:00:00",
-    "sleep_stop_at": "06:00:00"
-    "created_at": "2025-06-29T19:11:48+0000",
-    "updated_at": "2025-06-29T19:11:48+0000"
+    "width": 800,
+    "height": 480,
+    "proxy": true,
+    "firmware_update": true,
+    "sleep_start_at": "22:30:00",
+    "sleep_stop_at": "05:30:00",
+    "created_at": "2025-07-29T16:19:05+0000",
+    "updated_at": "2025-07-29T16:19:05+0000"
   }
 }
 ----
@@ -662,6 +659,13 @@ curl "https://localhost:2443/api/models/1" \
       "name": "t1",
       "label": "T1",
       "description": "The first production model.",
+      "mime_type": "image/png",
+      "colors": 2,
+      "bit_depth": 1,
+      "scale_factor": 1,
+      "rotation": 0,
+      "offset_x": 0,
+      "offset_y": 0,
       "width": 800,
       "height": 480,
       "published_at": "2024-06-25T00:00:00+0000"
@@ -676,6 +680,13 @@ curl "https://localhost:2443/api/models/1" \
     "name": "t1",
     "label": "T1",
     "description": "The first production model.",
+    "mime_type": "image/png",
+    "colors": 2,
+    "bit_depth": 1,
+    "scale_factor": 1,
+    "rotation": 0,
+    "offset_x": 0,
+    "offset_y": 0,
     "width": 800,
     "height": 480,
     "published_at": "2024-06-25T00:00:00+0000"
@@ -695,12 +706,19 @@ curl -X "POST" "https://localhost:2443/api/models" \
      -H 'Content-Type: application/json' \
      -d $'{
   "model": {
-    "name": "demo",
-    "label": "Demo",
     "description": "A demonstration.",
-    "width": "800",
-    "height": "480",
-    "published_at": "2025-01-01T00:00:00+00:00"
+    "published_at": "2025-01-01T00:00:00+00:00",
+    "label": "Demo",
+    "rotation": 25,
+    "width": "1000",
+    "colors": 4,
+    "mime_type": "image/png",
+    "scale_factor": 2,
+    "bit_depth": 2,
+    "offset_x": 50,
+    "height": "500",
+    "name": "demo",
+    "offset_y": 100
   }
 }'
 ----
@@ -713,13 +731,20 @@ curl -X "POST" "https://localhost:2443/api/models" \
 ----
 {
   "data": {
-    "id": 3,
+    "id": 2,
     "name": "demo",
     "label": "Demo",
     "description": "A demonstration.",
-    "width": 800,
-    "height": 480,
-    "published_at": "2025-01-01T00:00:00+00:00"
+    "mime_type": "image/png",
+    "colors": 4,
+    "bit_depth": 2,
+    "scale_factor": 2,
+    "rotation": 25,
+    "offset_x": 50,
+    "offset_y": 100,
+    "width": 1000,
+    "height": 500,
+    "published_at": "2025-01-01T00:00:00+0000"
   }
 }
 ----
@@ -730,7 +755,7 @@ curl -X "POST" "https://localhost:2443/api/models" \
 ====
 [source,bash]
 ----
-curl -X "PUT" "https://localhost:2443/api/models/3" \
+curl -X "PUT" "https://localhost:2443/api/models/2" \
      -H 'Content-Type: application/json' \
      -d $'{
   "model": {
@@ -749,13 +774,20 @@ You you change a single attribute or multiple attributes at once.
 ----
 {
   "data": {
-    "id": 3,
+    "id": 2,
     "name": "demo",
     "label": "Demo",
     "description": "A patch demonstration.",
-    "width": 800,
-    "height": 480,
-    "published_at": "2025-01-01T00:00:00+00:00"
+    "mime_type": "image/png",
+    "colors": 4,
+    "bit_depth": 2,
+    "scale_factor": 2,
+    "rotation": 25,
+    "offset_x": 50,
+    "offset_y": 100,
+    "width": 1000,
+    "height": 500,
+    "published_at": "2025-01-01T00:00:00+0000"
   }
 }
 ----
@@ -766,7 +798,7 @@ You you change a single attribute or multiple attributes at once.
 ====
 [source,bash]
 ----
-curl -X "DELETE" "https://localhost:2443/api/models/3" \
+curl -X "DELETE" "https://localhost:2443/api/models/2" \
      -H 'Content-Type: application/json' \
      -d $'{}'
 ----
@@ -779,13 +811,20 @@ curl -X "DELETE" "https://localhost:2443/api/models/3" \
 ----
 {
   "data": {
-    "id": 3,
+    "id": 2,
     "name": "demo",
     "label": "Demo",
-    "description": "A delete demonstration.",
-    "width": 800,
-    "height": 480,
-    "published_at": "2025-01-01T00:00:00+00:00"
+    "description": "A patch demonstration.",
+    "width": 1000,
+    "height": 500,
+    "published_at": "2025-01-01 00:00:00 UTC",
+    "mime_type": "image/png",
+    "colors": 4,
+    "bit_depth": 2,
+    "scale_factor": 2,
+    "rotation": 25,
+    "offset_x": 50,
+    "offset_y": 100
   }
 }
 ----
@@ -805,7 +844,6 @@ When making requests, the `Access-Token` is your device's API key. You can obtai
 [source,bash]
 ----
 curl "https://localhost:2443/api/screens" \
-     -H 'Access-Token: <redacted>' \
      -H 'Content-Type: application/json'
 ----
 ====
@@ -818,12 +856,18 @@ curl "https://localhost:2443/api/screens" \
 {
   "data": [
     {
-      "name": "demo.png",
-      "path": "http://192.168.0.227:2300/public/assets/screens/B0818422BDE8/demo.png"
-    },
-    {
-      "name": "proxy-9fb9de.bmp",
-      "path": "http://192.168.0.227:2300/public/assets/screens/B0818422BDE8/proxy-9fb9de.bmp"
+      "id": 3,
+      "model_id": 1,
+      "label": "Moon",
+      "name": "plugin-6e6740",
+      "created_at": "2025-07-29T16:29:02+0000",
+      "updated_at": "2025-07-29T16:29:02+0000",
+      "filename": "plugin-6e6740.bmp",
+      "mime_type": "image/bmp",
+      "width": 800,
+      "height": 480,
+      "size": 48062,
+      "uri": "/uploads/9fb384c1aa9043ccfee781ab21d99aa0.bmp"
     }
   ]
 }
@@ -836,13 +880,15 @@ curl "https://localhost:2443/api/screens" \
 [source,bash]
 ----
 curl -X "POST" "https://localhost:2443/api/screens" \
-    -H 'Access-Token: <redacted>' \
-    -H 'Content-Type: application/json' \
-    -d $'{
- "image": {
-   "content": "<p>Test</p>",
-   "file_name": "demo.png"
- }
+     -H 'Content-Type: application/json' \
+     -d $'{
+  "image": {
+    "label": "Demo",
+    "content": "<h1>Demo</h1>",
+    "name": "demo",
+    "file_name": "demo.png",
+    "model_id": "1"
+  }
 }'
 ----
 
@@ -855,236 +901,8 @@ Allows you to render custom HTML content as an image on your device. Full HTML i
 }
 ----
 
-Due to this being so flexible, this also means you can pull in and use our link:https://usetrmnl.com/framework[Design Framework] when building custom screens by linking to the following:
+Here's a more complete example using CSS and HTML that you can supply via the API request:
 
-* Plugins
-** link:https://usetrmnl.com/css/latest/plugins.css[Stylesheet]
-** link:https://usetrmnl.com/js/latest/plugins.js[JavaScript]
-* Components
-** link:https://usetrmnl.com/js/latest/trmnl-component.js[JavaScript]
-
-💡 You can use the Designer within the UI to build custom screens in real-time for faster feedback. The result of your work can be supplied to this endpoint to create a new screen for display on your device.
-====
-
-.POST Request (Preprocessed URI)
-[%collapsible]
-====
-[source,bash]
-----
-curl -X "POST" "https://localhost:2443/api/screens" \
-     -H 'Access-Token: <redacted>' \
-     -H 'Content-Type: application/json' \
-     -d $'{
-  "image": {
-    "uri": "https://demo.io/your_preprocessed_image.png",
-    "file_name": "demo.png",
-    "preprocessed": true
-  }
-}'
-----
-
-Allows you to render a preprocessed image -- by you -- on your device. The `preprocessed` value must be `true` when supplied. This assumes the URI you want have rendered on your device is fully compatible with the device in terms of greyscale, bit depth, color depth, and so forth. We _do not process this image_ and only cache the image locally for display on your device. I you want want your image processed then see the Unprocessed URI API Request example.
-====
-
-.POST Request (Unprocessed URI)
-[%collapsible]
-====
-[source,bash]
-----
-curl -X "POST" "https://localhost:2443/api/screens" \
-     -H 'Access-Token: <redacted>' \
-     -H 'Content-Type: application/json' \
-     -d $'{
-  "image": {
-    "uri": "https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png",
-    "file_name": "demo.png",
-    "dimensions": "800x480!"
-  }
-}'
-----
-
-Allows you to render a unprocessed image on your device. We'll automatically process the image for rendering on your device. The `dimensions` parameter is optional and defaults to `800x480` when not supplied. You can use the full {image_magick_geometry_link} syntax as the value.
-====
-
-.POST Request (Base64 Encoded Data)
-[%collapsible]
-====
-
-[source,bash]
-----
-curl -X "POST" "https://localhost:2443/api/screens" \
-     -H 'Access-Token: <redacted>' \
-     -H 'Content-Type: application/json' \
-     -d $'{
-  "image": {
-    "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAAXNSR0IArs4c6QAAAAtJREFUCFtjYGAAAAADAAHc7H1IAAAAAElFTkSuQmCC"
-    "file_name": "demo.png",
-    "dimensions": "800x480!"
-  }
-}'
-----
-
-Allows you to render a strictly Base64 encoded image on your device. The `dimensions` parameter is optional and defaults to `800x480` when not supplied. You can use the full {image_magick_geometry_link} syntax as the value.
-====
-
-.POST Response
-[%collapsible]
-====
-[source,json]
-----
-{
-  "data": {
-    "name": "demo.png"
-    "path": "http://192.168.1.2:2300/public/assets/screens/A1B2C3D4E5F6/demo.png"
-  }
-}
-----
-
-No matter what parameters you use for this request, you'll always get a path (unless an error is encountered).
-====
-
-.DELETE Request
-[%collapsible]
-====
-Use the file name (extension included) of the screen you wish to delete when making API requests. In the future, a proper ID will be used instead of the file name.
-
-[source,bash]
-----
-curl -X "DELETE" "https://localhost:2443/api/screens/demo.png" \
-     -H 'Access-Token: <redacted>' \
-     -H 'Content-Type: application/json'
-----
-====
-
-.DELETE Response
-[%collapsible]
-====
-[source,json]
-----
-{
-  "data": {
-    "name": "demo.png",
-    "path": "http://192.168.1.2:2300/public/assets/screens/A1B2C3D4E5F6/demo.png"
-  }
-}
-----
-====
-
-== Development
-
-To contribute, run:
-
-[source,bash]
-----
-git clone https://github.com/usetrmnl/byos_hanami terminus
-cd terminus
-bin/setup
-----
-
-=== Console
-
-To access the console with direct access to all objects, run:
-
-[source,bash]
-----
-bin/console
-----
-
-==== Basic
-
-Once in the console, you can interact with all objects. A few examples:
-
-[source,ruby]
-----
-# Use a repository.
-repository = Hanami.app["repositories.device"]
-
-repository.all              # View all devices.
-device = repository.find 1  # Find by Device ID.
-
-# Fetch next device screen. Sorts in descending order by modified timestamp.
-fetcher = Hanami.app["aspects.screens.fetcher"]
-fetcher.call device.slug
-----
-
-==== Screens
-
-Should you want to create screens from the command line/console instead of using the Designer (UI) or xref:_screens[Screens API], you can use the `Creator`. Please be aware of the following:
-
-* The output path must include your device's MAC Address in collapsed form (i.e. colons removed). Example: `"A1B2C3D4E5F6"`.
-* Use `.bmp` or `.png` as the file extension. This ensures your image is generated in the correct MIME Type and desired format.
-* Use `%<name>s` in your output path to generate a random name. This must included a supported file extension. Example: `%<name>s.png`.
-* The `image` parameters used in the xref:_screens[Screens API] -- except `file_name` -- are identical to the keyword arguments when calling this object.
-* When using `uri` and `data` keys, you'll need to supply dimensions which leverage the full {image_magick_geometry_link} syntax.
-
-Here are a few examples:
-
-*HTML content with random name*
-
-[source,ruby]
-----
-creator = Terminus::Screens::Creator.new
-output_path = Pathname(Hanami.app[:settings].screens_root).join("A1B2C3D4E5F6/%<name>s.png")
-
-
-creator.call output_path, content: "<p>Test</p>"
-
-# Success(
-#  #<Pathname:terminus/public/assets/screens/A1B2C3D4E5F6/31a55181-ef94-4397-89d9-bd576d89b404.png>
-# )
-----
-
-*HTML content with specific name*
-
-[source,ruby]
-----
-creator = Terminus::Screens::Creator.new
-output_path = Pathname(Hanami.app[:settings].screens_root).join("A1B2C3D4E5F6/demo.png")
-
-creator.call output_path, content: "<p>Test</p>"
-
-# Success(
-#  #<Pathname:terminus/public/assets/screens/A1B2C3D4E5F6/demo.png>
-# )
-----
-
-*URI*
-
-[source,ruby]
-----
-creator = Terminus::Screens::Creator.new
-output_path = Pathname(Hanami.app[:settings].screens_root).join("A1B2C3D4E5F6/demo.png")
-
-creator.call output_path,
-             uri: "https://leonardo.ai/wp-content/uploads/2023/07/image-129.jpeg",
-             dimensions: "800x480"
-
-# Success(
-#  #<Pathname:terminus/public/assets/screens/A1B2C3D4E5F6/demo.png>
-# )
-----
-
-*Data (Base64)*
-
-[source,ruby]
-----
-creator = Terminus::Screens::Creator.new
-output_path = Pathname(Hanami.app[:settings].screens_root).join("A1B2C3D4E5F6/demo.png")
-
-creator.call output_path,
-             data: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAAXNSR0IArs4c6QAAAAtJREFUCFtjYGAAAAADAAHc7H1IAAAAAElFTkSuQmCC",
-             dimensions: "800x480!"
-
-# Success(
-#  #<Pathname:terminus/public/assets/screens/A1B2C3D4E5F6/demo.png>
-# )
-----
-
-When creating images, you might find this HTML template valuable as a starting point as this let's you use the full capabilities of HTML to create new images for your device.
-
-.HTML Template
-[%collapsible]
-====
 [source,html]
 ----
 <!DOCTYPE html>
@@ -1112,47 +930,173 @@ When creating images, you might find this HTML template valuable as a starting p
   </body>
 </html>
 ----
+
+Due to this being so flexible, this also means you can pull in and use our link:https://usetrmnl.com/framework[Design Framework] when building custom screens by linking to the following:
+
+* Plugins
+** link:https://usetrmnl.com/css/latest/plugins.css[Stylesheet]
+** link:https://usetrmnl.com/js/latest/plugins.js[JavaScript]
+* Components
+** link:https://usetrmnl.com/js/latest/trmnl-component.js[JavaScript]
+
+💡 You can use the Designer within the UI to build custom screens in real-time for faster feedback. The result of your work can be supplied to this endpoint to create a new screen for display on your device.
 ====
 
-Use of `margin` zero is important to prevent default browser styles from creating borders around your image which will show up when rendered on your device. Otherwise, you have full capabilities to render any kind of page you want using whatever HTML you like. Anything is possible because `Terminus::Screens::Creator` is designed to screenshot your rendered HTML as a 800x480 image to render on your device. If you put all this together, that means you can do this in the console:
-
-.Screen Creation
+.POST Request (Preprocessed URI)
 [%collapsible]
 ====
-[source,ruby]
+[source,bash]
 ----
-creator = Terminus::Screens::Creator.new
+curl -X "POST" "https://localhost:2443/api/screens" \
+     -H 'Content-Type: application/json' \
+     -d $'{
+  "image": {
+    "file_name": "demo.png",
+    "label": "Demo",
+    "preprocessed": true,
+    "name": "demo",
+    "uri": "https://leonardo.ai/wp-content/uploads/2023/07/image-131.jpeg",
+    "model_id": "1"
+  }
+}'
+----
 
-creator.call(<<~CONTENT, Pathname(Hanami.app[:settings].screens_root).join("A1B2C3D4E5F6/%<name>s.bmp"))
-  <!DOCTYPE html>
+Allows you to render a preprocessed image -- by you -- on your device. The `preprocessed` value must be `true` when supplied. This assumes the URI you want have rendered on your device is fully compatible with the device in terms of greyscale, bit depth, color depth, and so forth. We _do not process this image_ and only cache the image locally for display on your device. I you want want your image processed then see the Unprocessed URI API Request example.
+====
 
-  <html lang="en">
-    <head>
-      <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+.POST Request (Unprocessed URI)
+[%collapsible]
+====
+[source,bash]
+----
+curl -X "POST" "https://localhost:2443/api/screens" \
+     -H 'Content-Type: application/json' \
+     -d $'{
+  "image": {
+    "file_name": "demo.png",
+    "label": "Demo",
+    "name": "demo",
+    "uri": "https://leonardo.ai/wp-content/uploads/2023/07/image-131.jpeg",
+    "model_id": "1"
+  }
+}'
+----
 
-      <title>Demo</title>
+Allows you to render a unprocessed image on your device. We'll automatically process the image for rendering on your device. The `dimensions` parameter is optional and defaults to `800x480` when not supplied. You can use the full {image_magick_geometry_link} syntax as the value.
+====
 
-      <meta charset="utf-8">
+.POST Request (Base64 Encoded Data)
+[%collapsible]
+====
 
-      <style type="text/css">
-        * {
-          margin: 0;
-        }
-      </style>
+[source,bash]
+----
+curl -X "POST" "https://localhost:2443/api/screens" \
+     -H 'Content-Type: application/json' \
+     -d $'{
+  "image": {
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAAXNSR0IArs4c6QAAAAtJREFUCFtjYGAAAAADAAHc7H1IAAAAAElFTkSuQmCC",
+    "label": "Demo",
+    "name": "demo",
+    "file_name": "demo.png",
+    "model_id": "1"
+  }
+}'
+----
 
-      <script type="text/javascript">
-      </script>
-    </head>
+Allows you to render a strictly Base64 encoded image on your device. The `dimensions` parameter is optional and defaults to `800x480` when not supplied. You can use the full {image_magick_geometry_link} syntax as the value.
+====
 
-    <body>
-      <h1>Hello, World!</h1>
-    </body>
-  </html>
-CONTENT
+.POST Response
+[%collapsible]
+====
+[source,json]
+----
+{
+  "data": {
+    "id": 13,
+    "model_id": 1,
+    "label": "Demo",
+    "name": "demo",
+    "created_at": "2025-07-29T19:06:04+0000",
+    "updated_at": "2025-07-29T19:06:04+0000",
+    "filename": "demo.png",
+    "mime_type": "image/png",
+    "width": 800,
+    "height": 480,
+    "size": 415,
+    "uri": "/uploads/619415a00830fa630649706977e95302.png"
+  }
+}
+----
+
+No matter what parameters you use for this request, you'll always get a path (unless an error is encountered).
+====
+
+.DELETE Request
+[%collapsible]
+====
+[source,bash]
+----
+curl -X "DELETE" "https://localhost:2443/api/screens/13" \
+     -H 'Content-Type: application/json'
 ----
 ====
 
-The above will create a new image in the `public/screens` folder of this application which will eventually render on your device. 🎉
+.DELETE Response
+[%collapsible]
+====
+[source,json]
+----
+{
+  "data": {
+    "id": 13,
+    "model_id": 1,
+    "label": "Demo",
+    "name": "demo",
+    "created_at": "2025-07-29T19:11:04+0000",
+    "updated_at": "2025-07-29T19:11:04+0000",
+    "filename": "demo.png",
+    "mime_type": "image/png",
+    "width": 800,
+    "height": 480,
+    "size": 126,
+    "uri": "/uploads/e27dc53657963e5ad765fdc246e60a3c.png"
+  }
+}
+----
+====
+
+== Development
+
+To contribute, run:
+
+[source,bash]
+----
+git clone https://github.com/usetrmnl/byos_hanami terminus
+cd terminus
+bin/setup
+----
+
+=== Console
+
+To access the console with direct access to all objects, run:
+
+[source,bash]
+----
+bin/console
+----
+
+Once in the console, you can interact with all objects. A few examples:
+
+[source,ruby]
+----
+# Use a repository.
+repository = Hanami.app["repositories.device"]
+
+repository.all              # View all devices.
+device = repository.find 1  # Find by Device ID.
+----
 
 === YJIT
 
