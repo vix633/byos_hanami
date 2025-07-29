@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "dry/monads"
+
 module Terminus
   module Actions
     module Devices
@@ -7,6 +9,7 @@ module Terminus
       class Create < Terminus::Action
         include Deps[
           :htmx,
+          "aspects.devices.provisioner",
           repository: "repositories.device",
           model_repository: "repositories.model",
           playlist_repository: "repositories.playlist",
@@ -14,20 +17,25 @@ module Terminus
           index_view: "views.devices.index"
         ]
 
+        include Dry::Monads[:result]
+
         contract Contracts::Devices::Create
 
         def handle request, response
           parameters = request.params
 
-          if parameters.valid?
-            repository.create parameters[:device]
-            response.render index_view, **view_settings(request, parameters)
-          else
-            render_new response, parameters
+          case provision parameters
+            in Success then response.render index_view, **view_settings(request, parameters)
+            else render_new response, parameters
           end
         end
 
         private
+
+        # :reek:FeatureEnvy
+        def provision parameters
+          parameters.valid? ? provisioner.call(**parameters[:device]) : Failure
+        end
 
         def view_settings request, _parameters
           settings = {devices: repository.all}
