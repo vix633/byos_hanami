@@ -10,6 +10,7 @@ RSpec.describe Terminus::Contracts::Devices::Create do
       {
         device: {
           model_id: 1,
+          playlist_id: nil,
           label: "Test",
           friendly_id: "ABC123",
           mac_address: "AA:BB:CC:11:22:33",

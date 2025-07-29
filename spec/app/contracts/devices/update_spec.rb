@@ -11,6 +11,7 @@ RSpec.describe Terminus::Contracts::Devices::Update do
         id: 1,
         device: {
           model_id: 1,
+          playlist_id: nil,
           label: "Test",
           friendly_id: "ABC123",
           mac_address: "AA:BB:CC:11:22:33",
