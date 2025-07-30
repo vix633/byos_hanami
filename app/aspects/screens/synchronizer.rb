@@ -66,7 +66,7 @@ module Terminus
               update screen, struct
             else
               metadata = struct.image_attributes.fetch :metadata, Dry::Core::EMPTY_HASH
-              model = model_repository.find_by(**metadata.slice(:width, :height))
+              model = model_repository.find_by_dimensions(**metadata.slice(:width, :height))
 
               create pathname.name.to_s, struct, model
             end

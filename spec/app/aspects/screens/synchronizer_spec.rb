@@ -39,7 +39,8 @@ RSpec.describe Terminus::Aspects::Screens::Synchronizer, :db do
 
   describe "#call" do
     it "creates new record with attachment" do
-      model
+      model_repository = instance_spy Terminus::Repositories::Model, find_by_dimensions: model
+      synchronizer = described_class.new(downloader:, model_repository:)
       response = synchronizer.call(display).success
 
       expect(response).to have_attributes(
