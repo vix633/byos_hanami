@@ -1,24 +1,21 @@
 # frozen_string_literal: true
 
-require "trmnl/api"
-
 module Terminus
   module Aspects
     module Firmware
       # A firmware attachment synchronizer with Core server.
       class Synchronizer
-        include Deps[repository: "repositories.firmware"]
+        include Deps[:trmnl_api, repository: "repositories.firmware"]
         include Dependencies[:downloader]
         include Dry::Monads[:result]
 
-        def initialize(struct: Structs::Firmware.new, api: TRMNL::API::Client.new, **)
+        def initialize(struct: Structs::Firmware.new, **)
           @struct = struct
-          @api = api
           super(**)
         end
 
         def call
-          result = api.firmware
+          result = trmnl_api.firmware
 
           case result
             in Success(payload) then download(payload).bind { attach it, payload.version }
@@ -28,7 +25,7 @@ module Terminus
 
         private
 
-        attr_reader :struct, :api
+        attr_reader :struct
 
         def download(payload) = downloader.call payload.url
 

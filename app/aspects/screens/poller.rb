@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 require "dry/monads"
-require "trmnl/api"
 
 module Terminus
   module Aspects
     module Screens
       # Polls the Core Display API on a scheduled interval for new images to display locally.
       class Poller
-        include Deps["aspects.screens.synchronizer", repository: "repositories.device"]
-        include Initable[client: proc { TRMNL::API::Client.new }, kernel: Kernel]
+        include Deps[:trmnl_api, "aspects.screens.synchronizer", repository: "repositories.device"]
+        include Initable[kernel: Kernel]
         include Dry::Monads[:result]
 
         # Seconds equates to five minutes (60 * 5).
@@ -37,7 +36,7 @@ module Terminus
         def process_devices = repository.all.select(&:proxy).each { |device| process device }
 
         def process device
-          client.display(token: device.api_key).bind { |record| synchronizer.call record }
+          trmnl_api.display(token: device.api_key).bind { |record| synchronizer.call record }
         end
       end
     end

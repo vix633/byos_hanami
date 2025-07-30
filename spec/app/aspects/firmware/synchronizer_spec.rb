@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 require "hanami_helper"
+require "trmnl/api"
 
 RSpec.describe Terminus::Aspects::Firmware::Synchronizer, :db do
-  subject(:synchronizer) { described_class.new api:, downloader: }
+  subject(:synchronizer) { described_class.new trmnl_api:, downloader: }
 
   include_context "with main application"
   include_context "with library dependencies"
 
-  let :api do
+  let :trmnl_api do
     instance_double TRMNL::API::Client,
                     firmware: Success(
                       TRMNL::API::Models::Firmware[
@@ -58,7 +59,7 @@ RSpec.describe Terminus::Aspects::Firmware::Synchronizer, :db do
     end
 
     context "with attachment errors" do
-      subject(:synchronizer) { described_class.new api:, downloader:, struct: }
+      subject(:synchronizer) { described_class.new trmnl_api:, downloader:, struct: }
 
       let :struct do
         instance_double Terminus::Structs::Firmware, upload: nil, errors: ["Danger!"], valid?: false
@@ -70,7 +71,7 @@ RSpec.describe Terminus::Aspects::Firmware::Synchronizer, :db do
     end
 
     context "with API client failure" do
-      let(:api) { instance_double TRMNL::API::Client, firmware: Failure(message: "Danger!") }
+      let(:trmnl_api) { instance_double TRMNL::API::Client, firmware: Failure(message: "Danger!") }
 
       it "answers failure" do
         expect(synchronizer.call).to be_failure(message: "Danger!")
