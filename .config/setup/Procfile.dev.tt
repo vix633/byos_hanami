@@ -2,3 +2,4 @@ web: rerun --dir app,config,lib,slices --pattern="**/*.{erb,rb}" -- bundle exec 
 assets: bundle exec hanami assets watch
 firmware_poller: bin/pollers/firmware
 screen_poller: bin/pollers/screen
+model_poller: bin/pollers/model

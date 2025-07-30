@@ -3,3 +3,4 @@ assets: bundle exec hanami assets compile
 migrate: bundle exec hanami db migrate
 firmware_poller: bin/pollers/firmware
 screen_poller: bin/pollers/screen
+model_poller: bin/pollers/model
