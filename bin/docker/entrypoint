@@ -9,6 +9,5 @@ path = Dir["/usr/lib/*/libjemalloc.so.2"]
 ENV["LD_PRELOAD"] = path.first unless ENV.key?("LD_PRELOAD") && path.empty?
 
 Pathname(".overmind.sock").tap { it.delete if it.exist? }
-system "bundle exec hanami db seed"
 
 system ARGV.join(" ")
