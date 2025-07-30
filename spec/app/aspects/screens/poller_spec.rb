@@ -42,7 +42,7 @@ RSpec.describe Terminus::Aspects::Screens::Poller, :db do
       expect(trmnl_api).to have_received(:display)
     end
 
-    it "downloads image" do
+    it "synchronizes" do
       poller.call
       expect(synchronizer).to have_received(:call).with(display)
     end
@@ -50,7 +50,7 @@ RSpec.describe Terminus::Aspects::Screens::Poller, :db do
     context "with no devices" do
       let(:devices) { [] }
 
-      it "doesn't download image" do
+      it "doesn't synchronize" do
         poller.call
         expect(synchronizer).not_to have_received(:call)
       end
@@ -59,7 +59,7 @@ RSpec.describe Terminus::Aspects::Screens::Poller, :db do
     context "with no proxied devices" do
       let(:devices) { [Factory[:device]] }
 
-      it "doesn't download image" do
+      it "doesn't synchronize" do
         poller.call
         expect(synchronizer).not_to have_received(:call)
       end
@@ -68,7 +68,7 @@ RSpec.describe Terminus::Aspects::Screens::Poller, :db do
     context "with remote image failure" do
       let(:trmnl_api) { instance_spy TRMNL::API::Client, display: Failure("Danger!") }
 
-      it "doesn't download image" do
+      it "doesn't synchronize" do
         poller.call
         expect(synchronizer).not_to have_received(:call)
       end

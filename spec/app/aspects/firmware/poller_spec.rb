@@ -3,11 +3,7 @@
 require "hanami_helper"
 
 RSpec.describe Terminus::Aspects::Firmware::Poller do
-  using Refinements::Pathname
-
   subject(:poller) { described_class.new synchronizer:, kernel: }
-
-  include_context "with temporary directory"
 
   let(:synchronizer) { instance_spy Terminus::Aspects::Firmware::Synchronizer }
   let(:kernel) { class_spy Kernel, sleep: 0 }
@@ -29,7 +25,7 @@ RSpec.describe Terminus::Aspects::Firmware::Poller do
       expect(kernel).to have_received(:exit)
     end
 
-    it "downloads file" do
+    it "synchronizes" do
       poller.call
       expect(synchronizer).to have_received(:call)
     end

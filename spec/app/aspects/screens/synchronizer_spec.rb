@@ -88,7 +88,7 @@ RSpec.describe Terminus::Aspects::Screens::Synchronizer, :db do
       expect(logger.reread).to match(/ERROR.+Unable to find model for screen\./)
     end
 
-    it "answers nil when screen can't be associated with model" do
+    it "answers failure when screen can't be associated with model" do
       expect(synchronizer.call(display)).to be_failure
     end
 

@@ -6,9 +6,6 @@ require "trmnl/api"
 RSpec.describe Terminus::Aspects::Firmware::Synchronizer, :db do
   subject(:synchronizer) { described_class.new trmnl_api:, downloader: }
 
-  include_context "with main application"
-  include_context "with library dependencies"
-
   let :trmnl_api do
     instance_double TRMNL::API::Client,
                     firmware: Success(
@@ -65,7 +62,7 @@ RSpec.describe Terminus::Aspects::Firmware::Synchronizer, :db do
         instance_double Terminus::Structs::Firmware, upload: nil, errors: ["Danger!"], valid?: false
       end
 
-      it "answers failure when attachment isn't saved" do
+      it "answers failure" do
         expect(synchronizer.call).to be_failure(["Danger!"])
       end
     end
