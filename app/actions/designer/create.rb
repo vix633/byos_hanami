@@ -48,7 +48,8 @@ module Terminus
           creator.call model_id: load_model.id, label: name.capitalize, name: name, content:
         end
 
-        def load_model = model_repository.find_by name: "t1"
+        # FIX: Use dynamic lookup once the UI support picking the correct model.
+        def load_model = model_repository.find_by name: "og_png"
       end
     end
   end

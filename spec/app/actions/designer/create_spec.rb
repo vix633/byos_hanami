@@ -8,7 +8,7 @@ RSpec.describe Terminus::Actions::Designer::Create, :db do
   include_context "with main application"
 
   describe "#call" do
-    let(:model) { Factory[:model, name: "t1"] }
+    let(:model) { Factory[:model, name: "og_png"] }
     let(:parameters) { {template: {id: :test, content: "<p>Test</p>"}} }
     let(:repository) { Terminus::Repositories::Screen.new }
 

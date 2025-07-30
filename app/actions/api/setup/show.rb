@@ -43,7 +43,7 @@ module Terminus
           end
 
           # FIX: Use dynamic lookup once Firmware Issue 199 is resolved.
-          def find_model_id = model_repository.find_by(name: "t1").then { it.id if it }
+          def find_model_id = model_repository.find_by(name: "og_png").then { it.id if it }
 
           def render_success device, response
             response.with body: payload.for(device).to_json, status: 200
