@@ -3,6 +3,7 @@
 :figure-caption!:
 
 :cogger_link: link:https://alchemists.io/projects/cogger[Cogger]
+:core_api_link: link:https://usetrmnl.com/api-docs/index.html[Core API]
 :docker_compose_link: link:https://docs.docker.com/compose[Docker Compose]
 :docker_link: link:https://www.docker.com[Docker]
 :hanami_link: link:https://hanamirb.org[Hanami]
@@ -138,9 +139,10 @@ The second way is to manually add your device via the UI. At a minimum, you only
 
 === Background Pollers
 
-There are two background pollers that cache data from the remote link:https://usetrmnl.com[Core] server for improved performance:
+There are a few background pollers that cache data from the remote link:https://usetrmnl.com[Core] server for improved performance:
 
 * *Firmware* (`bin/pollers/firmware`): Downloads the latest firmware for updating your local devices. By default, this checks for updates every six hours.
+* *Model* (`bin/pollers/model`): Synchronizes model information from the {core_api_link}. New models, as they become available, are added to the database while existing models, if updated, will be updated. By default, this checks for updates once a day.
 * *Screen* (`bin/pollers/screen`): Downloads device screens for any device you have set up to proxy to the Core server. You only need to toggle _proxy_ support for any/all devices you want to pull from Core. This allows you to leverage any/all recipes/plugins you have configured via your remote account. By default, this checks for updates every five minutes.
 
 ==== Configuration
@@ -150,13 +152,16 @@ All pollers can be configured to use different polling intervals by supplying th
 [source,ruby]
 ----
 # bin/pollers/firmware
-poller.call seconds: 60
+poller.call seconds: 21_600
+
+# bin/pollers/model
+poller.call seconds: 36_000
 
 # bin/pollers/screen
-poller.call seconds: 30
+poller.call seconds: 300
 ----
 
-Each automatically run in the background as separate processes in both the `Procfile` and `Procfile.dev` files. The latter is built for you when running `bin/setup`.
+Each automatically runs in the background as separate processes in both the `Procfile` and `Procfile.dev` files. The latter is built for you when running `bin/setup`.
 
 ==== Restarts
 
@@ -165,6 +170,7 @@ When using {overmind_link}, you can restart these pollers (as with any process m
 [source,bash]
 ----
 overmind restart firmware_poller
+overmind restart model_poller
 overmind restart screen_poller
 ----
 
@@ -176,6 +182,7 @@ To disable any of the pollers, remove them from the `Procfile.dev` and/or `Procf
 
 ----
 firmware_poller: bin/pollers/firmware
+model_poller: bin/pollers/model
 screen_poller: bin/pollers/screen
 ----
 
