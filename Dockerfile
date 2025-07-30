@@ -62,7 +62,7 @@ COPY .ruby-version Gemfile Gemfile.lock .node-version package.json package-lock.
 
 RUN <<STEPS
   bundle install
-  npm install
+  npm ci
   rm -rf "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 STEPS
 
