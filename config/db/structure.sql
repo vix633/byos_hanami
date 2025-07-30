@@ -225,7 +225,7 @@ CREATE TABLE public.model (
     mime_type text DEFAULT 'image/png'::text NOT NULL,
     colors integer DEFAULT 2 NOT NULL,
     bit_depth integer DEFAULT 1 NOT NULL,
-    scale_factor integer DEFAULT 1 NOT NULL,
+    scale_factor double precision DEFAULT 1 NOT NULL,
     rotation integer DEFAULT 0 NOT NULL,
     offset_x integer DEFAULT 0 NOT NULL,
     offset_y integer DEFAULT 0 NOT NULL
@@ -638,4 +638,5 @@ INSERT INTO schema_migrations (filename) VALUES
 ('20250625123721_add_screen.rb'),
 ('20250625123745_add_playlist_item.rb'),
 ('20250723140212_add_playlist_current_item_foreign_key.rb'),
-('20250723140455_add_model_detail_columns.rb');
+('20250723140455_add_model_detail_columns.rb'),
+('20250730094230_change_model_scale_factor_to_float.rb');
