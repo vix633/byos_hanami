@@ -1,13 +1,16 @@
 .page-designer {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  justify-content: between;
   margin-bottom: 2rem;
 
-  @media only screen and (min-width: 825px) {
-    flex-direction: row;
+  .designer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: between;
+
+    @media only screen and (min-width: 825px) {
+      flex-direction: row;
+    }
   }
 
   .device {
