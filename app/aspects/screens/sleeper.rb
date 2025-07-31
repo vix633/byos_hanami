@@ -16,18 +16,18 @@ module Terminus
 
         def call device
           id = device.friendly_id
-          name = "sleep_#{id.downcase}"
+          name = "terminus_sleep_#{id.downcase}"
 
-          find(name).then { |screen| screen ? Success(screen) : create(id, device) }
+          find(name).then { |screen| screen ? Success(screen) : create(id, name, device) }
         end
 
         private
 
         def find(name) = screen_repository.find_by(name:)
 
-        def create id, device
+        def create id, name, device
           creator.call model_id: device.model_id,
-                       name: "sleep_#{id.downcase}",
+                       name:,
                        label: "Sleep #{id}",
                        content: String.new(view.call(device:))
         end
