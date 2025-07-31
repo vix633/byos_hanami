@@ -11,10 +11,10 @@ RSpec.describe Terminus::Aspects::Screens::Welcomer, :db do
     it "creates welcome screen" do
       expect(welcomer.call(device).success).to have_attributes(
         label: "Welcome ABC123",
-        name: "welcome_abc123",
+        name: "terminus_welcome_abc123",
         image_attributes: hash_including(
           metadata: hash_including(
-            filename: "welcome_abc123.png",
+            filename: "terminus_welcome_abc123.png",
             mime_type: "image/png",
             width: 800,
             height: 480

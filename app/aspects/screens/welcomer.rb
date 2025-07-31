@@ -11,7 +11,7 @@ module Terminus
           id = device.friendly_id
 
           saver.call model_id: device.model_id,
-                     name: "welcome_#{id.downcase}",
+                     name: "terminus_welcome_#{id.downcase}",
                      label: "Welcome #{id}",
                      content: String.new(view.call(device:))
         end

@@ -43,7 +43,7 @@ RSpec.describe Terminus::Aspects::Devices::Provisioner, :db do
         expect(screen).to have_attributes(
           model_id: model.id,
           label: "Welcome #{device.friendly_id}",
-          name: "welcome_#{device.friendly_id.downcase}"
+          name: "terminus_welcome_#{device.friendly_id.downcase}"
         )
       end
 
@@ -54,7 +54,7 @@ RSpec.describe Terminus::Aspects::Devices::Provisioner, :db do
 
         expect(screen).to have_attributes(
           label: "Welcome #{device.friendly_id}",
-          name: "welcome_#{device.friendly_id.downcase}"
+          name: "terminus_welcome_#{device.friendly_id.downcase}"
         )
       end
 
