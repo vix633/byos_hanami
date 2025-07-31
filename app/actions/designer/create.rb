@@ -17,7 +17,8 @@ module Terminus
 
         params do
           required(:template).filled(:hash) do
-            required(:id).filled :string
+            required(:name).filled :string
+            required(:label).filled :string
             required(:content).filled :string
           end
         end
@@ -37,15 +38,15 @@ module Terminus
         private
 
         def render_text template, response
-          id, content = template.values_at :id, :content
+          name, label, content = template.values_at :name, :label, :content
 
-          rebuild_screen id, content
+          rebuild_screen name, label, content
           response.with body: content.strip, status: 201
         end
 
-        def rebuild_screen name, content
+        def rebuild_screen name, label, content
           screen_repository.find_by(name:).then { screen_repository.delete it.id if it }
-          creator.call model_id: load_model.id, label: name.capitalize, name: name, content:
+          creator.call model_id: load_model.id, name:, label:, content:
         end
 
         # FIX: Use dynamic lookup once the UI support picking the correct model.

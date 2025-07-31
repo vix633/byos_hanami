@@ -9,7 +9,7 @@ RSpec.describe Terminus::Actions::Designer::Create, :db do
 
   describe "#call" do
     let(:model) { Factory[:model, name: "og_png"] }
-    let(:parameters) { {template: {id: :test, content: "<p>Test</p>"}} }
+    let(:parameters) { {template: {name: :test, label: "Test", content: "<p>Test</p>"}} }
     let(:repository) { Terminus::Repositories::Screen.new }
 
     before { model }
@@ -65,7 +65,7 @@ RSpec.describe Terminus::Actions::Designer::Create, :db do
     end
 
     it "answers unprocessable content with invalid parameters" do
-      parameters[:template].delete :id
+      parameters[:template].delete :name
       response = Rack::MockRequest.new(action).post "", params: parameters
 
       expect(response.status).to eq(422)

@@ -5,7 +5,8 @@ module Terminus
     module Designer
       # The show view.
       class Show < Terminus::View
-        expose :id
+        expose :name, default: :terminus_designer
+        expose :label, default: "Designer"
       end
     end
   end

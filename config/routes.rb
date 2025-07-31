@@ -91,6 +91,6 @@ module Terminus
     slice(:health, at: "/up") { root to: "show" }
 
     use Rack::Static, root: "public", urls: ["/.well-known/security.txt", "/uploads"]
-    use Aspects::Screens::Designer::Middleware, pattern: %r(/preview/(?<id>.+))
+    use Aspects::Screens::Designer::Middleware, pattern: %r(/preview/(?<name>.+))
   end
 end

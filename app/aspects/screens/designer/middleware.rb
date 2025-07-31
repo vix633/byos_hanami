@@ -27,7 +27,7 @@ module Terminus
             path = request.path
 
             case path.match pattern
-              in id: then [200, headers, event_stream.new(id)]
+              in name: then [200, headers, event_stream.new(name)]
               else application.call environment
             end
           end

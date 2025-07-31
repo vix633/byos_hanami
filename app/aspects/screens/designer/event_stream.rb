@@ -8,7 +8,7 @@ module Terminus
         # Renders device preview image event streams.
         class EventStream
           include Deps[repository: "repositories.screen"]
-          include Initable[%i[req id], kernel: Kernel]
+          include Initable[%i[req name], kernel: Kernel]
 
           def each at: Time.now.to_i
             kernel.loop do
@@ -25,7 +25,7 @@ module Terminus
           private
 
           def load_screen at
-            screen = repository.find_by name: id
+            screen = repository.find_by(name:)
 
             if screen
               width, height = screen.image_attributes[:metadata].values_at :width, :height

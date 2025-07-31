@@ -25,12 +25,13 @@
   <div class="designer">
     <figure class="device"
             hx-ext="sse"
-            sse-connect="/preview/<%= id %>"
+            sse-connect="/preview/<%= name %>"
             sse-swap="preview">
     </figure>
 
     <form action="/designer" method="post" class="form">
-      <%= tag.input name: "template[id]", type: :hidden, value: id %>
+      <%= tag.input name: "template[name]", type: :hidden, value: name %>
+      <%= tag.input name: "template[label]", type: :hidden, value: label %>
       <textarea name="template[content]"
                 class="source"
                 hx-post="/designer"

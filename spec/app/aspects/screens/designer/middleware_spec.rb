@@ -3,13 +3,13 @@
 require "hanami_helper"
 
 RSpec.describe Terminus::Aspects::Screens::Designer::Middleware do
-  subject(:middleware) { described_class.new application, pattern: %r(/preview/(?<id>\d+)) }
+  subject(:middleware) { described_class.new application, pattern: %r(/preview/(?<name>.+)) }
 
   let(:application) { proc { [200, {}, []] } }
 
   describe "#call" do
     it "answers event stream when path matches" do
-      environment = Rack::MockRequest.env_for "/preview/1", method: :get
+      environment = Rack::MockRequest.env_for "/preview/test", method: :get
 
       expect(middleware.call(environment)).to match(
         array_including(
@@ -24,13 +24,17 @@ RSpec.describe Terminus::Aspects::Screens::Designer::Middleware do
       )
     end
 
-    it "passes ID to event stream" do
+    it "passes name to event stream" do
       event_stream = class_spy Terminus::Aspects::Screens::Designer::EventStream
-      middleware = described_class.new(application, pattern: %r(/preview/(?<id>\d+)), event_stream:)
-      environment = Rack::MockRequest.env_for "/preview/123", method: :get
+      middleware = described_class.new(
+        application,
+        pattern: %r(/preview/(?<name>.+)),
+        event_stream:
+      )
+      environment = Rack::MockRequest.env_for "/preview/test", method: :get
       middleware.call environment
 
-      expect(event_stream).to have_received(:new).with("123")
+      expect(event_stream).to have_received(:new).with("test")
     end
 
     it "answers original response when path doesn't match" do

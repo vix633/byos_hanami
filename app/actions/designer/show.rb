@@ -5,9 +5,7 @@ module Terminus
     module Designer
       # The show action.
       class Show < Terminus::Action
-        def handle _request, response
-          response.render view, id: :designer
-        end
+        def handle(*, response) = response.render view
       end
     end
   end
