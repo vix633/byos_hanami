@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 module Terminus
-  module API
-    module Headers
-      Contract = Dry::Schema.Params do
+  module Contracts
+    module Firmware
+      # Validates request headers.
+      Header = Dry::Schema.Params do
         optional(:HTTP_ACCESS_TOKEN).maybe :string
         optional(:HTTP_BATTERY_VOLTAGE).filled :float
         optional(:HTTP_FW_VERSION).filled Types::Version

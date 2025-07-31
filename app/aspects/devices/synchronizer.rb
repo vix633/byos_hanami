@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "dry/monads"
-require "initable"
 require "pipeable"
 
 module Terminus
@@ -9,8 +8,11 @@ module Terminus
     module Devices
       # Updates device based on firmware header information.
       class Synchronizer
-        include Initable[firmware_parser: proc { Terminus::API::Headers::Parser.new }]
-        include Deps[:settings, repository: "repositories.device"]
+        include Deps[
+          :settings,
+          firmware_parser: "aspects.firmware.header",
+          repository: "repositories.device"
+        ]
         include Pipeable
         include Dry::Monads[:result]
 

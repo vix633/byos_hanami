@@ -3,8 +3,8 @@
 require "refinements/hash"
 
 module Terminus
-  module API
-    module Headers
+  module Models
+    module Firmware
       KEY_MAP = {
         HTTP_ACCESS_TOKEN: :api_key,
         HTTP_BATTERY_VOLTAGE: :battery,
@@ -18,8 +18,8 @@ module Terminus
         HTTP_HEIGHT: :height
       }.freeze
 
-      # Models the HTTP headers for quick access of attributes.
-      Model = Struct.new(*KEY_MAP.values) do
+      # Models the HTTP headers for quick access to attributes.
+      Header = Struct.new(*KEY_MAP.values) do
         using Refinements::Hash
 
         def self.for(headers, key_map: KEY_MAP) = new(**headers.transform_keys(key_map))

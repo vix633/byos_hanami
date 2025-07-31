@@ -3,7 +3,7 @@
 require "hanami_helper"
 require "versionaire"
 
-RSpec.describe Terminus::API::Headers::Model do
+RSpec.describe Terminus::Models::Firmware::Header do
   using Refinements::Hash
   using Versionaire::Cast
 
