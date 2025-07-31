@@ -1,12 +1,28 @@
 <% content_for :title, "Designer | Terminus" %>
 
-<section class="page-body">
+<section class="page-designer">
   <header class="page-header">
-    <h1 class="label">Designer</h1>
-    <p class="page-subheader">Use the text area below to design custom screens for your device using pure HTML/CSS. Changes are applied automatically as you make edits. Enjoy!</p>
+    <h1 class="label">
+      Designer
+
+      <button class="popover-trigger" popovertarget="popover-shortcuts">
+        <%= image_tag "icons/info.svg", width: 20, height: 20, loading: :lazy %>
+      </button>
+    </h1>
+
+    <dialog id="popover-shortcuts" class="popover-content" popover="auto">
+      <button class="close" popovertarget="popover-shortcuts" popovertargetaction="hide">
+        <span aria-hidden=true>❌</span>
+        <span class="screen_reader">Close</span>
+      </button>
+
+      <h3 class="label">Overview</h3>
+
+      <p>Use the text area to design custom screens for your device using pure HTML/CSS. Changes are applied automatically as you make edits and saved as a screen which you can view via the <%= link_to "Screens", routes.path(:screens) %> page.</p>
+    </dialog>
   </header>
 
-  <div class="page-designer">
+  <div class="designer">
     <figure class="device"
             hx-ext="sse"
             sse-connect="/preview/<%= id %>"
