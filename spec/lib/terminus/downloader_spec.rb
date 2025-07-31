@@ -55,7 +55,7 @@ RSpec.describe Terminus::Downloader do
       allow(response).to receive(:then).and_return(Failure(:danger))
       downloader.call uri
 
-      expect(logger.reread).to match(/ERROR.+Unable to perform download/)
+      expect(logger.reread).to match(%r(ERROR.+Unable to download: "https://test.io/test.txt"\.))
     end
   end
 end
