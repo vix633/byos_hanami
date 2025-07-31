@@ -23,5 +23,10 @@ RSpec.describe Terminus::Views::Welcome::New, :db do
     it "includes firmware version" do
       expect(view.call(device:).to_s).to include(%(<dd class="value">1.2.3</dd>))
     end
+
+    it "includes question mark when firmware version isn't defined" do
+      device = Factory[:device, firmware_version: nil]
+      expect(view.call(device:).to_s).to include(%(<dd class="value">?</dd>))
+    end
   end
 end
