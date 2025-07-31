@@ -8,7 +8,7 @@ module Terminus
         class Create < Base
           include Deps[
             :logger,
-            transformer: "aspects.api.transformers.firmware_log",
+            transformer: "aspects.firmware.log_transformer",
             device_repository: "repositories.device",
             log_repository: "repositories.device_log"
           ]

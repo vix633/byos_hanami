@@ -2,7 +2,7 @@
 
 require "hanami_helper"
 
-RSpec.describe Terminus::Aspects::API::Transformers::FirmwareLog do
+RSpec.describe Terminus::Aspects::Firmware::LogTransformer do
   subject(:firmware_log) { described_class.new }
 
   let :payload do

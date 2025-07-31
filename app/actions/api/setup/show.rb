@@ -11,7 +11,7 @@ module Terminus
         # The show action.
         class Show < Base
           include Deps["aspects.devices.provisioner", model_repository: "repositories.model"]
-          include Initable[payload: Aspects::API::Responses::Setup]
+          include Initable[payload: Terminus::Models::Firmware::Setup]
           include Dry::Monads[:result]
 
           using Refines::Actions::Response
