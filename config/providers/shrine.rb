@@ -6,14 +6,15 @@ Hanami.app.register_provider :shrine do
     require "shrine/storage/file_system"
   end
 
-  # :nocov:
   start do
     Shrine.storages = if Hanami.env? :test
                         {cache: Shrine::Storage::Memory.new, store: Shrine::Storage::Memory.new}
                       else
                         {
+                          # :nocov:
                           cache: Shrine::Storage::FileSystem.new("public", prefix: "uploads/cache"),
                           store: Shrine::Storage::FileSystem.new("public", prefix: "uploads")
+                          # :nocov:
                         }
                       end
 

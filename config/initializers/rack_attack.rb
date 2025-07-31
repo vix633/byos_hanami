@@ -12,6 +12,7 @@ allowed_subnets = [
   IPAddr.new("::1"),
   *ENV.fetch("RACK_ATTACK_ALLOWED_SUBNETS", "").split(",").map { IPAddr.new it }
 ]
+# :nocov:
 
 Rack::Attack.safelist "allow subnets" do |request|
   allowed_subnets.any? { |subnet| subnet.include? request.ip }
