@@ -10,7 +10,7 @@ module Terminus
         # The create action.
         class Create < Base
           include Deps[
-            creator: "aspects.screens.creator",
+            "aspects.screens.creator",
             model_repository: "repositories.model",
             repository: "repositories.screen"
           ]

@@ -10,7 +10,7 @@ module Terminus
         include Deps[
           "aspects.screens.creator",
           view: "views.sleep.new",
-          screen_repository: "repositories.screen"
+          repository: "repositories.screen"
         ]
         include Dry::Monads[:result]
 
@@ -18,12 +18,11 @@ module Terminus
           id = device.friendly_id
           name = "terminus_sleep_#{id.downcase}"
 
-          find(name).then { |screen| screen ? Success(screen) : create(id, name, device) }
+          repository.find_by(name:)
+                    .then { |screen| screen ? Success(screen) : create(id, name, device) }
         end
 
         private
-
-        def find(name) = screen_repository.find_by(name:)
 
         def create id, name, device
           creator.call model_id: device.model_id,
