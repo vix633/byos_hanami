@@ -2,10 +2,10 @@
 
 module Terminus
   module Views
-    module Setup
+    module Welcome
       # The new view.
       class New < Terminus::View
-        config.layout = "setup"
+        config.layout = "welcome"
 
         expose :device
       end

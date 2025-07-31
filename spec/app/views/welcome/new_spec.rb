@@ -2,7 +2,7 @@
 
 require "hanami_helper"
 
-RSpec.describe Terminus::Views::Setup::New, :db do
+RSpec.describe Terminus::Views::Welcome::New, :db do
   subject(:view) { described_class.new }
 
   let(:device) { Factory[:device] }
