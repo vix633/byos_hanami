@@ -11,7 +11,7 @@ module Terminus
           query = request.params[:query]
           firmware = load query
 
-          if htmx.request(**request.env).trigger == "search"
+          if htmx.request? request.env, :trigger, "search"
             add_htmx_headers response, query
             response.render view, firmware:, query:, layout: false
           else
@@ -30,7 +30,7 @@ module Terminus
         end
 
         def add_htmx_headers response, query
-          response.headers["HX-Push-Url"] = routes.path :firmware, query:
+          htmx.response! response.headers, push_url: routes.path(:firmware, query:)
         end
       end
     end

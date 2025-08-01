@@ -25,7 +25,7 @@ module Terminus
 
         def view_settings request, parameters
           settings = {models: model_repository.all, screen: repository.find(parameters[:id])}
-          settings[:layout] = false if htmx.request(**request.env).request?
+          settings[:layout] = false if htmx.request? request.env, :request, "true"
           settings
         end
       end

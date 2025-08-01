@@ -11,7 +11,7 @@ module Terminus
           query = request.params[:query].to_s
           devices = load_devices query
 
-          if htmx.request(**request.env).trigger == "search"
+          if htmx.request? request.env, :trigger, "search"
             add_htmx_headers response, query
             response.render view, devices:, query:, layout: false
           else
@@ -28,7 +28,7 @@ module Terminus
         def add_htmx_headers response, query
           return if query.empty?
 
-          response.headers["HX-Push-Url"] = routes.path :devices, query:
+          htmx.response! response.headers, push_url: routes.path(:devices, query:)
         end
       end
     end

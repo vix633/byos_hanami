@@ -26,7 +26,7 @@ module Terminus
 
           def view_settings request, parameters
             settings = {playlist: repository.find(parameters[:id]), devices: device_repository.all}
-            settings[:layout] = false if htmx.request(**request.env).request?
+            settings[:layout] = false if htmx.request? request.env, :request, "true"
             settings
           end
         end

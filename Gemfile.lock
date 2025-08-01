@@ -1,12 +1,3 @@
-GIT
-  remote: https://github.com/bkuhlmann/htmx.git
-  revision: fe39076389a160372e958838ef9746049b79d3cf
-  branch: release
-  specs:
-    htmx (2.3.0)
-      refinements (~> 13.3)
-      zeitwerk (~> 2.7)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -240,6 +231,9 @@ GEM
       better_errors (~> 2.10, >= 2.10.1)
       binding_of_caller (~> 1.0)
     hansi (0.2.1)
+    htmx (2.4.0)
+      refinements (~> 13.3)
+      zeitwerk (~> 2.7)
     http (5.3.1)
       addressable (~> 2.8)
       http-cookie (~> 1.0)
@@ -466,7 +460,7 @@ GEM
     sanitize (7.0.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.16.8)
-    sequel (5.94.0)
+    sequel (5.95.0)
       bigdecimal
     shrine (3.6.0)
       content_disposition (~> 1.0)
@@ -561,7 +555,7 @@ DEPENDENCIES
   hanami-validations (~> 2.2)
   hanami-view (~> 2.2)
   hanami-webconsole (~> 2.2)
-  htmx!
+  htmx (~> 2.4)
   http (~> 5.2)
   infusible (~> 4.2)
   initable (~> 0.3)
@@ -669,7 +663,7 @@ CHECKSUMS
   hanami-view (2.2.1) sha256=09179b2ce6f30e1b9e939d85f44cf11ca4803bad7a91788376586b0e31bb2560
   hanami-webconsole (2.2.0) sha256=486fba76c2664a63fcd30729d9c97a763264944dc120ff6b3ad1e29ad06e0931
   hansi (0.2.1) sha256=7e27dfd729f1692a3a7690fc0ef3af9d5e3cfc0285bb135cae7e56180e4805db
-  htmx (2.3.0)
+  htmx (2.4.0) sha256=31e5d272556f5c16a0e29c9c58e2a1e4546095cf6635a978d536658c9582c581
   http (5.3.1) sha256=c50802d8e9be3926cb84ac3b36d1a31fbbac383bc4cbecdce9053cb604231d7d
   http-cookie (1.0.8) sha256=b14fe0445cf24bf9ae098633e9b8d42e4c07c3c1f700672b09fbfe32ffd41aa6
   http-form_data (2.3.0) sha256=cc4eeb1361d9876821e31d7b1cf0b68f1cf874b201d27903480479d86448a5f3
@@ -765,7 +759,7 @@ CHECKSUMS
   ruby2_keywords (0.0.5) sha256=ffd13740c573b7301cf7a2e61fc857b2a8e3d3aff32545d6f8300d8bae10e3ef
   runcom (12.3.0) sha256=0e84c9f6532bdd447aed22c62c12b8315cd8b277e4335e19981fa085c1e11734
   sanitize (7.0.0) sha256=269d1b9d7326e69307723af5643ec032ff86ad616e72a3b36d301ac75a273984
-  sequel (5.94.0) sha256=dfb13a6da870a060f7f8ac47969944281b51419181dc695c810ec7177d0e2e59
+  sequel (5.95.0) sha256=617c60b494936e0e2a06ab80d74e4fdaa4ed46566b01b59771249f251cbf32a6
   shrine (3.6.0) sha256=d361b7e5a452d65d900f3326ed99fe343d0d3b2ce17e012fc04ae85b0373358c
   simplecov (0.22.0) sha256=fe2622c7834ff23b98066bb0a854284b2729a569ac659f82621fc22ef36213a5
   simplecov-html (0.13.2) sha256=bd0b8e54e7c2d7685927e8d6286466359b6f16b18cb0df47b508e8d73c777246

@@ -30,7 +30,7 @@ module Terminus
             playlists: playlist_repository.all,
             device: repository.find(parameters[:id])
           }
-          settings[:layout] = false if htmx.request(**request.env).request?
+          settings[:layout] = false if htmx.request? request.env, :request, "true"
           settings
         end
       end

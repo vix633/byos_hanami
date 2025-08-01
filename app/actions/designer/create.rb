@@ -28,7 +28,7 @@ module Terminus
 
           halt 422 unless parameters.valid?
 
-          if htmx.request(**request.env).request?
+          if htmx.request? request.env, :request, "true"
             render_text parameters[:template], response
           else
             response.render show_view, id: Time.new.utc.to_i
