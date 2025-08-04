@@ -42,7 +42,7 @@ module Terminus
           browser.new(settings).then do |instance|
             instance.create_page
             instance.set_viewport(**viewport)
-            instance.execute "document.documentElement.innerHTML = `#{content}`;"
+            instance.main_frame.content = content
             instance.network.wait_for_idle
             instance.screenshot path: path.to_s
             instance.quit
