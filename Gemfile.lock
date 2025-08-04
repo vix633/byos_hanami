@@ -271,7 +271,7 @@ GEM
     llhttp-ffi (0.5.1)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
-    localhost (1.5.0)
+    localhost (1.6.0)
     logger (1.7.0)
     marameters (4.4.0)
       refinements (~> 13.3)
@@ -681,7 +681,7 @@ CHECKSUMS
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
   listen (3.9.0) sha256=db9e4424e0e5834480385197c139cb6b0ae0ef28cc13310cfd1ca78377d59c67
   llhttp-ffi (0.5.1) sha256=9a25a7fc19311f691a78c9c0ac0fbf4675adbd0cca74310228fdf841018fa7bc
-  localhost (1.5.0) sha256=ac48998ca1a4df75bf3c7038beb9d0baa5afb934bc4ed991d1b795f6a34feaf2
+  localhost (1.6.0) sha256=d99697c6344283d39d8ae8572c22fcd556c95347a30d361594c36846b112fa17
   logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
   marameters (4.4.0) sha256=3be3d3cdef68950b2b067f4d897603b5a40437ecf51549c9137c2d427a24f376
   marcel (1.0.4) sha256=0d5649feb64b8f19f3d3468b96c680bae9746335d02194270287868a661516a4
