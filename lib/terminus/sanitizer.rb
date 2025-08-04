@@ -24,7 +24,8 @@ module Terminus
     def elements = defaults[:elements].including "html", "link", "script", "source", "style"
 
     def attributes
-      defaults[:attributes].merge "link" => %w[href rel],
+      defaults[:attributes].merge "div" => [:data],
+                                  "link" => %w[href rel],
                                   "script" => %w[src],
                                   "source" => %w[type src srcset sizes media height width]
     end

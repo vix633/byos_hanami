@@ -6,6 +6,17 @@ RSpec.describe Terminus::Sanitizer do
   subject(:sanitizer) { described_class.new }
 
   describe "#call" do
+    it "allows div element with data attributes" do
+      source = <<~HTML.squeeze(" ").delete("\n").strip
+        <html><head></head>
+          <body>
+            <div data-list-limit="true"></div>
+        </body></html>
+      HTML
+
+      expect(sanitizer.call(source)).to eq(source)
+    end
+
     it "allows link element with attributes" do
       source = <<~HTML.squeeze(" ").delete("\n").strip
         <html><head> <link rel="stylesheet" href="https://usetrmnl.com/css/latest/plugins.css">
