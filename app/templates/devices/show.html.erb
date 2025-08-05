@@ -19,7 +19,6 @@
       <%= render "measurements", device: %>
 
       <div class="page-actions">
-        <%= link_to "Devices", routes.path(:devices) %>
         <%= render "edit_link", device: %>
         <%= link_to "Logs", routes.path(:device_logs, device_id: device.id) %>
       </div>

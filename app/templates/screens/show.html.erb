@@ -15,8 +15,6 @@
       <h2 class="label"><%= screen.label %></h2>
 
       <div class="page-actions">
-        <%= link_to "Screens", routes.path(:screens) %>
-
         <a href="<%= routes.path :screen_edit, id: screen.id %>"
            hx-get="<%= routes.path :screen_edit, id: screen.id %>"
            hx-target="closest .page-screens"

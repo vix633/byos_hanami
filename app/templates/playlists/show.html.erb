@@ -13,8 +13,6 @@
       <h2 class="label"><%= playlist.label %></h2>
 
       <div class="page-actions">
-        <%= link_to "Playlists", routes.path(:playlists) %>
-
         <a href="<%= routes.path :playlist_edit, id: playlist.id %>"
            hx-get="<%= routes.path :playlist_edit, id: playlist.id %>"
            hx-target="closest .page-playlists"
