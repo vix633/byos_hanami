@@ -37,7 +37,8 @@ gem "rom-sql", "~> 3.7"
 gem "sanitize", "~> 7.0"
 gem "sequel", "~> 5.89"
 gem "shrine", "~> 3.6"
-gem "trmnl-api", "~> 0.3"
+gem "trmnl-api", "~> 0.4"
+
 gem "versionaire", "~> 14.1"
 
 group :quality do
