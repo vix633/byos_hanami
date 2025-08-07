@@ -10,13 +10,15 @@ detectors:
       - Terminus::Actions::Devices::Create#render_new
       - Terminus::Actions::Devices::Update#edit
       - Terminus::Actions::Firmware::Delete#render
-      - Terminus::IPFinder#all
       - Terminus::Aspects::Screens::Converter#convert
+      - Terminus::Aspects::Screens::Shoter#save
+      - Terminus::IPFinder#all
   LongParameterList:
     enabled: false
   TooManyStatements:
     exclude:
       - Terminus::Aspects::Firmware::Downloader#get
       - Terminus::Aspects::Screens::Converter#convert
+      - Terminus::Aspects::Screens::Shoter#save
       - Terminus::Views::Parts::Device#battery_percentage
       - Terminus::Views::Parts::Device#wifi_percentage

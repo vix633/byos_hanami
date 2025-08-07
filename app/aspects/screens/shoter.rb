@@ -2,6 +2,7 @@
 
 require "dry/monads"
 require "ferrum"
+require "refinements/pathname"
 
 module Terminus
   module Aspects
@@ -9,6 +10,8 @@ module Terminus
       # Saves web page as screenshot.
       class Shoter
         include Dry::Monads[:result]
+
+        using Refinements::Pathname
 
         SETTINGS = {
           browser_options: {
@@ -27,24 +30,24 @@ module Terminus
           @browser = browser
         end
 
-        def call content, path, viewport: VIEWPORT
-          save content, path, viewport
-          Success path
+        def call content, output_path, viewport: VIEWPORT
+          save content, viewport, output_path
+          Success output_path
         end
 
         private
 
         attr_reader :settings, :browser
 
-        # :reek:FeatureEnvy
-        # :reek:TooManyStatements
-        def save content, path, viewport
-          browser.new(settings).then do |instance|
+        def save content, viewport, output_path
+          Pathname.mktmpdir do |work_dir|
+            instance = browser.new settings
+
             instance.create_page
             instance.set_viewport(**viewport)
-            instance.main_frame.content = content
-            instance.network.wait_for_idle
-            instance.screenshot path: path.to_s
+            instance.main_frame.content = work_dir.join("content.html").write(content).read
+            instance.network.wait_for_idle duration: 1
+            instance.screenshot path: output_path.to_s
             instance.quit
           end
         end
