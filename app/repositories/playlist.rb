@@ -11,12 +11,6 @@ module Terminus
                 .to_a
       end
 
-      def all_by(**)
-        playlist.where(**)
-                .order { created_at.asc }
-                .to_a
-      end
-
       def find(id) = (with_current_item.by_pk(id).one if id)
 
       def find_by(**) = with_current_item.where(**).one
@@ -26,6 +20,12 @@ module Terminus
           record = find id
           record.current_item_id ? record : update(id, current_item_id: item_id)
         end
+      end
+
+      def where(**)
+        playlist.where(**)
+                .order { created_at.asc }
+                .to_a
       end
 
       private

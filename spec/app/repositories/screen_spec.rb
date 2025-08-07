@@ -20,24 +20,6 @@ RSpec.describe Terminus::Repositories::Screen, :db do
     end
   end
 
-  describe "#all_by" do
-    it "answers record for single attribute" do
-      expect(repository.all_by(label: screen.label)).to contain_exactly(screen)
-    end
-
-    it "answers record for multiple attributes" do
-      expect(repository.all_by(label: screen.label, name: screen.name)).to contain_exactly(screen)
-    end
-
-    it "answers empty array for unknown value" do
-      expect(repository.all_by(label: "bogus")).to eq([])
-    end
-
-    it "answers empty array for nil" do
-      expect(repository.all_by(label: nil)).to eq([])
-    end
-  end
-
   describe "#create_with_image" do
     let(:struct) { Factory.structs[:screen, :with_image] }
     let(:model) { Factory[:model] }
@@ -138,6 +120,24 @@ RSpec.describe Terminus::Repositories::Screen, :db do
 
     it "answers nil for nil" do
       expect(repository.find_by(name: nil)).to be(nil)
+    end
+  end
+
+  describe "#where" do
+    it "answers record for single attribute" do
+      expect(repository.where(label: screen.label)).to contain_exactly(screen)
+    end
+
+    it "answers record for multiple attributes" do
+      expect(repository.where(label: screen.label, name: screen.name)).to contain_exactly(screen)
+    end
+
+    it "answers empty array for unknown value" do
+      expect(repository.where(label: "bogus")).to eq([])
+    end
+
+    it "answers empty array for nil" do
+      expect(repository.where(label: nil)).to eq([])
     end
   end
 end

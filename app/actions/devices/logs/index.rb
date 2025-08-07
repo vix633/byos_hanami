@@ -47,7 +47,7 @@ module Terminus
           end
 
           def load_logs device_id, query
-            return repository.all_by device_id: device_id if query.empty?
+            return repository.where device_id: device_id if query.empty?
 
             repository.all_by_message device_id, query
           end

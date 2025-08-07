@@ -11,12 +11,6 @@ module Terminus
                          .to_a
       end
 
-      def all_by(**)
-        with_associations.where(**)
-                         .order { [playlist_id, position.asc] }
-                         .to_a
-      end
-
       def create_with_position(offset: 1, **)
         playlist_item.transaction do
           playlist_item.command(:create).call(position: playlist_item.count + offset, **)
@@ -29,6 +23,12 @@ module Terminus
       def find_by(**) = with_associations.where(**).one
 
       def next_item(after:, playlist_id:) = playlist_item.next_item(after:, playlist_id:)
+
+      def where(**)
+        with_associations.where(**)
+                         .order { [playlist_id, position.asc] }
+                         .to_a
+      end
 
       private
 

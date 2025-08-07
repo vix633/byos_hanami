@@ -21,7 +21,7 @@ module Terminus
 
         private
 
-        def load(query) = query.empty? ? repository.all : repository.all_by(label: query)
+        def load(query) = query.empty? ? repository.all : repository.where(label: query)
 
         def add_htmx_headers response, query
           return if query.empty?

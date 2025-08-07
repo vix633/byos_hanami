@@ -12,10 +12,7 @@ module Terminus
             parameters = request.params
             playlist_id = parameters[:playlist_id]
 
-            response.render view,
-                            playlist_id:,
-                            items: repository.all_by(playlist_id:),
-                            layout: false
+            response.render view, playlist_id:, items: repository.where(playlist_id:), layout: false
           end
         end
       end

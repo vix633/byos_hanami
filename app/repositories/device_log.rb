@@ -12,12 +12,6 @@ module Terminus
                    .to_a
       end
 
-      def all_by(**)
-        device_logs.where(**)
-                   .order { created_at.desc }
-                   .to_a
-      end
-
       def all_by_message device_id, value
         device_logs.where(device_id:)
                    .where { message.ilike "%#{value}%" }
@@ -30,6 +24,12 @@ module Terminus
       def delete_by_device(device_id, id) = device_logs.where(device_id:, id:).delete
 
       def delete_all_by_device(device_id) = device_logs.where(device_id:).command(:delete).call
+
+      def where(**)
+        device_logs.where(**)
+                   .order { created_at.desc }
+                   .to_a
+      end
     end
   end
 end

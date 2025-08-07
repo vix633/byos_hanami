@@ -20,28 +20,6 @@ RSpec.describe Terminus::Repositories::PlaylistItem, :db do
     end
   end
 
-  describe "#all_by" do
-    it "answers record for single attribute" do
-      result = repository.all_by playlist_id: playlist_item.playlist_id
-      expect(result).to contain_exactly(playlist_item)
-    end
-
-    it "answers record for multiple attributes" do
-      result = repository.all_by playlist_id: playlist_item.playlist_id,
-                                 screen_id: playlist_item.screen_id
-
-      expect(result).to contain_exactly(playlist_item)
-    end
-
-    it "answers empty array for unknown value" do
-      expect(repository.all_by(playlist_id: 666)).to eq([])
-    end
-
-    it "answers empty array for nil" do
-      expect(repository.all_by(playlist_id: nil)).to eq([])
-    end
-  end
-
   describe "#create_with_position" do
     let(:playlist) { Factory[:playlist] }
     let(:screen) { Factory[:screen] }
@@ -104,6 +82,28 @@ RSpec.describe Terminus::Repositories::PlaylistItem, :db do
       expect(repository.next_item(after: one.position, playlist_id:)).to have_attributes(
         position: two.position
       )
+    end
+  end
+
+  describe "#where" do
+    it "answers record for single attribute" do
+      result = repository.where playlist_id: playlist_item.playlist_id
+      expect(result).to contain_exactly(playlist_item)
+    end
+
+    it "answers record for multiple attributes" do
+      result = repository.where playlist_id: playlist_item.playlist_id,
+                                screen_id: playlist_item.screen_id
+
+      expect(result).to contain_exactly(playlist_item)
+    end
+
+    it "answers empty array for unknown value" do
+      expect(repository.where(playlist_id: 666)).to eq([])
+    end
+
+    it "answers empty array for nil" do
+      expect(repository.where(playlist_id: nil)).to eq([])
     end
   end
 end

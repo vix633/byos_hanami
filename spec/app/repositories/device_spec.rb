@@ -20,21 +20,6 @@ RSpec.describe Terminus::Repositories::Device, :db do
     end
   end
 
-  describe "#all_by" do
-    it "answers record for label" do
-      records = repository.all_by(label: device.label).map { it.to_h.tap { it.delete :playlist } }
-      expect(records).to contain_exactly(device.to_h)
-    end
-
-    it "answers empty array for unknown value" do
-      expect(repository.all_by(label: "bogus")).to eq([])
-    end
-
-    it "answers empty array for nil" do
-      expect(repository.all_by(label: nil)).to eq([])
-    end
-  end
-
   describe "#find" do
     it "answers record by ID" do
       record = repository.find(device.id).to_h.tap { it.delete :playlist }
@@ -112,6 +97,21 @@ RSpec.describe Terminus::Repositories::Device, :db do
     it "answers nil when device can't be found" do
       update = repository.update_by_mac_address "bogus"
       expect(update).to be(nil)
+    end
+  end
+
+  describe "#where" do
+    it "answers record for label" do
+      records = repository.where(label: device.label).map { it.to_h.tap { it.delete :playlist } }
+      expect(records).to contain_exactly(device.to_h)
+    end
+
+    it "answers empty array for unknown value" do
+      expect(repository.where(label: "bogus")).to eq([])
+    end
+
+    it "answers empty array for nil" do
+      expect(repository.where(label: nil)).to eq([])
     end
   end
 end

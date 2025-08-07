@@ -18,26 +18,6 @@ RSpec.describe Terminus::Repositories::DeviceLog, :db do
     end
   end
 
-  describe "#all_by" do
-    it "answers records" do
-      expect(repository.all_by(device_id: log.device_id)).to contain_exactly(
-        have_attributes(id: log.id, device_id: log.device_id)
-      )
-    end
-
-    it "answers empty array when records don't exist" do
-      expect(repository.all_by(device_id: 13)).to eq([])
-    end
-
-    it "answers empty array when not found" do
-      expect(repository.all_by(device_id: 13, refresh_rate: 1)).to eq([])
-    end
-
-    it "answers empty array when nil" do
-      expect(repository.all_by(refresh_rate: nil)).to eq([])
-    end
-  end
-
   describe "#all_by_message" do
     it "answers records for device ID and message" do
       expect(repository.all_by_message(log.device_id, "danger")).to contain_exactly(
@@ -91,6 +71,26 @@ RSpec.describe Terminus::Repositories::DeviceLog, :db do
       repository.delete_all_by_device id
 
       expect(repository.all).to eq([])
+    end
+  end
+
+  describe "#where" do
+    it "answers records" do
+      expect(repository.where(device_id: log.device_id)).to contain_exactly(
+        have_attributes(id: log.id, device_id: log.device_id)
+      )
+    end
+
+    it "answers empty array when records don't exist" do
+      expect(repository.where(device_id: 13)).to eq([])
+    end
+
+    it "answers empty array when not found" do
+      expect(repository.where(device_id: 13, refresh_rate: 1)).to eq([])
+    end
+
+    it "answers empty array when nil" do
+      expect(repository.where(refresh_rate: nil)).to eq([])
     end
   end
 end

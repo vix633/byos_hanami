@@ -41,7 +41,7 @@ module Terminus
           end
 
           def view_settings request, playlist
-            settings = {playlist:, items: playlist_item_repository.all_by(playlist_id: playlist.id)}
+            settings = {playlist:, items: playlist_item_repository.where(playlist_id: playlist.id)}
             settings[:layout] = false if htmx.request? request.env, :request, "true"
             settings
           end

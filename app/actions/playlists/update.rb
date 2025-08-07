@@ -42,7 +42,7 @@ module Terminus
 
           response.render show_view,
                           playlist: repository.find(id),
-                          items: item_repository.all_by(playlist_id: id),
+                          items: item_repository.where(playlist_id: id),
                           layout: false
         end
 

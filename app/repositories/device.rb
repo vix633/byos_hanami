@@ -11,12 +11,6 @@ module Terminus
                          .to_a
       end
 
-      def all_by(**)
-        with_associations.where(**)
-                         .order { created_at.asc }
-                         .to_a
-      end
-
       def find(id) = (with_associations.by_pk(id).one if id)
 
       def find_by(**) = with_associations.where(**).one
@@ -32,6 +26,12 @@ module Terminus
         return unless device
 
         update device.id, **attributes
+      end
+
+      def where(**)
+        with_associations.where(**)
+                         .order { created_at.asc }
+                         .to_a
       end
 
       private

@@ -20,26 +20,6 @@ RSpec.describe Terminus::Repositories::Playlist, :db do
     end
   end
 
-  describe "#all_by" do
-    it "answers record for single attribute" do
-      expect(repository.all_by(label: playlist.label)).to contain_exactly(playlist)
-    end
-
-    it "answers record for multiple attributes" do
-      expect(repository.all_by(label: playlist.label, name: playlist.name)).to contain_exactly(
-        playlist
-      )
-    end
-
-    it "answers empty array for unknown value" do
-      expect(repository.all_by(label: "bogus")).to eq([])
-    end
-
-    it "answers empty array for nil" do
-      expect(repository.all_by(label: nil)).to eq([])
-    end
-  end
-
   describe "#find" do
     it "answers record by ID" do
       expect(repository.find(playlist.id)).to have_attributes(playlist.to_h)
@@ -89,6 +69,26 @@ RSpec.describe Terminus::Repositories::Playlist, :db do
       update = repository.update_current_item playlist.id, 666
 
       expect(update.current_item_id).to eq(item.id)
+    end
+  end
+
+  describe "#where" do
+    it "answers record for single attribute" do
+      expect(repository.where(label: playlist.label)).to contain_exactly(playlist)
+    end
+
+    it "answers record for multiple attributes" do
+      expect(repository.where(label: playlist.label, name: playlist.name)).to contain_exactly(
+        playlist
+      )
+    end
+
+    it "answers empty array for unknown value" do
+      expect(repository.where(label: "bogus")).to eq([])
+    end
+
+    it "answers empty array for nil" do
+      expect(repository.where(label: nil)).to eq([])
     end
   end
 end
