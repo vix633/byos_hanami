@@ -6,7 +6,7 @@
   </header>
 
   <p class="introduction">
-    Welcome to the problem details page where you can information for resolving API errors.
+    Welcome to the problem details page where you can find information for resolving API errors.
   </p>
 
   <details name="details">
@@ -189,7 +189,20 @@
 
     <p>Could not create screen for device. When making an API HTTP POST request, the following required and optional keys should be used within the hash provided for the <code>image</code> key.</p>
 
-    <h2 class="label">Required (use only one):</h2>
+    <h2 class="label">Required:</h2>
+
+    <dl class="site-definition-list">
+      <dt class="key">model_id</dt>
+      <dd class="value">Must be the primary ID of an existing model.</dd>
+
+      <dt class="key">label</dt>
+      <dd class="value">Must be a unique string.</dd>
+
+      <dt class="key">name</dt>
+      <dd class="value">Must be a unique string (generally the snake case version of the label).</dd>
+    </dl>
+
+    <h2 class="label">Optional (must be one of the following):</h2>
 
     <dl class="site-definition-list">
       <dt class="key">content</dt>
@@ -200,18 +213,6 @@
 
       <dt class="key">data</dt>
       <dd class="value">Must be Base64 encoded image data. In Ruby, that'd be: <code>Base64.strict_encode64 file.read</code>.</dd>
-    </dl>
-
-    <h2 class="label">Optional:</h2>
-
-    <dl class="site-definition-list">
-      <dt class="key">dimensions</dt>
-      <dd class="value">
-        Use to render your screen with specific dimensions. The <a href="https://www.imagemagick.org/script/command-line-processing.php#geometry">ImageMagick Geometry</a> syntax is available to you to render your screen as desired. If no dimensions are supplied, then the default dimensions of <code>800x480</code> are used.
-      </dd>
-
-      <dt class="key">file_name</dt>
-      <dd class="value">Use to create a screen with an automatically generated or specific file name. Example: <code>demo.png</code>. Otherwise, if no file name is provided, a UUID will be used instead. Example: <code>e2a8a4bc-11ba-40a4-9184-5275f4172da4.png</code>. You can also use <code>%&lt;name&gt;s</code> with a file extension to render an automatically generated file. Example: <code>%&lt;name&gt;s.bmp</code>. Only <code>.bmp</code> and <code>.png</code> file extensions are supported.</dd>
 
       <dt class="key">preprocessed</dt>
       <dd class="value">
