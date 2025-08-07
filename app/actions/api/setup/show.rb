@@ -46,7 +46,7 @@ module Terminus
           def find_model_id = model_repository.find_by(name: "og_png").then { it.id if it }
 
           def render_success device, response
-            response.with body: payload.for(device).to_json, status: 200
+            response.body = payload.for(device).to_json
           end
 
           def not_found error, response

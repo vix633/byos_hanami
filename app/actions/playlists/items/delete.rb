@@ -8,8 +8,6 @@ module Terminus
         class Delete < Terminus::Action
           include Deps[repository: "repositories.playlist_item"]
 
-          using Refines::Actions::Response
-
           params do
             required(:playlist_id).filled :integer
             required(:id).filled :integer
@@ -22,7 +20,7 @@ module Terminus
 
             item = repository.find_by(**parameters)
             repository.delete item.id
-            response.with body: "", status: 200
+            response.body = ""
           end
         end
       end

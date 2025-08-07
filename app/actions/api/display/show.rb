@@ -42,7 +42,7 @@ module Terminus
           end
 
           def success device, image_attributes, response
-            response.with body: build_payload(device, image_attributes).to_json, status: 200
+            response.body = build_payload(device, image_attributes).to_json
           end
 
           def error_for device, message, response
@@ -80,7 +80,7 @@ module Terminus
               **device.as_api_display
             ]
 
-            response.with body: payload.to_json, status: 200
+            response.body = payload.to_json
           end
 
           def not_found response

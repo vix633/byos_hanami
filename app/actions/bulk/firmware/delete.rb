@@ -8,8 +8,6 @@ module Terminus
         class Delete < Terminus::Action
           include Deps[repository: "repositories.firmware"]
 
-          using Refines::Actions::Response
-
           def handle _request, response
             repository.delete_all
             response.render view, layout: false

@@ -16,7 +16,7 @@ RSpec.describe Terminus::Refines::Actions::Response do
 
   describe "#with" do
     it "answers response with required body and status" do
-      expect(response.with(body: "A test.", status: 200)).to have_attributes(
+      expect(response.with(body: "A test.")).to have_attributes(
         body: ["A test."],
         format: nil,
         status: 200
