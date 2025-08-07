@@ -12,7 +12,7 @@ RSpec.describe "/api/setup", :db do
 
     expect(json_payload).to match(
       api_key: match_device_api_key,
-      friendly_id: match_friendly_id,
+      friendly_id: match_device_friendly_id,
       image_url: %(#{settings.api_uri}/assets/setup.bmp),
       message: "Welcome to Terminus!"
     )
