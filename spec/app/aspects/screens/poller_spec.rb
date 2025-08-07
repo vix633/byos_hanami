@@ -15,7 +15,7 @@ RSpec.describe Terminus::Aspects::Screens::Poller, :db do
 
   let(:synchronizer) { instance_spy Terminus::Aspects::Screens::Synchronizer }
 
-  include_context "with main application"
+  include_context "with application dependencies"
 
   describe "#call" do
     let(:devices) { [Factory[:device, proxy: true]] }

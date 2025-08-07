@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.shared_context "with main application" do
-  include_context "with temporary directory"
-
+RSpec.shared_context "with application dependencies" do
   let(:app) { Hanami.app }
   let(:settings) { app[:settings] }
   let(:routes) { app[:routes] }

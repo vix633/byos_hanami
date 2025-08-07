@@ -5,7 +5,7 @@ require "hanami_helper"
 RSpec.describe Terminus::Actions::Designer::Create, :db do
   subject(:action) { described_class.new }
 
-  include_context "with main application"
+  include_context "with application dependencies"
 
   describe "#call" do
     let(:model) { Factory[:model, name: "og_png"] }

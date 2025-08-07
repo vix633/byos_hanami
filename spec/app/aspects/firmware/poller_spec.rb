@@ -8,7 +8,7 @@ RSpec.describe Terminus::Aspects::Firmware::Poller do
   let(:synchronizer) { instance_spy Terminus::Aspects::Firmware::Synchronizer }
   let(:kernel) { class_spy Kernel, sleep: 0 }
 
-  include_context "with main application"
+  include_context "with application dependencies"
 
   describe "#call" do
     before { allow(kernel).to receive(:loop).and_yield }

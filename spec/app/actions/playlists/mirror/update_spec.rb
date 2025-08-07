@@ -5,7 +5,7 @@ require "hanami_helper"
 RSpec.describe Terminus::Actions::Playlists::Mirror::Update, :db do
   subject(:action) { described_class.new }
 
-  include_context "with main application"
+  include_context "with application dependencies"
 
   describe "#call" do
     let(:playlist) { Factory[:playlist] }
