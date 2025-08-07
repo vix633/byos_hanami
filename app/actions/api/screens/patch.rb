@@ -47,10 +47,13 @@ module Terminus
 
           private
 
+          # :reek:TooManyStatements
           def update screen, parameters
             id = screen.id
 
             if parameters.key? :content
+              screen.image_destroy
+
               temp_path.call build_payload(screen, parameters) do |path|
                 screen.upload StringIO.new(path.read), metadata: {"filename" => path.basename}
                 repository.update id, image_data: screen.image_attributes, **parameters
