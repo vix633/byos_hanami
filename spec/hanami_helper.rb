@@ -33,7 +33,6 @@ Pathname.require_tree SPEC_ROOT.join("support/factories")
 
 RSpec.configure do |config|
   config.include Capybara::DSL, Capybara::RSpecMatchers, type: :feature
-  config.include Dry::Monads[:result]
   config.include Rack::Test::Methods, type: :request
 
   config.define_derived_metadata(file_path: %r(/spec/features/)) { it[:type] = :feature }
