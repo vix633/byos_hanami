@@ -17,7 +17,7 @@ port ENV.fetch("PORT") { ENV.fetch("HANAMI_PORT", "5000") }
 environment ENV.fetch("HANAMI_ENV", "development")
 workers concurrency
 worker_timeout 3600 if development
-bind "0.0.0.0", port if development && !ENV["RAILWAY_ENVIRONMENT"]
+bind "0.0.0.0", ENV.fetch("PORT") { ENV.fetch("HANAMI_PORT", "5000") }
 pidfile ENV.fetch("PIDFILE", "tmp/server.pid")
 plugin :tmp_restart
 

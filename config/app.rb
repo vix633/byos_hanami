@@ -51,8 +51,10 @@ module Terminus
         stream: root.join("log/development.log")
       )
       
-      # Allow hosting on Replit domains
+      # Allow hosting on Replit and Railway domains
       config.force_ssl = false
+      config.hosts << /.*\.replit\.dev/
+      config.hosts << /.*\.railway\.app/
       # :nocov:
     end
   end
