@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Railway deployment setup script
+puts "Setting up Terminus for Railway deployment..."
+
+# Ensure required directories exist
+%w[tmp log public/uploads public/uploads/cache].each do |dir|
+  Dir.mkdir(dir) unless Dir.exist?(dir)
+  puts "Created directory: #{dir}"
+end
+
+# Set proper permissions
+File.chmod(0755, "bin/railway-setup") if File.exist?("bin/railway-setup")
+
+puts "Railway setup complete!"

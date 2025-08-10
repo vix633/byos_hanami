@@ -1,0 +1,12 @@
+[phases.setup]
+nixPkgs = ["...", "postgresql", "imagemagick", "chromium"]
+
+[phases.build]
+cmds = [
+  "bundle install --deployment --without development:quality:test:tools",
+  "npm ci --production",
+  "bundle exec hanami assets compile"
+]
+
+[start]
+cmd = "bundle exec puma --config ./config/puma.rb"

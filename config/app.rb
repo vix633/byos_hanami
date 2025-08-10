@@ -36,6 +36,11 @@ module Terminus
     config.middleware.use Rack::Attack
     config.middleware.use Rack::Deflater
     config.middleware.use :body_parser, :json
+    
+    environment :production do
+      config.logger.options[:colorize] = false
+      config.logger.level = :info
+    end
 
     environment :development do
       # :nocov:

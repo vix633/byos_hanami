@@ -1,0 +1,31 @@
+# Development files
+.env.development
+.env.test
+Procfile.dev
+compose.dev.yml
+compose.yml
+
+# Test files
+/spec
+coverage/
+
+# Development tools
+.reek.yml
+.circleci/
+.github/
+
+# Documentation
+*.adoc
+README.adoc
+
+# Logs
+log/
+tmp/
+
+# Cache
+.bundle/
+node_modules/.cache/
+
+# OS files
+.DS_Store
+Thumbs.db
