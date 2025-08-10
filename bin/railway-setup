@@ -1,3 +1,4 @@
+
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
@@ -6,11 +7,17 @@ puts "Setting up Terminus for Railway deployment..."
 
 # Ensure required directories exist
 %w[tmp log public/uploads public/uploads/cache].each do |dir|
-  Dir.mkdir(dir) unless Dir.exist?(dir)
-  puts "Created directory: #{dir}"
+  unless Dir.exist?(dir)
+    Dir.mkdir(dir)
+    puts "Created directory: #{dir}"
+  end
 end
 
-# Set proper permissions
-File.chmod(0755, "bin/railway-setup") if File.exist?("bin/railway-setup")
+# Set proper file permissions if needed
+begin
+  File.chmod(0755, "bin/railway-setup") if File.exist?("bin/railway-setup")
+rescue => e
+  puts "Warning: Could not set permissions on railway-setup: #{e.message}"
+end
 
 puts "Railway setup complete!"
