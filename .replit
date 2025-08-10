@@ -1,0 +1,8 @@
+modules = ["ruby-3.2", "web", "bash"]
+run = "overmind start --port-step 10 --can-die assets,migrate"
+
+[nix]
+channel = "stable-25_05"
+
+[deployment]
+run = ["sh", "-c", "overmind start --port-step 10 --can-die assets,migrate"]
