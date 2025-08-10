@@ -50,6 +50,9 @@ module Terminus
         colorize: false,
         stream: root.join("log/development.log")
       )
+      
+      # Allow hosting on Replit domains
+      config.force_ssl = false
       # :nocov:
     end
   end

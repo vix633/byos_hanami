@@ -13,11 +13,11 @@ min_threads = ENV.fetch "HANAMI_MIN_THREADS", max_threads
 concurrency = ENV.fetch("HANAMI_WEB_CONCURRENCY") { Concurrent.physical_processor_count }
 
 threads min_threads, max_threads
-port ENV.fetch("PORT") { ENV.fetch("HANAMI_PORT", "2300") }
+port ENV.fetch("PORT") { ENV.fetch("HANAMI_PORT", "5000") }
 environment ENV.fetch("HANAMI_ENV", "development")
 workers concurrency
 worker_timeout 3600 if development
-ssl_bind "localhost", 2443 if development && !ENV["RAILWAY_ENVIRONMENT"]
+bind "0.0.0.0", port if development && !ENV["RAILWAY_ENVIRONMENT"]
 pidfile ENV.fetch("PIDFILE", "tmp/server.pid")
 plugin :tmp_restart
 
