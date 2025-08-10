@@ -17,8 +17,4 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "bundle install --quiet"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "bundle exec puma --config ./config/puma.rb"
+args = "overmind start --port-step 10 --can-die assets,migrate"
